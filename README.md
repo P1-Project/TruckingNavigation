@@ -29,7 +29,7 @@ Step-by-step instructions to get the project running locally.
 
 **Steps**
 ```bash
-git clone https://github.com/username/project.git
+git clone https://github.com/P1-Project/TruckingNavigation.git
 cd project
 
 ```
