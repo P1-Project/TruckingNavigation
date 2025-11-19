@@ -3,11 +3,13 @@
 //
 
 #include "utils.h"
-
+#include "programFuntions.h"
 
 #include <stdio.h>
 
 
 void printHelloWorld() {
     printf("Hello World from utils\n");
+
+    runProgram();
 }
