@@ -3,3 +3,9 @@
 //
 
 #include "mapGen.h"
+
+#include <stdio.h>
+
+void printtest() {
+    printf("Testing mapGen\n");
+}
