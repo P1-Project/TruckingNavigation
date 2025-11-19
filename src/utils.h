@@ -4,5 +4,5 @@
 
 #ifndef TRUCKINGNAVIGATION_UTILS_H
 #define TRUCKINGNAVIGATION_UTILS_H
-void printHelloWorld(void);
+void TestUtilsConnection(void);
 #endif //TRUCKINGNAVIGATION_UTILS_H

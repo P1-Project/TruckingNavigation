@@ -8,7 +8,7 @@
 #include <stdio.h>
 
 
-void printHelloWorld() {
+void TestUtilsConnection() {
     printf("Hello World from utils\n");
 
     runProgram();

@@ -1,15 +1,33 @@
 #include <stdio.h>
 
 #include "utils.h"
-#include "pathfinding.h"
+#include "pathFinding.h"
 #include "mapGen.h"
 
-int main(void) {
-    printf("Hello, World!\n");
 
-    printHelloWorld();
-    test();
-    printtest();
+//DEFINES OF CONSTANTS
+#define DRIVINGTIMEMAX 4.5 //hours
+#define DRIVINGSPEED 100 //KM per hour
+
+int main(void) {
+    //GenMap
+
+    //GetDestination (start, end)
+
+    //GenTruckStops
+
+    //GetPreferences
+
+    //Navigate
+
+    //DisplayRoute
+
+    //FilterTruckStops
+
+    printf("Hello, World!\n");
+    TestUtilsConnection();
+    TestPathfindingConcetion();
+    TestMapGenConcetion();
 
     return 0;
 }

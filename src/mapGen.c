@@ -6,6 +6,6 @@
 
 #include <stdio.h>
 
-void printtest() {
-    printf("Testing mapGen\n");
+void TestMapGenConcetion(void) {
+    printf("Testing con from mapGen\n");
 }
