@@ -3,3 +3,11 @@
 //
 
 #include "pathfinding.h"
+
+#include <stdio.h>
+
+
+void test() {
+    printf("Testing\n");
+
+}
