@@ -16,4 +16,9 @@ add_executable(
         main.c
 )
 
+add_executable(MapGen mapGen.c)
+
+
+
+
 target_link_libraries(TruckingNavigation projectLib programFuntions mapGen pathfinding truckstops)
