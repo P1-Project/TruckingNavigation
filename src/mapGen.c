@@ -54,9 +54,6 @@ void SetInterStateRoad(int *map, const unsigned int mapSize, InterStateRoad inte
     printf("%d\n",coordinateToIndex);
 
     //using dijkstra algorithm to calculate the shortest path between to points
-
-
-
 }
 
 
