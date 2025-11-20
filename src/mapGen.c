@@ -11,6 +11,10 @@ typedef struct {
     int startX, startY, endX, endY;
 } InterStateRoad;
 
+int XYToIndex(int x, int y, int mapSize) {
+    return y * mapSize + x;
+}
+
 
 void TestMapGenConcetion(void) {
     printf("Testing con from mapGen\n");
@@ -44,8 +48,8 @@ void SetInterStateRoad(int *map, const unsigned int mapSize, InterStateRoad inte
     map[interStateRoad.startY*mapSize + interStateRoad.startX] = 120;
     printf("%d\n", interStateRoad.startY*mapSize + interStateRoad.startX);
     //endpoint
-    int coordinateToIndex = interStateRoad.endX*mapSize + interStateRoad.endY - 1;
-    if (coordinateToIndex >mapSize*mapSize - 1) {coordinateToIndex = mapSize*mapSize - 1;}
+    int coordinateToIndex = interStateRoad.endX*mapSize + interStateRoad.endY;
+    if (coordinateToIndex > mapSize*mapSize) {coordinateToIndex = mapSize*mapSize;}
     map[coordinateToIndex] = 120;
     printf("%d\n",coordinateToIndex);
 
@@ -65,7 +69,7 @@ int main() {
     GenRandomMap(map,mapSize*mapSize);
     InterStateRoad interStateRoad;
     interStateRoad.startX = 0, interStateRoad.startY = 0;
-    interStateRoad.endX = 30, interStateRoad.endY = 30;
+    interStateRoad.endX = 29, interStateRoad.endY = 29;
 
     SetInterStateRoad(map, mapSize, interStateRoad);
     PrintMap(map, mapSize*mapSize);
