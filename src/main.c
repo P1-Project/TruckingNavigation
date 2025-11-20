@@ -1,8 +1,12 @@
 #include <stdio.h>
 
-#include "utils.h"
+#include "CheckCoordinateSetFunc.h"
 #include "pathFinding.h"
 #include "mapGen.h"
+#include "GenStopsFunc.h"
+#include "GenBlockadeFunc.h"
+#include "GetDestinationFunc.h"
+#include "GenInterstateFunc.h"
 
 
 //DEFINES OF CONSTANTS
@@ -25,8 +29,16 @@ int main(void) {
     //FilterTruckStops
 
     printf("Hello, World!\n");
-    TestUtilsConnection();
-    TestPathfindingConcetion();
+
+    //connection testing
+    TestConGenStopsFunc();
+    TestConGetDestinationFunc();
+    TestConCheckCoordinateSetFunc();
+    TestConGenBlockadeFunc();
+
+
+
+    //TestPathfindingConcetion();
     TestMapGenConcetion();
 
     return 0;
