@@ -30,6 +30,7 @@ void PrintMap(int *map, int mapSize) {
 void GenRandomMap(int *map, const unsigned int mapSize) {
     for (int i = 0; i < mapSize; i++) {
         int num = rand() % (0-6+1)+0;
+        num = 0;
         if (num == 0) map[i] = 48;
         if (num == 1) map[i] = 49;
         if (num == 2) map[i] = 50;
@@ -60,7 +61,7 @@ void SetInterStateRoad(int *map, const unsigned int mapSize, InterStateRoad inte
 
 
 
-int main() {
+void runMapGen(void) {
     const unsigned int mapSize = 30;
     int map[mapSize*mapSize];
     GenRandomMap(map,mapSize*mapSize);
@@ -70,5 +71,4 @@ int main() {
 
     SetInterStateRoad(map, mapSize, interStateRoad);
     PrintMap(map, mapSize*mapSize);
-    return 0;
 }

@@ -22,8 +22,7 @@ add_executable(
         main.c
 )
 #testing files and functions before merge
-#add_executable(MapGen mapGen.c)
 
-#Linking all togehter for main program
+#Linking all together for main program
 target_link_libraries(TruckingNavigation mapGen GenBlockadeFunc GenInterstateFunc GenStopsFunc GetDestinationFunc CheckCoordinateSetFunc)
 
