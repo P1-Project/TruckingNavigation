@@ -3,13 +3,11 @@
 //
 
 #include "mapGen.h"
+#include "GenInterstateFunc.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct {
-    int startX, startY, endX, endY;
-} InterStateRoad;
 
 int XYToIndex(int x, int y, int mapSize) {
     return y * mapSize + x;
@@ -41,22 +39,6 @@ void GenRandomMap(int *map, const unsigned int mapSize) {
     }
 }
 
-void SetInterStateRoad(int *map, const unsigned int mapSize, InterStateRoad interStateRoad) {
-    //from point (x,y) on map, to (x,y)
-    //calculate index from map
-    //map[y*mapSize+x]
-    //start point
-    map[interStateRoad.startY*mapSize + interStateRoad.startX] = 120;
-    printf("%d\n", interStateRoad.startY*mapSize + interStateRoad.startX);
-    //endpoint
-    int coordinateToIndex = interStateRoad.endX*mapSize + interStateRoad.endY;
-    if (coordinateToIndex > mapSize*mapSize) {coordinateToIndex = mapSize*mapSize;}
-    map[coordinateToIndex] = 120;
-    printf("%d\n",coordinateToIndex);
-
-    //using dijkstra algorithm to calculate the shortest path between to points
-}
-
 
 
 
@@ -71,4 +53,5 @@ void runMapGen(void) {
 
     SetInterStateRoad(map, mapSize, interStateRoad);
     PrintMap(map, mapSize*mapSize);
+
 }
