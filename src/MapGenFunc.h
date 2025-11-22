@@ -4,6 +4,8 @@
 
 #ifndef TRUCKINGNAVIGATION_MAPGEN_H
 #define TRUCKINGNAVIGATION_MAPGEN_H
+
+
 void TestMapGenConcetion(void);
 void runMapGen(void);
 #endif //TRUCKINGNAVIGATION_MAPGEN_H

@@ -19,8 +19,17 @@ void TestMapGenConcetion(void) {
 
 void PrintMap(int *map, int mapSize) {
     int total = mapSize * mapSize;
+    for (int i = -1; i < mapSize; i++) {
+        if (i == -1 ) {printf("   |"); continue;}
+        if (i <= 9) printf(" ");
+        printf("%d ", i);
+    }
+    printf("\n");
+
+
     for (int i = 0; i < total; i++) {
         //new row:
+
         if (i % mapSize == 0) {
             if (i != 0) printf("\n");
             printf("%2d |", i / mapSize);
@@ -32,13 +41,14 @@ void PrintMap(int *map, int mapSize) {
             case 0: c = '.'; break; // empty
             case 1: c = '#'; break; // blockade
             case 2: c = 'H'; break; // highway
-            case 3: c = '.'; break;
+            case 3: c = 'S'; break; // InterstateTruckStop
             case 4: c = '.'; break;
             //add more cases for rest stops and more
             default: c = '?'; break; // unknown
         }
         //printf("%d ", map[i]);
-        printf("%c ", c);
+        printf(" %c ", c);
+        //if (i % mapSize >= 9) printf(" ");
     }
     printf("\n");
 }
@@ -62,12 +72,12 @@ void runMapGen(void) {
     int map[mapSize*mapSize];
     GenRandomMap(map,mapSize);
     InterStateRoad interStateRoad;
-    interStateRoad.startX = 29, interStateRoad.startY = 29;
-    interStateRoad.endX = 0, interStateRoad.endY = 0;
+    interStateRoad.startX = 10, interStateRoad.startY = 0;
+    interStateRoad.endX = 25, interStateRoad.endY = 30;
 
     SetInterStateRoad(map, mapSize, interStateRoad);
     printf("\n");
     PrintMap(map, mapSize);
 
-    printf("\n map index = %d \n", map[1]);
+    //printf("\n map index = %d \n", map[155]);
 }
