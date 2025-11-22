@@ -2,7 +2,7 @@
 
 #include "CheckCoordinateSetFunc.h"
 #include "pathFinding.h"
-#include "mapGen.h"
+#include "MapGenFunc.h"
 #include "GenStopsFunc.h"
 #include "GenBlockadeFunc.h"
 #include "GetDestinationFunc.h"
