@@ -5,9 +5,11 @@
 #include "GenInterstateFunc.h"
 #include "DijkstraAlgorithm.h"
 #include "ConverterFunc.h"
+#include "MapGenFunc.h"
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 
 /**
@@ -33,16 +35,16 @@ int *DefineHighwayPath(int *map, signed int mapSize, InterStateRoad interStateRo
     int D; //decision var
     int pathLength = 0;
     int *path = malloc(sizeof(int)* mapSize * mapSize);
-    int tempIndex = y*mapSize + x;
-    printf("tempIndex = %d\n", tempIndex);
-    map[tempIndex] = 6;
+    int tempIndex = XYToIdx(x,y, mapSize);
+    //printf("tempIndex = %d\n", tempIndex);
+    map[tempIndex] = INTERSTATEROAD;
 
     //if the highway is going North to South or East to West, do this else do East West,
     if (absDx >= absDy) { //North to South
         D = 2*absDy - absDx;
         for (int i = 0; i <= absDx; i++) {
             tempIndex = XYToIdx(x, y, mapSize);
-            map[tempIndex] = 1; //sets mapIdx as highway
+            map[tempIndex] = INTERSTATEROAD; //sets mapIdx as highway
             pathLength++;
             path[i] = tempIndex;
 
@@ -58,7 +60,7 @@ int *DefineHighwayPath(int *map, signed int mapSize, InterStateRoad interStateRo
         D = 2*absDy- absDx;
         for (int i = 0; i <= absDy; i++) {
             tempIndex = XYToIdx(x, y, mapSize);
-            map[tempIndex] = 1; //sets mapIdx as highway
+            map[tempIndex] = INTERSTATEROAD; //sets mapIdx as highway
             pathLength++;
             path[i] = tempIndex;
             if (D > 0) {
@@ -106,19 +108,19 @@ TruckStopInterstate *SetInterstateRestStops(int *map, signed int mapSize, int fr
             continue;
         }
         //sets the type of truckstop to match interstate type
-        truckStops[counter].type = 2;
+        truckStops[counter].type = INTERSTATESTOP;
         //Calls IdxToCoords from Converter.c and gets the value for x and y in return
         IdxToCoords(path[i], mapSize,
                     &truckStops[counter].locationX,
                     &truckStops[counter].locationY);
 
         //displaying debugging informaiton
-        printf("TruckStop # %d at path[%d] = %d\n", counter, i, path[i]);
+        /*printf("TruckStop # %d at path[%d] = %d\n", counter, i, path[i]);
         printf("Location (x,y): %d, %d\n",
                 truckStops[counter].locationX,
-                truckStops[counter].locationY);
+                truckStops[counter].locationY);*/
 
-        map[path[i]] = 2; //value for an interstate truck stop on the map
+        map[path[i]] = INTERSTATESTOP; //value for an interstate truck stop on the map
         counter++; //post increments the counter for the amount of stops to keep track.
     }
     *outNumStops = counter; //assigns the pointer a value that are equal counter.
@@ -137,16 +139,12 @@ void SetInterStateRoad(int *map, signed int mapSize, InterStateRoad interStateRo
     //from point (x,y) on map, to (x,y)
     //start point
     const int startIndex = XYToIdx(interStateRoad.startX,interStateRoad.startY, mapSize);
-    map[startIndex] = 6; //value for map start index
-    printf("Start index : %d\n", startIndex);
+    //value for map start index
+    //printf("Start index : %d\n", startIndex);
     //endpoint
     const int goalIndex = XYToIdx(interStateRoad.endX, interStateRoad.endY, mapSize);
-    map[goalIndex] = 6; //value for map end index
-    printf("Goal index : %d\n", goalIndex);
-
-    //using dijkstra algorithm to calculate the shortest path between to points
-    //TestDijkstraAlgorithmCon();
-    //runDijstraks(map, mapSize, startIndex, goalIndex);
+    //value for map end index
+    //printf("Goal index : %d\n", goalIndex);
 
     //defines highway with the use of rules,
     int pathLength;
@@ -154,11 +152,11 @@ void SetInterStateRoad(int *map, signed int mapSize, InterStateRoad interStateRo
 
     printf("PathLength : %d\n", pathLength);
 
-    for (int i = 0; i < pathLength; i++) {
+    /*for (int i = 0; i < pathLength; i++) {
         printf("%d, ", path[i]);
     }
-    printf("\n");
-    int frequencyOfStops = 3;
+    printf("\n");*/
+    int frequencyOfStops = 5;
     int numStops;
     TruckStopInterstate *truckStops = SetInterstateRestStops(map, mapSize, frequencyOfStops, path, pathLength, startIndex, goalIndex, &numStops);
 
@@ -168,4 +166,74 @@ void SetInterStateRoad(int *map, signed int mapSize, InterStateRoad interStateRo
     //frees the memorey allocated for pointers
     free(truckStops);
     free(path);
+}
+void printInterStateRoad(InterStateRoad interStateRoad) {
+    printf("in start X :%d\n", interStateRoad.startX);
+    printf("in start Y :%d\n", interStateRoad.startY);
+    printf("in end X :%d\n", interStateRoad.endX);
+    printf("in end Y :%d\n", interStateRoad.endY);
+}
+
+
+
+void SetInterStates(int *map, int mapSize) {
+    srand(time(NULL));
+    InterStateRoad interStateRoad1;
+    InterStateRoad interStateRoad2;
+    int minDistance = mapSize / 2 - 5;
+
+    //find firsts x value with y value = 0
+    interStateRoad1.startX = rand() % mapSize-1;
+    interStateRoad1.startY = 0; //sets the start to be in the first 0 - 29 indexes
+
+    interStateRoad1.endX = rand() % mapSize-1;
+    interStateRoad1.endY = mapSize - 1;
+
+    printInterStateRoad(interStateRoad1);
+
+    // -------------------------
+    // SAFELY PICK startY FOR HIGHWAY 2
+    // -------------------------
+    // If H1 starts on LEFT side, place H2 start on LOWER half
+    // If H1 starts on RIGHT side, place H2 start on UPPER half
+    if (interStateRoad1.startX < mapSize / 2) {
+        // H1 on left → H2 start must be far down
+        interStateRoad2.startY = randomBetween(mapSize / 2 + minDistance - mapSize, mapSize - 1);
+        // This simplifies to:
+        // randomBetween( min(15+15-30=0), 29 ) → randomBetween(0,29)
+        // But we ensure the distance condition explicitly:
+        do {
+            interStateRoad2.startY = randomBetween(mapSize/2, mapSize-1); // 15–29
+        } while (abs(interStateRoad1.startX - interStateRoad2.startY) < minDistance);
+    } else {
+        // H1 on right → H2 start must be high up
+        do {
+            interStateRoad2.startY = randomBetween(0, mapSize/2); // 0–15
+        } while (abs(interStateRoad1.startX - interStateRoad2.startY) < minDistance);
+    }
+
+    interStateRoad2.startX = 0;
+    interStateRoad2.endX = mapSize - 1;
+
+    // -------------------------
+    // END Y WITH SAME GUARANTEES
+    // -------------------------
+    if (interStateRoad1.endX >= mapSize/2) {
+        do {
+            interStateRoad2.endY = randomBetween(mapSize/2, mapSize - 1);
+        } while (abs(interStateRoad1.endX - interStateRoad2.endY) < minDistance);
+    } else {
+        do {
+            interStateRoad2.endY = randomBetween(0, mapSize/2);
+        } while (abs(interStateRoad1.endX - interStateRoad2.endY) < minDistance);
+    }
+
+
+
+
+    printInterStateRoad(interStateRoad2);
+
+
+    SetInterStateRoad(map, mapSize, interStateRoad1);
+    SetInterStateRoad(map, mapSize, interStateRoad2);
 }
