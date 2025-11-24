@@ -82,7 +82,7 @@ void runMapGen(void) {
 
     map[XYToIdx(10, 10, mapSize)] = 5;
     int indexValue = CheckCoordinateSet(map, 10, 10, mapSize);
-    printf("%d\n", indexValue);
+    printf("map[%d]\n", indexValue);
 
     PrintMap(map, mapSize);
 
