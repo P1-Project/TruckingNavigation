@@ -5,9 +5,11 @@
 #include "MapGenFunc.h"
 #include "GenInterstateFunc.h"
 #include "CheckCoordinateSetFunc.c"
+#include "GenStopsFunc.h"
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 
 
@@ -83,8 +85,18 @@ void runMapGen(void) {
     int indexValue = CheckCoordinateSet(map, 10, 10, mapSize);
     printf("%d\n", indexValue);
 
-    PrintMap(map, mapSize);
 
+
+    srand(time(NULL));
+
+    StopType stopTypesArray[3];
+    InitializeTypes(stopTypesArray);
+
+    Stops restStops[NUMBEROFSTOPS];
+    InitializeStops(map, mapSize, restStops, stopTypesArray);
+    GenStops(map, mapSize, restStops);
+
+    PrintMap(map, mapSize);
 
 
 

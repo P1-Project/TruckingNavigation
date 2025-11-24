@@ -5,6 +5,8 @@
 
 #include "GenStopsFunc.h"
 #include "ConverterFunc.h"
+#include "GetDestinationFunc.h"
+#include "MapGenFunc.h"
 
 void TestConGenStopsFunc() {
     printf("Hello, World from GenStopsFunc!");
@@ -16,9 +18,9 @@ void TestConGenStopsFunc() {
  * @param stopTypesArray An array of the 3 stop types
  */
 void InitializeTypes(StopType stopTypesArray[3]) {
-    stopTypesArray[0] = (StopType){1, 1, 0, 0, 0, 1}; //49 is 1
-    stopTypesArray[1] = (StopType){2, 1, 1, 0, 1, 1}; //50 is 2
-    stopTypesArray[2] = (StopType){3, 1, 1, 1, 1, 1}; //51 is 3
+    stopTypesArray[0] = (StopType){INTERSTATESTOP, 1, 0, 0, 0, 1}; //49 is 1
+    stopTypesArray[1] = (StopType){TYPE2STOP, 1, 1, 0, 1, 1}; //50 is 2
+    stopTypesArray[2] = (StopType){TYPE3STOP, 1, 1, 1, 1, 1}; //51 is 3
 }
 
 /**
@@ -27,7 +29,7 @@ void InitializeTypes(StopType stopTypesArray[3]) {
  * @param restStops An array of all the existing restStops
  * @param stopTypesArray An array of the 3 stop types
  */
-void InitializeStops(int mapSize, Stops restStops[NUMBEROFSTOPS], StopType stopTypesArray[3]) {
+void InitializeStops(int *map, int mapSize, Stops restStops[NUMBEROFSTOPS], StopType stopTypesArray[3]) {
     double Type2Percentage = 0.75;
     double Type3Percentage = 1.00-Type2Percentage;
 
@@ -46,7 +48,7 @@ void InitializeStops(int mapSize, Stops restStops[NUMBEROFSTOPS], StopType stopT
             randomX = rand() % mapSize;
             randomY = rand() % mapSize;
             printf("Trying to assign rest stop at (%d, %d)\n", randomX, randomY);
-        } while (StopExists(randomX, randomY, restStops, i));
+        } while (SpotOccupied(map, mapSize, randomX, randomY));
         printf("Successfully assigned rest stop at (%d, %d)\n", randomX, randomY);
 
         restStops[i].locationX = randomX;
@@ -62,14 +64,14 @@ void InitializeStops(int mapSize, Stops restStops[NUMBEROFSTOPS], StopType stopT
  * @param stopsPlaced The amount of rest stops which have already been initialized
  * @return 1 if the stop is occupied, 0 if not
  */
-int StopExists(int X, int Y, Stops restStops[NUMBEROFSTOPS], int stopsPlaced) {
-    for (int i = 0; i < stopsPlaced; ++i) {
-        if ((restStops[i].locationX == X) && (restStops[i].locationY == Y)) {
-            printf("Deflected attempt at assigning a rest stop at the occupied coordinate (%d, %d)\n", X, Y);
-            return 1;
-        }
+int SpotOccupied(int *map, int mapSize, int X, int Y) {
+    if (map[XYToIdx(X, Y, mapSize)] == NORMALROAD) {
+        return 0;
     }
-    return 0;
+    if ((map[XYToIdx(X, Y, mapSize)] == BLOCKADE) || (map[XYToIdx(X, Y, mapSize)] == INTERSTATEROAD) || (map[XYToIdx(X, Y, mapSize)] == INTERSTATESTOP)) {
+        return 1;
+    }
+    return 1;
 }
 
 /**
@@ -80,7 +82,7 @@ int StopExists(int X, int Y, Stops restStops[NUMBEROFSTOPS], int stopsPlaced) {
  */
 void GenStops(int *map, unsigned int mapSize, Stops restStops[NUMBEROFSTOPS]) {
     for (int i = 0; i < NUMBEROFSTOPS; ++i) {
-        printf("Setting (%d, %d) to stop type %d\n", restStops[i].locationX, restStops[i].locationY, restStops[i].Type.Type);
+        //printf("Setting (%d, %d) to stop type %d\n", restStops[i].locationX, restStops[i].locationY, restStops[i].Type.Type);
         int index = XYToIdx(restStops[i].locationX, restStops[i].locationY, mapSize);
         map[index] = restStops[i].Type.Type;
     }
