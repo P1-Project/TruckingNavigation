@@ -4,7 +4,7 @@
 #include <time.h>
 
 #include "GenStopsFunc.h"
-#include "MapGenFunc.h"
+#include "ConverterFunc.h"
 
 void TestConGenStopsFunc() {
     printf("Hello, World from GenStopsFunc!");
@@ -81,7 +81,7 @@ int StopExists(int X, int Y, Stops restStops[NUMBEROFSTOPS], int stopsPlaced) {
 void GenStops(int *map, unsigned int mapSize, Stops restStops[NUMBEROFSTOPS]) {
     for (int i = 0; i < NUMBEROFSTOPS; ++i) {
         printf("Setting (%d, %d) to stop type %d\n", restStops[i].locationX, restStops[i].locationY, restStops[i].Type.Type);
-        int index = XYToIndex(restStops[i].locationX, restStops[i].locationY, mapSize);
+        int index = XYToIdx(restStops[i].locationX, restStops[i].locationY, mapSize);
         map[index] = restStops[i].Type.Type;
     }
 }
