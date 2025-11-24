@@ -4,7 +4,7 @@
 
 #include "MapGenFunc.h"
 #include "GenInterstateFunc.h"
-
+#include "CheckCoordinateSetFunc.c"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -78,6 +78,9 @@ void runMapGen(void) {
     SetInterStateRoad(map, mapSize, interStateRoad);
     printf("\n");
     PrintMap(map, mapSize);
+
+
+
 
     //printf("\n map index = %d \n", map[155]);
 }

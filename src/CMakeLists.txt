@@ -22,6 +22,8 @@ target_include_directories(MapGenFunc PUBLIC .)
 target_include_directories(pathfinding PUBLIC .)
 
 target_link_libraries(GenInterstateFunc PUBLIC ConverterFunc)
+target_link_libraries(CheckCoordinateSetFunc PUBLIC ConverterFunc)
+target_link_libraries(MapGenFunc PUBLIC CheckCoordinateSetFunc)
 
 
 add_executable(
