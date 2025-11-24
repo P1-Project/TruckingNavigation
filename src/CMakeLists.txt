@@ -25,8 +25,12 @@ target_include_directories(pathfinding PUBLIC .)
 target_link_libraries(MapGenFunc PUBLIC CheckCoordinateSetFunc)
 target_link_libraries(GenInterstateFunc PUBLIC ConverterFunc)
 target_link_libraries(CheckCoordinateSetFunc PUBLIC ConverterFunc)
+target_link_libraries(MapGenFunc PUBLIC GenBlockadeFunc ConverterFunc)
+target_link_libraries(MapGenFunc PUBLIC CheckCoordinateSetFunc)
 target_link_libraries(GenStopsFunc PUBLIC ConverterFunc)
-target_link_libraries(MapGenFunc PUBLIC ConverterFunc)
+target_link_libraries(GenBlockadeFunc PUBLIC ConverterFunc)
+target_link_libraries(GenBlockadeFunc PUBLIC MapGenFunc)
+
 
 
 add_executable(
