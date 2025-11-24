@@ -4,7 +4,8 @@
 
 #ifndef TRUCKINGNAVIGATION_INTERSTATE_H
 #define TRUCKINGNAVIGATION_INTERSTATE_H
-#define ERROR_PATH 5
+#define ERROR_PATH 10
+
 
 typedef struct {
     int startX, startY, endX, endY;

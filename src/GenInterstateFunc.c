@@ -35,14 +35,14 @@ int *DefineHighwayPath(int *map, signed int mapSize, InterStateRoad interStateRo
     int *path = malloc(sizeof(int)* mapSize * mapSize);
     int tempIndex = y*mapSize + x;
     printf("tempIndex = %d\n", tempIndex);
-    map[tempIndex] = 2;
+    map[tempIndex] = 6;
 
     //if the highway is going North to South or East to West, do this else do East West,
     if (absDx >= absDy) { //North to South
         D = 2*absDy - absDx;
         for (int i = 0; i <= absDx; i++) {
-            tempIndex = y*mapSize + x;
-            map[tempIndex] = 2; //sets mapIdx as highway
+            tempIndex = XYToIdx(x, y, mapSize);
+            map[tempIndex] = 1; //sets mapIdx as highway
             pathLength++;
             path[i] = tempIndex;
 
@@ -57,8 +57,8 @@ int *DefineHighwayPath(int *map, signed int mapSize, InterStateRoad interStateRo
     else { //East to West
         D = 2*absDy- absDx;
         for (int i = 0; i <= absDy; i++) {
-            tempIndex = y*mapSize + x;
-            map[tempIndex] = 2; //sets mapIdx as highway
+            tempIndex = XYToIdx(x, y, mapSize);
+            map[tempIndex] = 1; //sets mapIdx as highway
             pathLength++;
             path[i] = tempIndex;
             if (D > 0) {
@@ -118,7 +118,7 @@ TruckStopInterstate *SetInterstateRestStops(int *map, signed int mapSize, int fr
                 truckStops[counter].locationX,
                 truckStops[counter].locationY);
 
-        map[path[i]] = 3; //value for an interstate truck stop on the map
+        map[path[i]] = 2; //value for an interstate truck stop on the map
         counter++; //post increments the counter for the amount of stops to keep track.
     }
     *outNumStops = counter; //assigns the pointer a value that are equal counter.
@@ -137,11 +137,11 @@ void SetInterStateRoad(int *map, signed int mapSize, InterStateRoad interStateRo
     //from point (x,y) on map, to (x,y)
     //start point
     const int startIndex = XYToIdx(interStateRoad.startX,interStateRoad.startY, mapSize);
-    map[startIndex] = 2; //value for map start index
+    map[startIndex] = 6; //value for map start index
     printf("Start index : %d\n", startIndex);
     //endpoint
     const int goalIndex = XYToIdx(interStateRoad.endX, interStateRoad.endY, mapSize);
-    map[goalIndex] = 2; //value for map end index
+    map[goalIndex] = 6; //value for map end index
     printf("Goal index : %d\n", goalIndex);
 
     //using dijkstra algorithm to calculate the shortest path between to points

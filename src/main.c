@@ -44,6 +44,5 @@ int main(void) {
     //runMapGen()
     runMapGen();
 
-
     return 0;
 }
