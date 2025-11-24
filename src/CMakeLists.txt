@@ -21,6 +21,9 @@ add_executable(
         TruckingNavigation
         main.c
 )
+
+add_executable(GenStopsExec GenStopsFunc.c mapGen.c)
+
 #testing files and functions before merge
 #add_executable(MapGen mapGen.c)
 
