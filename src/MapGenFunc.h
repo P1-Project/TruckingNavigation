@@ -4,8 +4,13 @@
 
 #ifndef TRUCKINGNAVIGATION_MAPGEN_H
 #define TRUCKINGNAVIGATION_MAPGEN_H
+#define NORMALROAD 0
+#define INTERSTATEROAD 1
+#define INTERSTATESTOP 2
+#define TYPE2STOP 3
+#define TYPE3STOP 4
+#define BLOCKADE 5
+
 void TestMapGenConcetion(void);
-int XYToIndex(int x, int y, int mapSize);
-void PrintMap(int *map, int mapSize);
-void GenRandomMap(int *map, const unsigned int mapSize);
+void runMapGen(void);
 #endif //TRUCKINGNAVIGATION_MAPGEN_H
