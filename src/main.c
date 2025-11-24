@@ -18,8 +18,6 @@ int main(void) {
 
     //GetDestination (start, end)
 
-    //GenTruckStops
-
     //GetPreferences
 
     //Navigate
