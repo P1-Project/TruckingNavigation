@@ -59,10 +59,9 @@ void PrintMap(int *map, int mapSize) {
 
 
 
-void GenRandomMap(int *map, const signed int mapSize) {
+void InitMap(int *map, const signed int mapSize) {
     for (int i = 0; i < mapSize*mapSize; i++) {
-        int num = rand() % (0-6+1)+0;
-        num = 0;
+        int num = 0;
         map[i] = num;
     }
 }
@@ -86,17 +85,20 @@ void runMapGen(void) {
     interStateRoad.startX = 10, interStateRoad.startY = 0;
     interStateRoad.endX = 25, interStateRoad.endY = 30;
 
-    SetInterStateRoad(map, mapSize, interStateRoad);
-    printf("\n");
 
-    map[XYToIdx(10, 10, mapSize)] = 5;
-    int indexValue = CheckCoordinateSet(map, 10, 10, mapSize);
-    printf("%d\n", indexValue);
+
+void runMapGen(void) {
+    const signed int mapSize = 30;
+    int map[mapSize*mapSize];
+    InitMap(map,mapSize);
+
+    SetInterStates(map,mapSize);
+
+
+    map[XYToIdx(29, 29, mapSize)] = 5;
+    //int indexValue = CheckCoordinateSet(map, 29, 29, mapSize); //this function needs fixing if index goes out of bounds
+    //printf("%d\n", indexValue);
 
     PrintMap(map, mapSize);
-
-
-
-
     //printf("\n map index = %d \n", map[155]);
 }

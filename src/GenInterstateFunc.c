@@ -5,9 +5,11 @@
 #include "GenInterstateFunc.h"
 #include "DijkstraAlgorithm.h"
 #include "ConverterFunc.h"
+#include "MapGenFunc.h"
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 
 /**
@@ -25,24 +27,29 @@ int *DefineHighwayPath(int *map, signed int mapSize, InterStateRoad interStateRo
     int absDy = abs(interStateRoad.startY - interStateRoad.endY);
 
     //these intgers below are assigned as an oneline if-statement with return either 1 or -1
-    int stepX = (interStateRoad.endX > interStateRoad.startX) ? 1 : -1;
-    int stepY = (interStateRoad.endY > interStateRoad.startY) ? 1 : -1;
+    int stepX = (interStateRoad.endX > interStateRoad.startX) ? 1 :
+            (interStateRoad.endX < interStateRoad.startX) ? -1 : 0;
+
+    int stepY = (interStateRoad.endY > interStateRoad.startY) ? 1 :
+                (interStateRoad.endY < interStateRoad.startY) ? -1 : 0;
+
 
     int x = interStateRoad.startX;
     int y = interStateRoad.startY;
     int D; //decision var
     int pathLength = 0;
     int *path = malloc(sizeof(int)* mapSize * mapSize);
-    int tempIndex = y*mapSize + x;
-    printf("tempIndex = %d\n", tempIndex);
-    map[tempIndex] = 6;
+    int tempIndex = XYToIdx(x,y, mapSize);
+    //printf("tempIndex = %d\n", tempIndex);
+    //map[tempIndex-1] = INTERSTATEROAD;
+    //printf("map[tempIndex] = %d\n", map[tempIndex]);
 
     //if the highway is going North to South or East to West, do this else do East West,
-    if (absDx >= absDy) { //North to South
+    if (absDx >= absDy) { //East To west
         D = 2*absDy - absDx;
         for (int i = 0; i <= absDx; i++) {
             tempIndex = XYToIdx(x, y, mapSize);
-            map[tempIndex] = 1; //sets mapIdx as highway
+            map[tempIndex] = INTERSTATEROAD; //sets mapIdx as highway
             pathLength++;
             path[i] = tempIndex;
 
@@ -54,11 +61,11 @@ int *DefineHighwayPath(int *map, signed int mapSize, InterStateRoad interStateRo
             D += 2*absDy;
         }
     }
-    else { //East to West
+    else { //North To South
         D = 2*absDy- absDx;
         for (int i = 0; i <= absDy; i++) {
             tempIndex = XYToIdx(x, y, mapSize);
-            map[tempIndex] = 1; //sets mapIdx as highway
+            map[tempIndex] = INTERSTATEROAD; //sets mapIdx as highway
             pathLength++;
             path[i] = tempIndex;
             if (D > 0) {
@@ -106,19 +113,19 @@ TruckStopInterstate *SetInterstateRestStops(int *map, signed int mapSize, int fr
             continue;
         }
         //sets the type of truckstop to match interstate type
-        truckStops[counter].type = 2;
+        truckStops[counter].type = INTERSTATESTOP;
         //Calls IdxToCoords from Converter.c and gets the value for x and y in return
         IdxToCoords(path[i], mapSize,
                     &truckStops[counter].locationX,
                     &truckStops[counter].locationY);
 
         //displaying debugging informaiton
-        printf("TruckStop # %d at path[%d] = %d\n", counter, i, path[i]);
+        /*printf("TruckStop # %d at path[%d] = %d\n", counter, i, path[i]);
         printf("Location (x,y): %d, %d\n",
                 truckStops[counter].locationX,
-                truckStops[counter].locationY);
+                truckStops[counter].locationY);*/
 
-        map[path[i]] = 2; //value for an interstate truck stop on the map
+        map[path[i]] = INTERSTATESTOP; //value for an interstate truck stop on the map
         counter++; //post increments the counter for the amount of stops to keep track.
     }
     *outNumStops = counter; //assigns the pointer a value that are equal counter.
@@ -137,16 +144,12 @@ void SetInterStateRoad(int *map, signed int mapSize, InterStateRoad interStateRo
     //from point (x,y) on map, to (x,y)
     //start point
     const int startIndex = XYToIdx(interStateRoad.startX,interStateRoad.startY, mapSize);
-    map[startIndex] = 6; //value for map start index
+    //value for map start index
     printf("Start index : %d\n", startIndex);
     //endpoint
     const int goalIndex = XYToIdx(interStateRoad.endX, interStateRoad.endY, mapSize);
-    map[goalIndex] = 6; //value for map end index
+    //value for map end index
     printf("Goal index : %d\n", goalIndex);
-
-    //using dijkstra algorithm to calculate the shortest path between to points
-    //TestDijkstraAlgorithmCon();
-    //runDijstraks(map, mapSize, startIndex, goalIndex);
 
     //defines highway with the use of rules,
     int pathLength;
@@ -154,11 +157,11 @@ void SetInterStateRoad(int *map, signed int mapSize, InterStateRoad interStateRo
 
     printf("PathLength : %d\n", pathLength);
 
-    for (int i = 0; i < pathLength; i++) {
+    /*for (int i = 0; i < pathLength; i++) {
         printf("%d, ", path[i]);
     }
-    printf("\n");
-    int frequencyOfStops = 3;
+    printf("\n");*/
+    int frequencyOfStops = 5;
     int numStops;
     TruckStopInterstate *truckStops = SetInterstateRestStops(map, mapSize, frequencyOfStops, path, pathLength, startIndex, goalIndex, &numStops);
 
@@ -168,4 +171,62 @@ void SetInterStateRoad(int *map, signed int mapSize, InterStateRoad interStateRo
     //frees the memorey allocated for pointers
     free(truckStops);
     free(path);
+}
+void printInterStateRoad(InterStateRoad interStateRoad) {
+    printf("in start (X, Y) : (%d , %d) ", interStateRoad.startX , interStateRoad.startY);
+    printf("Start Index : %d\n", XYToIdx(interStateRoad.startX, interStateRoad.startY, 30));
+
+    printf("in end (X, Y) : (%d , %d) ", interStateRoad.endX, interStateRoad.endY);
+    printf("End Index : %d\n", XYToIdx(interStateRoad.endX, interStateRoad.endY, 30));
+}
+
+
+static int clamp(int v, int min, int max) {
+    if (v < min) return min;
+    if (v > max) return max;
+    return v;
+}
+
+
+void SetInterStates(int *map, int mapSize) {
+    srand(time(NULL));
+
+    InterStateRoad interStateRoad1;
+    InterStateRoad interStateRoad2;
+
+    int wiggle = 5;
+
+
+    // interStateRoad1 = vertical-ish
+    // interStateRoad2 = horizontal-ish
+    int baseX = mapSize / 2;          // vertical highway near center
+    int baseY = mapSize / 2;          // horizontal highway near center
+
+    // Vertical highway
+    interStateRoad1.startX = clamp(baseX + randomBetween(-wiggle, wiggle), 0, mapSize - 1);
+    interStateRoad1.startY = 0;           // top edge
+    interStateRoad1.endX   = clamp(baseX + randomBetween(-wiggle, wiggle), 0, mapSize - 1);
+    interStateRoad1.endY   = mapSize - 1; // bottom edge
+
+    // Horizontal highway
+    interStateRoad2.startX = 0;           // left edge
+    interStateRoad2.startY = clamp(baseY + randomBetween(-wiggle, wiggle), 0, mapSize - 1);
+    interStateRoad2.endX   = mapSize - 1; // right edge
+    interStateRoad2.endY   = clamp(baseY + randomBetween(-wiggle, wiggle), 0, mapSize - 1);
+
+    // 2. Ensure they're not too close to each other
+    int minSeparation = mapSize / 4;
+
+    while (abs(interStateRoad1.startX - interStateRoad2.startY) < minSeparation)
+    {
+        interStateRoad1.startX = clamp(baseX + randomBetween(-wiggle, wiggle), 0, mapSize - 1);
+        interStateRoad1.endX   = clamp(baseX + randomBetween(-wiggle, wiggle), 0, mapSize - 1);
+
+        interStateRoad2.startY = clamp(baseY + randomBetween(-wiggle, wiggle), 0, mapSize - 1);
+        interStateRoad2.endY   = clamp(baseY + randomBetween(-wiggle, wiggle), 0, mapSize - 1);
+    }
+
+    // 3. Draw highways
+    SetInterStateRoad(map, mapSize, interStateRoad1);
+    SetInterStateRoad(map, mapSize, interStateRoad2);
 }
