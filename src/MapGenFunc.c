@@ -8,7 +8,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
+#include "GenBlockadeFunc.h"
 
 
 void TestMapGenConcetion(void) {
@@ -70,8 +72,15 @@ void GenRandomMap(int *map, const signed int mapSize) {
 
 void runMapGen(void) {
     const signed int mapSize = 30;
+    const int numBlockades = 80;
+    srand(time(NULL));
     int map[mapSize*mapSize];
     GenRandomMap(map,mapSize);
+
+
+    GenBlockadeFunc(map,mapSize,numBlockades);
+    GenerateClusterBlockades(map,mapSize,numBlockades / 20,1);
+
     InterStateRoad interStateRoad;
     interStateRoad.startX = 10, interStateRoad.startY = 0;
     interStateRoad.endX = 25, interStateRoad.endY = 30;
