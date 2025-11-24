@@ -5,10 +5,10 @@
 #ifndef TRUCKINGNAVIGATION_GENSTOPSFUNC_H
 #define TRUCKINGNAVIGATION_GENSTOPSFUNC_H
 
-#define NUMBEROFSTOPS 100
+#define NUMBEROFSTOPS 10
 
 typedef struct {
-    char Type;
+    int Type;
     int Toilet;
     int Fuel;
     int Hotel;
