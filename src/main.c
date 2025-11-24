@@ -38,9 +38,9 @@ int main(void) {
 
     //TestPathfindingConcetion();
     TestMapGenConcetion();
-
+    
     //runMapGen()
     runMapGen();
-
+    
     return 0;
 }
