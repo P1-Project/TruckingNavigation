@@ -1,29 +1,49 @@
-add_library(mapGen mapGen.c)
+add_library(MapGenFunc MapGenFunc.c)
 add_library(pathfinding pathfinding.c)
+
+add_library(ConverterFunc ConverterFunc.c)
 
 add_library(GenBlockadeFunc GenBlockadeFunc.c)
 add_library(GenInterstateFunc GenInterstateFunc.c)
+#add_library(DijkstraAlgorithm DijkstraAlgorithm.c)
 add_library(GetDestinationFunc GetDestinationFunc.c)
 add_library(GenStopsFunc GenStopsFunc.c)
 add_library(CheckCoordinateSetFunc CheckCoordinateSetFunc.c)
 
 target_include_directories(GenBlockadeFunc PUBLIC .)
 target_include_directories(GenInterstateFunc PUBLIC .)
+#target_include_directories(DijkstraAlgorithm PUBLIC .)
 target_include_directories(GetDestinationFunc PUBLIC .)
 target_include_directories(GenStopsFunc PUBLIC .)
 target_include_directories(CheckCoordinateSetFunc PUBLIC .)
+target_include_directories(ConverterFunc PUBLIC .)
 
-target_include_directories(mapGen PUBLIC .)
+target_include_directories(MapGenFunc PUBLIC .)
 target_include_directories(pathfinding PUBLIC .)
+
+target_link_libraries(GenInterstateFunc PUBLIC ConverterFunc)
+target_link_libraries(CheckCoordinateSetFunc PUBLIC ConverterFunc)
+target_link_libraries(MapGenFunc PUBLIC CheckCoordinateSetFunc)
+target_link_libraries(GenStopsFunc PUBLIC ConverterFunc)
 
 
 add_executable(
         TruckingNavigation
         main.c
 )
-#testing files and functions before merge
-#add_executable(MapGen mapGen.c)
 
-#Linking all togehter for main program
-target_link_libraries(TruckingNavigation mapGen GenBlockadeFunc GenInterstateFunc GenStopsFunc GetDestinationFunc CheckCoordinateSetFunc)
+#add_executable(GenStopsExec GenStopsFunc.c mapGen.c)
+
+#testing files and functions before merge
+
+
+
+
+#Linking all libraries to main program
+target_link_libraries(
+        TruckingNavigation MapGenFunc ConverterFunc
+        GenBlockadeFunc GenInterstateFunc
+        #DijkstraAlgorithm
+        GenStopsFunc GetDestinationFunc CheckCoordinateSetFunc
+)
 
