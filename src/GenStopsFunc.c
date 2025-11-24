@@ -4,7 +4,7 @@
 #include <time.h>
 
 #include "GenStopsFunc.h"
-#include "mapGen.h"
+#include "MapGenFunc.h"
 
 void TestConGenStopsFunc() {
     printf("Hello, World from GenStopsFunc!");
@@ -86,6 +86,7 @@ void GenStops(int *map, unsigned int mapSize, Stops restStops[NUMBEROFSTOPS]) {
     }
 }
 
+/*
 int main(void) {
     srand(time(NULL));
 
@@ -103,4 +104,4 @@ int main(void) {
     PrintMap(map, mapSize*mapSize);
 
     return 0;
-}
+}*/

@@ -31,7 +31,7 @@ add_executable(
         main.c
 )
 
-add_executable(GenStopsExec GenStopsFunc.c mapGen.c)
+#add_executable(GenStopsExec GenStopsFunc.c mapGen.c)
 
 #testing files and functions before merge
 
