@@ -5,6 +5,7 @@
 #include "MapGenFunc.h"
 #include "GenInterstateFunc.h"
 #include "CheckCoordinateSetFunc.c"
+#include "ConverterFunc.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,11 +39,12 @@ void PrintMap(int *map, int mapSize) {
         //printsMap
         char c;
         switch (map[i]) {
-            case 0: c = '.'; break; // empty
-            case 1: c = '#'; break; // blockade
-            case 2: c = 'H'; break; // highway
-            case 3: c = 'S'; break; // InterstateTruckStop
-            case 4: c = '.'; break;
+            case NORMALROAD: c = '.'; break; // Road
+            case INTERSTATEROAD: c = 'H'; break; // Interstate
+            case INTERSTATESTOP: c = '1'; break; // InterstateTruckStop
+            case TYPE2STOP: c = '2'; break; // Type 2 stop
+            case TYPE3STOP: c = '3'; break; // Type 3 Stop
+            case BLOCKADE: c = '#'; break; // Blockade
             //add more cases for rest stops and more
             default: c = '?'; break; // unknown
         }
@@ -77,6 +79,11 @@ void runMapGen(void) {
 
     SetInterStateRoad(map, mapSize, interStateRoad);
     printf("\n");
+
+    map[XYToIdx(10, 10, mapSize)] = 5;
+    int indexValue = CheckCoordinateSet(map, 10, 10, mapSize);
+    printf("%d\n", indexValue);
+
     PrintMap(map, mapSize);
 
 

@@ -18,8 +18,6 @@ int main(void) {
 
     //GetDestination (start, end)
 
-    //GenTruckStops
-
     //GetPreferences
 
     //Navigate
@@ -36,14 +34,14 @@ int main(void) {
     TestConCheckCoordinateSetFunc();
     TestConGenBlockadeFunc();
 
-
-
     //TestPathfindingConcetion();
     TestMapGenConcetion();
-
+    
     //runMapGen()
     runMapGen();
 
+    //getDestination();
 
+    
     return 0;
 }
