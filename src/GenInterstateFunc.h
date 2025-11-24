@@ -19,4 +19,5 @@ typedef struct {
 
 int *DefineHighwayPath(int *map, signed int mapSize, InterStateRoad interStateRoad, int *outPathLength);
 void SetInterStateRoad(int *map, signed int mapSize, InterStateRoad interStateRoad);
+void SetInterStates(int *map, const signed int mapSize);
 #endif //TRUCKINGNAVIGATION_INTERSTATE_H

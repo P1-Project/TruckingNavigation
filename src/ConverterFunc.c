@@ -4,6 +4,8 @@
 
 #include "ConverterFunc.h"
 
+#include <stdlib.h>
+
 /**
  *
  * @param x x coordinate
@@ -26,4 +28,9 @@ int XYToIdx(int x, int y, int mapSize) {
 void IdxToCoords(int index, int mapSize, int *x, int *y) {
     *x = index % mapSize;
     *y = index / mapSize;
+}
+
+
+int randomBetween(int a, int b) {
+    return a + rand() % (b - a + 1);
 }
