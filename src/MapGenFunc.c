@@ -5,6 +5,7 @@
 #include "MapGenFunc.h"
 #include "GenInterstateFunc.h"
 #include "CheckCoordinateSetFunc.c"
+#include "ConverterFunc.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -79,7 +80,7 @@ void runMapGen(void) {
     SetInterStateRoad(map, mapSize, interStateRoad);
     printf("\n");
 
-    map[310] = 5;
+    map[XYToIdx(10, 10, mapSize)] = 5;
     int indexValue = CheckCoordinateSet(map, 10, 10, mapSize);
     printf("%d\n", indexValue);
 

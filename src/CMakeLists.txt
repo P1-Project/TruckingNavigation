@@ -25,6 +25,7 @@ target_link_libraries(GenInterstateFunc PUBLIC ConverterFunc)
 target_link_libraries(CheckCoordinateSetFunc PUBLIC ConverterFunc)
 target_link_libraries(MapGenFunc PUBLIC CheckCoordinateSetFunc)
 target_link_libraries(GenStopsFunc PUBLIC ConverterFunc)
+target_link_libraries(MapGenFunc PUBLIC ConverterFunc)
 
 
 add_executable(
