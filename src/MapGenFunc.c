@@ -75,8 +75,7 @@ void runMapGen(void) {
     const int numBlockades = 80;
     srand(time(NULL));
     int map[mapSize*mapSize];
-    GenRandomMap(map,mapSize);
-
+    InitMap(map,mapSize);
 
     GenBlockadeFunc(map,mapSize,numBlockades);
     GenerateClusterBlockades(map,mapSize,numBlockades / 20,1);
@@ -86,14 +85,7 @@ void runMapGen(void) {
     interStateRoad.endX = 25, interStateRoad.endY = 30;
 
 
-
-void runMapGen(void) {
-    const signed int mapSize = 30;
-    int map[mapSize*mapSize];
-    InitMap(map,mapSize);
-
     SetInterStates(map,mapSize);
-
 
     map[XYToIdx(29, 29, mapSize)] = 5;
     //int indexValue = CheckCoordinateSet(map, 29, 29, mapSize); //this function needs fixing if index goes out of bounds
