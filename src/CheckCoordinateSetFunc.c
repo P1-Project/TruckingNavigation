@@ -30,28 +30,28 @@ int CheckCoordinateSet(int *map, int x, int y, int mapSize){
     for (int r = 1; r < mapSize; r++) {          // r tæller op hver gang og udvider søgningen med et felt
 
         int j = index_i + 1 * r;                 // Tjekker højre
-            if (j <= mapSize * mapSize && )      // ved ikke lige, skal tjekke den ikke springer på næste linje
-            if (map[j] != 5) return j;
+        if (j <= mapSize * mapSize && )      // ved ikke lige, skal tjekke den ikke springer på næste linje
+        if (map[j] != 5) return j;
 
         j = index_i - 1 * r;                     // Tjekker venstre, og skal tjekke den bliver på linjen
-            if (map[j] != 5) return j;
+        if (map[j] != 5) return j;
 
         j = index_i + mapSize * r;               // Tjekker "nede" samt index er indenfor array
-            if (j < mapSize * mapSize && map[j] != 5) return j;
+        if (j < mapSize * mapSize && map[j] != 5) return j;
 
-        j = index_i + (mapSize + 1) * r;         // Tjekker skråt ned højre
-            if (j > 0 && map[j] != 5) return j;
+        j = index_i + (mapSize + (1 * r));         // Tjekker skråt ned højre
+        if (j > 0 && map[j] != 5) return j;
 
-        j = index_i + (mapSize - 1) * r;         // Tjekker skråt ned venstre
-            if (j > 0 && map[j] != 5) return j;
+        j = index_i + (mapSize - (1*r));         // Tjekker skråt ned venstre
+        if (j > 0 && map[j] != 5) return j;
 
         j = index_i - mapSize * r;               // Tjekker "oppe" samt index er indenfor array
-            if (j > 0 && map[j] != 5) return j;
+        if (j > 0 && map[j] != 5) return j;
 
-        j = index_i - (mapSize + 1) * r;         // Tjekker skråt op højre
-            if (j > 0 && map[j] != 5) return j;
+        j = index_i - (mapSize + (1*r));         // Tjekker skråt op højre
+        if (j > 0 && map[j] != 5) return j;
 
-        j = index_i - (mapSize - 1) * r;         // Tjekker skråt op venstre
+        j = index_i - (mapSize - (1*r));         // Tjekker skråt op venstre
             if (j > 0 && map[j] != 5) return j;
     }                                            // Returnerer index. Skal den konverteres tilbage til x,y?
 
