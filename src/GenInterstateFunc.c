@@ -27,8 +27,12 @@ int *DefineHighwayPath(int *map, signed int mapSize, InterStateRoad interStateRo
     int absDy = abs(interStateRoad.startY - interStateRoad.endY);
 
     //these intgers below are assigned as an oneline if-statement with return either 1 or -1
-    int stepX = (interStateRoad.endX > interStateRoad.startX) ? 1 : -1;
-    int stepY = (interStateRoad.endY > interStateRoad.startY) ? 1 : -1;
+    int stepX = (interStateRoad.endX > interStateRoad.startX) ? 1 :
+            (interStateRoad.endX < interStateRoad.startX) ? -1 : 0;
+
+    int stepY = (interStateRoad.endY > interStateRoad.startY) ? 1 :
+                (interStateRoad.endY < interStateRoad.startY) ? -1 : 0;
+
 
     int x = interStateRoad.startX;
     int y = interStateRoad.startY;
@@ -37,10 +41,11 @@ int *DefineHighwayPath(int *map, signed int mapSize, InterStateRoad interStateRo
     int *path = malloc(sizeof(int)* mapSize * mapSize);
     int tempIndex = XYToIdx(x,y, mapSize);
     //printf("tempIndex = %d\n", tempIndex);
-    map[tempIndex] = INTERSTATEROAD;
+    //map[tempIndex-1] = INTERSTATEROAD;
+    //printf("map[tempIndex] = %d\n", map[tempIndex]);
 
     //if the highway is going North to South or East to West, do this else do East West,
-    if (absDx >= absDy) { //North to South
+    if (absDx >= absDy) { //East To west
         D = 2*absDy - absDx;
         for (int i = 0; i <= absDx; i++) {
             tempIndex = XYToIdx(x, y, mapSize);
@@ -56,7 +61,7 @@ int *DefineHighwayPath(int *map, signed int mapSize, InterStateRoad interStateRo
             D += 2*absDy;
         }
     }
-    else { //East to West
+    else { //North To South
         D = 2*absDy- absDx;
         for (int i = 0; i <= absDy; i++) {
             tempIndex = XYToIdx(x, y, mapSize);
@@ -140,11 +145,11 @@ void SetInterStateRoad(int *map, signed int mapSize, InterStateRoad interStateRo
     //start point
     const int startIndex = XYToIdx(interStateRoad.startX,interStateRoad.startY, mapSize);
     //value for map start index
-    //printf("Start index : %d\n", startIndex);
+    printf("Start index : %d\n", startIndex);
     //endpoint
     const int goalIndex = XYToIdx(interStateRoad.endX, interStateRoad.endY, mapSize);
     //value for map end index
-    //printf("Goal index : %d\n", goalIndex);
+    printf("Goal index : %d\n", goalIndex);
 
     //defines highway with the use of rules,
     int pathLength;
@@ -168,72 +173,60 @@ void SetInterStateRoad(int *map, signed int mapSize, InterStateRoad interStateRo
     free(path);
 }
 void printInterStateRoad(InterStateRoad interStateRoad) {
-    printf("in start X :%d\n", interStateRoad.startX);
-    printf("in start Y :%d\n", interStateRoad.startY);
-    printf("in end X :%d\n", interStateRoad.endX);
-    printf("in end Y :%d\n", interStateRoad.endY);
+    printf("in start (X, Y) : (%d , %d) ", interStateRoad.startX , interStateRoad.startY);
+    printf("Start Index : %d\n", XYToIdx(interStateRoad.startX, interStateRoad.startY, 30));
+
+    printf("in end (X, Y) : (%d , %d) ", interStateRoad.endX, interStateRoad.endY);
+    printf("End Index : %d\n", XYToIdx(interStateRoad.endX, interStateRoad.endY, 30));
 }
 
+
+static int clamp(int v, int min, int max) {
+    if (v < min) return min;
+    if (v > max) return max;
+    return v;
+}
 
 
 void SetInterStates(int *map, int mapSize) {
     srand(time(NULL));
+
     InterStateRoad interStateRoad1;
     InterStateRoad interStateRoad2;
-    int minDistance = mapSize / 2 - 5;
 
-    //find firsts x value with y value = 0
-    interStateRoad1.startX = rand() % mapSize-1;
-    interStateRoad1.startY = 0; //sets the start to be in the first 0 - 29 indexes
+    int wiggle = 5;
 
-    interStateRoad1.endX = rand() % mapSize-1;
-    interStateRoad1.endY = mapSize - 1;
 
-    printInterStateRoad(interStateRoad1);
+    // interStateRoad1 = vertical-ish
+    // interStateRoad2 = horizontal-ish
+    int baseX = mapSize / 2;          // vertical highway near center
+    int baseY = mapSize / 2;          // horizontal highway near center
 
-    // -------------------------
-    // SAFELY PICK startY FOR HIGHWAY 2
-    // -------------------------
-    // If H1 starts on LEFT side, place H2 start on LOWER half
-    // If H1 starts on RIGHT side, place H2 start on UPPER half
-    if (interStateRoad1.startX < mapSize / 2) {
-        // H1 on left → H2 start must be far down
-        interStateRoad2.startY = randomBetween(mapSize / 2 + minDistance - mapSize, mapSize - 1);
-        // This simplifies to:
-        // randomBetween( min(15+15-30=0), 29 ) → randomBetween(0,29)
-        // But we ensure the distance condition explicitly:
-        do {
-            interStateRoad2.startY = randomBetween(mapSize/2, mapSize-1); // 15–29
-        } while (abs(interStateRoad1.startX - interStateRoad2.startY) < minDistance);
-    } else {
-        // H1 on right → H2 start must be high up
-        do {
-            interStateRoad2.startY = randomBetween(0, mapSize/2); // 0–15
-        } while (abs(interStateRoad1.startX - interStateRoad2.startY) < minDistance);
+    // Vertical highway
+    interStateRoad1.startX = clamp(baseX + randomBetween(-wiggle, wiggle), 0, mapSize - 1);
+    interStateRoad1.startY = 0;           // top edge
+    interStateRoad1.endX   = clamp(baseX + randomBetween(-wiggle, wiggle), 0, mapSize - 1);
+    interStateRoad1.endY   = mapSize - 1; // bottom edge
+
+    // Horizontal highway
+    interStateRoad2.startX = 0;           // left edge
+    interStateRoad2.startY = clamp(baseY + randomBetween(-wiggle, wiggle), 0, mapSize - 1);
+    interStateRoad2.endX   = mapSize - 1; // right edge
+    interStateRoad2.endY   = clamp(baseY + randomBetween(-wiggle, wiggle), 0, mapSize - 1);
+
+    // 2. Ensure they're not too close to each other
+    int minSeparation = mapSize / 4;
+
+    while (abs(interStateRoad1.startX - interStateRoad2.startY) < minSeparation)
+    {
+        interStateRoad1.startX = clamp(baseX + randomBetween(-wiggle, wiggle), 0, mapSize - 1);
+        interStateRoad1.endX   = clamp(baseX + randomBetween(-wiggle, wiggle), 0, mapSize - 1);
+
+        interStateRoad2.startY = clamp(baseY + randomBetween(-wiggle, wiggle), 0, mapSize - 1);
+        interStateRoad2.endY   = clamp(baseY + randomBetween(-wiggle, wiggle), 0, mapSize - 1);
     }
 
-    interStateRoad2.startX = 0;
-    interStateRoad2.endX = mapSize - 1;
-
-    // -------------------------
-    // END Y WITH SAME GUARANTEES
-    // -------------------------
-    if (interStateRoad1.endX >= mapSize/2) {
-        do {
-            interStateRoad2.endY = randomBetween(mapSize/2, mapSize - 1);
-        } while (abs(interStateRoad1.endX - interStateRoad2.endY) < minDistance);
-    } else {
-        do {
-            interStateRoad2.endY = randomBetween(0, mapSize/2);
-        } while (abs(interStateRoad1.endX - interStateRoad2.endY) < minDistance);
-    }
-
-
-
-
-    printInterStateRoad(interStateRoad2);
-
-
+    // 3. Draw highways
     SetInterStateRoad(map, mapSize, interStateRoad1);
     SetInterStateRoad(map, mapSize, interStateRoad2);
 }
