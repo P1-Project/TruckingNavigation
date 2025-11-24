@@ -21,20 +21,26 @@ target_include_directories(ConverterFunc PUBLIC .)
 target_include_directories(MapGenFunc PUBLIC .)
 target_include_directories(pathfinding PUBLIC .)
 
+
+target_link_libraries(MapGenFunc PUBLIC CheckCoordinateSetFunc)
 target_link_libraries(GenInterstateFunc PUBLIC ConverterFunc)
 target_link_libraries(CheckCoordinateSetFunc PUBLIC ConverterFunc)
+target_link_libraries(MapGenFunc PUBLIC GenBlockadeFunc ConverterFunc)
 target_link_libraries(MapGenFunc PUBLIC CheckCoordinateSetFunc)
-target_link_libraries(MapGenFunc PUBLIC ConverterFunc)
+target_link_libraries(GenStopsFunc PUBLIC ConverterFunc)
+target_link_libraries(GenBlockadeFunc PUBLIC ConverterFunc)
+target_link_libraries(GenBlockadeFunc PUBLIC MapGenFunc)
+
 
 
 add_executable(
         TruckingNavigation
         main.c
 )
+
+#add_executable(GenStopsExec GenStopsFunc.c mapGen.c)
+
 #testing files and functions before merge
-
-
-
 
 #Linking all libraries to main program
 target_link_libraries(
