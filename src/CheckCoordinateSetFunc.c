@@ -68,7 +68,7 @@ int CheckCoordinateSet(int *map, int x, int y, int mapSize){
 return -1;                                       // Ingen "ledig plads"
 }
 
-int main(void) {
+/*int main(void) {
 
     int x, y, mapSize, i;
     int map[] = {0, 5, 5, 5, 0, 5,
@@ -81,4 +81,4 @@ int main(void) {
     };
     int index = CheckCoordinateSet(map, 2, 1, 6);
     printf("%d", index);
-}
+}*/

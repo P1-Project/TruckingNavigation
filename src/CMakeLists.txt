@@ -5,14 +5,14 @@ add_library(ConverterFunc ConverterFunc.c)
 
 add_library(GenBlockadeFunc GenBlockadeFunc.c)
 add_library(GenInterstateFunc GenInterstateFunc.c)
-add_library(DijkstraAlgorithm DijkstraAlgorithm.c)
+#add_library(DijkstraAlgorithm DijkstraAlgorithm.c)
 add_library(GetDestinationFunc GetDestinationFunc.c)
 add_library(GenStopsFunc GenStopsFunc.c)
 add_library(CheckCoordinateSetFunc CheckCoordinateSetFunc.c)
 
 target_include_directories(GenBlockadeFunc PUBLIC .)
 target_include_directories(GenInterstateFunc PUBLIC .)
-target_include_directories(DijkstraAlgorithm PUBLIC .)
+#target_include_directories(DijkstraAlgorithm PUBLIC .)
 target_include_directories(GetDestinationFunc PUBLIC .)
 target_include_directories(GenStopsFunc PUBLIC .)
 target_include_directories(CheckCoordinateSetFunc PUBLIC .)
@@ -38,7 +38,8 @@ add_executable(
 #Linking all libraries to main program
 target_link_libraries(
         TruckingNavigation MapGenFunc ConverterFunc
-        GenBlockadeFunc GenInterstateFunc DijkstraAlgorithm
+        GenBlockadeFunc GenInterstateFunc
+        #DijkstraAlgorithm
         GenStopsFunc GetDestinationFunc CheckCoordinateSetFunc
 )
 
