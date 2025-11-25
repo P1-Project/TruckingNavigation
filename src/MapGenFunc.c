@@ -99,11 +99,5 @@ void runMapGen(void) {
 
     EnableANSI();
     PrintMap(map, mapSize);
-
-
-    printf(RED"This text is red!\n"RESET);
-    printf("\033[32mThis text is green!\033[0m\n");
-    printf("\033[33mThis text is yellow!\033[0m\n");
-    printf("\033[34mThis text is blue!\033[0m\n");
     //printf("\n map index = %d \n", map[155]);
 }
