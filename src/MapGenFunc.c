@@ -6,6 +6,7 @@
 #include "GenInterstateFunc.h"
 #include "CheckCoordinateSetFunc.c"
 #include "ConverterFunc.h"
+#include "AnsiColorCodes.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -51,7 +52,7 @@ void PrintMap(int *map, int mapSize) {
             default: c = '?'; break; // unknown
         }
         //printf("%d ", map[i]);
-        printf(" %c ", c);
+        printf(RED "%c" reset, c);
         //if (i % mapSize >= 9) printf(" ");
     }
     printf("\n");
