@@ -78,7 +78,7 @@ void runMapGen(void) {
     InitMap(map,mapSize);
 
     GenBlockadeFunc(map,mapSize,numBlockades);
-    GenerateClusterBlockades(map,mapSize,numBlockades / 20,1);
+    GenerateClusterBlockades(map,mapSize,numBlockades/4,1);
 
     InterStateRoad interStateRoad;
     interStateRoad.startX = 10, interStateRoad.startY = 0;
