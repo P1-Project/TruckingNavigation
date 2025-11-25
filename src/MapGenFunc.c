@@ -7,12 +7,14 @@
 #include "CheckCoordinateSetFunc.c"
 #include "ConverterFunc.h"
 #include "AnsiColorCodes.h"
+#include "GenBlockadeFunc.h"
+
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <windows.h>
 
-#include "GenBlockadeFunc.h"
 
 
 void TestMapGenConcetion(void) {
@@ -30,30 +32,26 @@ void PrintMap(int *map, int mapSize) {
     }
     printf("\n");
 
-
     for (int i = 0; i < total; i++) {
-        //new row:
-
         if (i % mapSize == 0) {
             if (i != 0) printf("\n");
             printf("%2d |", i / mapSize);
         }
 
-        //printsMap
-        char c;
+        const char *color = COLOR_RESET;
+        char c = '?';
+
         switch (map[i]) {
-            case NORMALROAD: c = '.'; break; // Road
-            case INTERSTATEROAD: c = 'H'; break; // Interstate
-            case INTERSTATESTOP: c = '1'; break; // InterstateTruckStop
-            case TYPE2STOP: c = '2'; break; // Type 2 stop
-            case TYPE3STOP: c = '3'; break; // Type 3 Stop
-            case BLOCKADE: c = '#'; break; // Blockade
-            //add more cases for rest stops and more
-            default: c = '?'; break; // unknown
+            case NORMALROAD: c = '.'; color = WHT; break;
+            case INTERSTATEROAD: c = 'H'; color = MAG; break;
+            case INTERSTATESTOP: c = '1'; color = BLU; break;
+            case TYPE2STOP: c = '2'; color = YEL; break;
+            case TYPE3STOP: c = '3'; color = GRN; break;
+            case BLOCKADE: c = '#'; color = RED; break;
+            default: c = '?'; color = WHT; break;
         }
-        //printf("%d ", map[i]);
-        printf(RED "%c" reset, c);
-        //if (i % mapSize >= 9) printf(" ");
+
+        printf("%s %c %s", color, c, WHT);
     }
     printf("\n");
 }
@@ -67,6 +65,13 @@ void InitMap(int *map, const signed int mapSize) {
     }
 }
 
+void EnableANSI() {
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD mode = 0;
+    GetConsoleMode(hOut, &mode);
+    mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hOut, mode);
+}
 
 
 
@@ -92,6 +97,13 @@ void runMapGen(void) {
     //int indexValue = CheckCoordinateSet(map, 29, 29, mapSize); //this function needs fixing if index goes out of bounds
     //printf("%d\n", indexValue);
 
+    EnableANSI();
     PrintMap(map, mapSize);
+
+
+    printf(RED"This text is red!\n"RESET);
+    printf("\033[32mThis text is green!\033[0m\n");
+    printf("\033[33mThis text is yellow!\033[0m\n");
+    printf("\033[34mThis text is blue!\033[0m\n");
     //printf("\n map index = %d \n", map[155]);
 }
