@@ -56,7 +56,7 @@ void InitializeStops(int *map, int mapSize, Stops restStops[NUMBEROFSTOPS], Stop
     }
 
     for (int i = (NUMBEROFSTOPS-NUMBEROFINTERSTATESTOPS); i < NUMBEROFSTOPS; ++i) {
-        restStops[i].Type = stopTypesArray[3];
+        restStops[i].Type = stopTypesArray[0];
     }
 }
 
