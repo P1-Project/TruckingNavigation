@@ -5,6 +5,7 @@
 #include "MapGenFunc.h"
 #include "GenInterstateFunc.h"
 #include "CheckCoordinateSetFunc.c"
+#include "GenStopsFunc.h"
 #include "ConverterFunc.h"
 #include "AnsiColorCodes.h"
 #include "GenBlockadeFunc.h"
@@ -87,6 +88,21 @@ void runMapGen(void) {
     GenerateClusterBlockades(map,mapSize,numBlockades/4,1);
 
     SetInterStates(map,mapSize);
+
+
+
+    srand(time(NULL));
+
+    StopType stopTypesArray[3];
+    InitializeTypes(stopTypesArray);
+
+    Stops restStops[NUMBEROFSTOPS];
+    InitializeStops(map, mapSize, restStops, stopTypesArray);
+    GenStops(map, mapSize, restStops);
+
+    PrintMap(map, mapSize);
+
+
 
     //map[XYToIdx(29, 29, mapSize)] = 5;
     //int indexValue = CheckCoordinateSet(map, 29, 29, mapSize); //this function needs fixing if index goes out of bounds

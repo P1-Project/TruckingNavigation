@@ -5,7 +5,8 @@
 #ifndef TRUCKINGNAVIGATION_GENSTOPSFUNC_H
 #define TRUCKINGNAVIGATION_GENSTOPSFUNC_H
 
-#define NUMBEROFSTOPS 10
+#define NUMBEROFSTOPS 198
+#define NUMBEROFINTERSTATESTOPS 59
 
 typedef struct {
     int Type;
@@ -25,8 +26,8 @@ typedef struct {
 void TestConGenStopsFunc();
 
 void InitializeTypes(StopType stopTypesArray[3]);
-void InitializeStops(int mapSize, Stops restStops[NUMBEROFSTOPS], StopType stopTypesArray[3]);
-int StopExists(int X, int Y, Stops restStops[NUMBEROFSTOPS], int stopsPlaced);
+void InitializeStops(int *map, int mapSize, Stops restStops[NUMBEROFSTOPS], StopType stopTypesArray[3]);
+int SpotOccupied(int *map, int mapSize, int X, int Y);
 void GenStops(int *map, unsigned int mapSize, Stops restStops[NUMBEROFSTOPS]);
 
 #endif //TRUCKINGNAVIGATION_GENSTOPSFUNC_H
