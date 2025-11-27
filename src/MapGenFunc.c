@@ -86,17 +86,11 @@ void runMapGen(void) {
     GenBlockadeFunc(map,mapSize,numBlockades);
     GenerateClusterBlockades(map,mapSize,numBlockades/4,1);
 
-    InterStateRoad interStateRoad;
-    interStateRoad.startX = 10, interStateRoad.startY = 0;
-    interStateRoad.endX = 25, interStateRoad.endY = 30;
-
-
     SetInterStates(map,mapSize);
 
-    map[XYToIdx(29, 29, mapSize)] = 5;
+    //map[XYToIdx(29, 29, mapSize)] = 5;
     //int indexValue = CheckCoordinateSet(map, 29, 29, mapSize); //this function needs fixing if index goes out of bounds
     //printf("%d\n", indexValue);
-
     EnableANSI();
     PrintMap(map, mapSize);
     //printf("\n map index = %d \n", map[155]);
