@@ -13,4 +13,5 @@
 
 void TestMapGenConcetion(void);
 void runMapGen(void);
+
 #endif //TRUCKINGNAVIGATION_MAPGEN_H

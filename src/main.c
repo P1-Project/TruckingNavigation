@@ -34,13 +34,14 @@ int main(void) {
     TestConCheckCoordinateSetFunc();
     TestConGenBlockadeFunc();
 
-
-
     //TestPathfindingConcetion();
     TestMapGenConcetion();
-
+    
     //runMapGen()
     runMapGen();
 
+    //getDestination();
+
+    
     return 0;
 }
