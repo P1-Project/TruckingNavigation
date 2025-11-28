@@ -83,11 +83,11 @@ void runMapGen(int *map, unsigned int mapSize, Stops *restStops)
     GenBlockadeFunc(map,mapSize,numBlockades); //gen blockades for the map
     GenerateClusterBlockades(map,mapSize,numBlockades/4,1); //gen cluster blockades for the map
 
-    GenInterStates(map,mapSize, restStops); //defines and setes the interstates
+    StopType stopTypesArray[3];
+    InitializeTypes(stopTypesArray);
+    GenInterStates(map, mapSize, restStops, stopTypesArray); //defines and setes the interstates
 
     //inits the stops types array
-    //StopType stopTypesArray[3];
-    //InitializeTypes(stopTypesArray);
 
     //inits the restStops array for storrage of the reststops
     //*restStops[NUMBEROFSTOPS];
