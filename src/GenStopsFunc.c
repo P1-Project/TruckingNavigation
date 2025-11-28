@@ -25,6 +25,7 @@ void InitializeTypes(StopType stopTypesArray[3]) {
 
 /**
  * This function creates type 1, type 2 and type 3 stops by percentage, storing them with type and coordinates in an array
+ * @param map Pointer to the map array
  * @param mapSize The size of the map (int)
  * @param restStops An array of all the existing restStops
  * @param stopTypesArray An array of the 3 stop types
@@ -38,18 +39,21 @@ void InitializeStops(int *map, int mapSize, Stops restStops[NUMBEROFSTOPS], Stop
 
     int randomX, randomY;
 
-    printf("Creating %d rest stops of type 2 and %d rest stops of type 3.\n", numberOfType2, numberOfType3);
+    //printf("Creating %d rest stops of type 2 and %d rest stops of type 3.\n", numberOfType2, numberOfType3);
 
     for (int i = 0; i < (NUMBEROFSTOPS-NUMBEROFINTERSTATESTOPS); ++i) {
-        if (i < numberOfType2) restStops[i].Type = stopTypesArray[1];
-        else restStops[i].Type = stopTypesArray[2];
+        if (i < numberOfType2) {
+            restStops[i].Type = stopTypesArray[1];
+        } else {
+            restStops[i].Type = stopTypesArray[2];
+        }
 
         do {
             randomX = rand() % mapSize;
             randomY = rand() % mapSize;
-            printf("Trying to assign rest stop at (%d, %d)\n", randomX, randomY);
+            //printf("Trying to assign rest stop at (%d, %d)\n", randomX, randomY);
         } while (SpotOccupied(map, mapSize, randomX, randomY));
-        printf("Successfully assigned rest stop at (%d, %d)\n", randomX, randomY);
+        //printf("Successfully assigned rest stop at (%d, %d)\n", randomX, randomY);
 
         restStops[i].locationX = randomX;
         restStops[i].locationY = randomY;
@@ -62,18 +66,14 @@ void InitializeStops(int *map, int mapSize, Stops restStops[NUMBEROFSTOPS], Stop
 
 /**
  * This function checks whether the rest stop you're trying to initialize, is being placed on top of an existing rest stop
+ * @param map Pointer to the map array
  * @param X The x-coordinate of the given stop
  * @param Y The y-coordinate of the given stop
- * @param restStops An array of all the existing restStops
- * @param stopsPlaced The amount of rest stops which have already been initialized
  * @return 1 if the stop is occupied, 0 if not
  */
 int SpotOccupied(int *map, int mapSize, int X, int Y) {
     if (map[XYToIdx(X, Y, mapSize)] == NORMALROAD) {
         return 0;
-    }
-    if ((map[XYToIdx(X, Y, mapSize)] == BLOCKADE) || (map[XYToIdx(X, Y, mapSize)] == INTERSTATEROAD) || (map[XYToIdx(X, Y, mapSize)] == INTERSTATESTOP)) {
-        return 1;
     }
     return 1;
 }
@@ -85,7 +85,7 @@ int SpotOccupied(int *map, int mapSize, int X, int Y) {
  * @param restStops An array of all the existing restStops
  */
 void GenStops(int *map, unsigned int mapSize, Stops restStops[NUMBEROFSTOPS]) {
-    for (int i = 0; i < (NUMBEROFSTOPS-NUMBEROFINTERSTATESTOPS); ++i) { // INTERSTATESTOPS ER IKKE INKLUDERET HER ENDNU
+    for (int i = 0; i < (NUMBEROFSTOPS-NUMBEROFINTERSTATESTOPS); ++i) {
         //printf("Setting (%d, %d) to stop type %d\n", restStops[i].locationX, restStops[i].locationY, restStops[i].Type.Type);
         int index = XYToIdx(restStops[i].locationX, restStops[i].locationY, mapSize);
         map[index] = restStops[i].Type.Type;

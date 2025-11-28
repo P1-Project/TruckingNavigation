@@ -100,10 +100,6 @@ void runMapGen(void) {
     InitializeStops(map, mapSize, restStops, stopTypesArray);
     GenStops(map, mapSize, restStops);
 
-    PrintMap(map, mapSize);
-
-
-
     //map[XYToIdx(29, 29, mapSize)] = 5;
     //int indexValue = CheckCoordinateSet(map, 29, 29, mapSize); //this function needs fixing if index goes out of bounds
     //printf("%d\n", indexValue);
