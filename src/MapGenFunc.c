@@ -9,6 +9,8 @@
 #include "ConverterFunc.h"
 #include "AnsiColorCodes.h"
 #include "GenBlockadeFunc.h"
+#include "DefineConst.h"
+#include "DefineStruct.h"
 
 
 #include <stdio.h>
@@ -18,13 +20,27 @@
 
 
 
-void TestMapGenConcetion(void) {
+void TestMapGenConnection(void) {
     printf("Testing con from mapGen\n");
 }
 
+void InitMap(int *map, signed int mapSize){
+    for (int i = 0; i < mapSize*mapSize; i++) {
+        map[i] = 0;
+    }
+}
+
+void EnableANSI() {
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD mode = 0;
+    GetConsoleMode(hOut, &mode);
+    mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hOut, mode);
+}
 
 
 void PrintMap(int *map, int mapSize) {
+    EnableANSI();
     int total = mapSize * mapSize;
     for (int i = -1; i < mapSize; i++) {
         if (i == -1 ) {printf("   |"); continue;}
@@ -51,63 +67,36 @@ void PrintMap(int *map, int mapSize) {
             case BLOCKADE: c = '#'; color = RED; break;
             default: c = '?'; color = WHT; break;
         }
-
         printf("%s %c %s", color, c, WHT);
     }
     printf("\n");
 }
 
 
-
-void InitMap(int *map, const signed int mapSize) {
-    for (int i = 0; i < mapSize*mapSize; i++) {
-        int num = 0;
-        map[i] = num;
-    }
-}
-
-void EnableANSI() {
-    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    DWORD mode = 0;
-    GetConsoleMode(hOut, &mode);
-    mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-    SetConsoleMode(hOut, mode);
-}
-
-
-
-
-void runMapGen(void) {
-    const signed int mapSize = 30;
+void runMapGen(int *map, int mapSize)
+{
+    //Stops *restStops[]
     const int numBlockades = 80;
-    srand(time(NULL));
-    int map[mapSize*mapSize];
-    InitMap(map,mapSize);
+    srand(time(NULL)); //used to gen a random seed using the time.h libary
 
-    GenBlockadeFunc(map,mapSize,numBlockades);
-    GenerateClusterBlockades(map,mapSize,numBlockades/4,1);
+    InitMap(map, mapSize); //inits the map and sets all values equal 0
 
-    SetInterStates(map,mapSize);
+    GenBlockadeFunc(map,mapSize,numBlockades); //gen blockades for the map
+    GenerateClusterBlockades(map,mapSize,numBlockades/4,1); //gen cluster blockades for the map
 
+    GenInterStates(map,mapSize); //defines and setes the interstates
 
+    //inits the stops types array
+    //StopType stopTypesArray[3];
+    //InitializeTypes(stopTypesArray);
 
-    srand(time(NULL));
-
-    StopType stopTypesArray[3];
-    InitializeTypes(stopTypesArray);
-
-    Stops restStops[NUMBEROFSTOPS];
-    InitializeStops(map, mapSize, restStops, stopTypesArray);
-    GenStops(map, mapSize, restStops);
-
-    PrintMap(map, mapSize);
-
+    //inits the restStops array for storrage of the reststops
+    //*restStops[NUMBEROFSTOPS];
+    //InitializeStops(*map, mapSize, &restStops, stopTypesArray);
+    //GenStops(*map, mapSize, &restStops);
 
 
     //map[XYToIdx(29, 29, mapSize)] = 5;
     //int indexValue = CheckCoordinateSet(map, 29, 29, mapSize); //this function needs fixing if index goes out of bounds
     //printf("%d\n", indexValue);
-    EnableANSI();
-    PrintMap(map, mapSize);
-    //printf("\n map index = %d \n", map[155]);
 }

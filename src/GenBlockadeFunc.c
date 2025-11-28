@@ -5,6 +5,8 @@
 #include "GenBlockadeFunc.h"
 #include "MapGenFunc.h"
 #include "ConverterFunc.h"
+#include "DefineStruct.h"
+#include "DefineConst.h"
 
 
 #include <stdio.h>

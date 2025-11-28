@@ -5,19 +5,11 @@
 #ifndef TRUCKINGNAVIGATION_INTERSTATE_H
 #define TRUCKINGNAVIGATION_INTERSTATE_H
 #define ERROR_PATH 10
-
-
-typedef struct {
-    int startX, startY, endX, endY;
-} InterStateRoad;
-
-typedef struct {
-    int type;
-    int locationX, locationY;
-} TruckStopInterstate;
+#include "DefineStruct.h"
+#include "DefineConst.h"
 
 
 int *DefineHighwayPath(int *map, signed int mapSize, InterStateRoad interStateRoad, int *outPathLength);
 void SetInterStateRoad(int *map, signed int mapSize, InterStateRoad interStateRoad);
-void SetInterStates(int *map, const signed int mapSize);
+void GenInterStates(int *map, signed int mapSize);
 #endif //TRUCKINGNAVIGATION_INTERSTATE_H

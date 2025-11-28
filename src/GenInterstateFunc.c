@@ -3,9 +3,9 @@
 //
 
 #include "GenInterstateFunc.h"
-#include "DijkstraAlgorithm.h"
 #include "ConverterFunc.h"
-#include "MapGenFunc.h"
+#include "DefineStruct.h"
+#include "DefineConst.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,7 +14,7 @@
 
 /**
  *
- *  @param map int array of the map
+ * @param map int array of the map
  * @param mapSize The size of the map width
  * @param interStateRoad Struct type of InterStateRoad, containing the start x,y and end x,y
  * @param outPathLength the amount of indexes in path
@@ -39,7 +39,7 @@ int *DefineHighwayPath(int *map, signed int mapSize, InterStateRoad interStateRo
     int D; //decision var
     int pathLength = 0;
     int *path = malloc(sizeof(int)* mapSize * mapSize);
-    int tempIndex = XYToIdx(x,y, mapSize);
+    int tempIndex;
     //printf("tempIndex = %d\n", tempIndex);
     //map[tempIndex-1] = INTERSTATEROAD;
     //printf("map[tempIndex] = %d\n", map[tempIndex]);
@@ -188,7 +188,7 @@ static int clamp(int v, int min, int max) {
 }
 
 
-void SetInterStates(int *map, int mapSize) {
+void GenInterStates(int *map, int mapSize) {
     srand(time(NULL));
 
     InterStateRoad interStateRoad1;
