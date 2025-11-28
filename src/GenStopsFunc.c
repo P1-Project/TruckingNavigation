@@ -7,6 +7,8 @@
 #include "ConverterFunc.h"
 #include "GetDestinationFunc.h"
 #include "MapGenFunc.h"
+#include "DefineConst.h"
+#include "DefineStruct.h"
 
 void TestConGenStopsFunc() {
     printf("Hello, World from GenStopsFunc!");

@@ -3,8 +3,11 @@
 //
 
 #include "GetDestinationFunc.h"
+
+
 #include <time.h>
 #include <stdio.h>
+
 
 void GetDestination (Destination *destination, int acceptInput, int mapSize){
 
