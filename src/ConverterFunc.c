@@ -25,7 +25,7 @@ int XYToIdx(int x, int y, int mapSize) {
  * @param x pointer for x coordinate to be returned
  * @param y pointer for y coordinate to be returned
  */
-void IdxToCoords(int index, int mapSize, int *x, int *y) {
+void IdxToCoords(int index, int mapSize, unsigned int *x, unsigned int *y) {
     *x = index % mapSize;
     *y = index / mapSize;
 }

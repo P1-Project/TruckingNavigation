@@ -17,7 +17,7 @@ void TestConGenBlockadeFunc() {
 }
 
 
-void GenBlockadeFunc(int *map, signed int mapSize, int numBlockades) {
+void GenBlockadeFunc(int *map, unsigned int mapSize, int numBlockades) {
     for (int i = 0; i < numBlockades; i++) {
         int row = rand() % mapSize;
         int col = rand() % mapSize;
@@ -28,7 +28,7 @@ void GenBlockadeFunc(int *map, signed int mapSize, int numBlockades) {
 
 }
 
-void GenerateClusterBlockades(int *map, signed int mapSize, int numClusters, int clusterSize) {
+void GenerateClusterBlockades(int *map, unsigned int mapSize, int numClusters, int clusterSize) {
     for (int c = 0; c < numClusters; c++) {
         int centerRow = rand() % mapSize;
         int centerCol = rand() % mapSize;

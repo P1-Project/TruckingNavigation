@@ -43,7 +43,7 @@ int main(void) {
 
 
     //runMapGen()
-    runMapGen(map, MAPSIZE);
+    runMapGen(map, MAPSIZE, restStops);
 
 
     PrintMap(map, MAPSIZE);

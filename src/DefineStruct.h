@@ -16,18 +16,13 @@ typedef struct {
 
 typedef struct {
     StopType Type;
-    unsigned int locationX;
-    unsigned int locationY;
+    unsigned int locationX, locationY;
 } Stops ;
 
 typedef struct {
     int startX, startY, endX, endY;
 } InterStateRoad;
 
-typedef struct {
-    int type;
-    int locationX, locationY;
-} TruckStopInterstate;
 
 
 #endif //TRUCKINGNAVIGATION_DEFINESTRUCTS_H

@@ -20,7 +20,7 @@
  * @param outPathLength the amount of indexes in path
  * @return Returns an array of indexes from the map.
  */
-int *DefineHighwayPath(int *map, signed int mapSize, InterStateRoad interStateRoad, int *outPathLength) {
+int *DefineHighwayPath(int *map, unsigned int mapSize, InterStateRoad interStateRoad, int *outPathLength) {
     //calculate distance absolute distance from startX to endX
     int absDx = abs( interStateRoad.startX - interStateRoad.endX);
     //calculate distance absolute distance from startY to endY
@@ -93,18 +93,14 @@ int *DefineHighwayPath(int *map, signed int mapSize, InterStateRoad interStateRo
  * @return An array of TruckInterstate stops related to the amout of stops, and their respective location on the map.
  * The number of stops and the updated map itself
  */
-TruckStopInterstate *SetInterstateRestStops(int *map, signed int mapSize, int frequencyOfStops,
+void SetInterstateRestStops(int *map, unsigned int mapSize, int frequencyOfStops,
                                             int *path, int pathLength,
                                             int startIndex, int goalIndex,
-                                            int *outNumStops) {
+                                            int *outNumStops,
+                                            Stops *restStops) {
     if (path == NULL) {exit(ERROR_PATH);}
-
-    int maxStops = pathLength / frequencyOfStops;
-    int counter = 0;
-    TruckStopInterstate *truckStops =
-        malloc(maxStops * sizeof(TruckStopInterstate));
-
-    if (!truckStops) {return NULL;}
+    int counter = NUMBEROFSTOPS-NUMBEROFSTOPS;
+    if (!restStops) return;
 
     //add interstate rest stops matching length of the path
     for (int i = 0; i < pathLength; i++) {
@@ -113,11 +109,12 @@ TruckStopInterstate *SetInterstateRestStops(int *map, signed int mapSize, int fr
             continue;
         }
         //sets the type of truckstop to match interstate type
-        truckStops[counter].type = INTERSTATESTOP;
+        restStops[counter].Type.Type = INTERSTATESTOP;
         //Calls IdxToCoords from Converter.c and gets the value for x and y in return
         IdxToCoords(path[i], mapSize,
-                    &truckStops[counter].locationX,
-                    &truckStops[counter].locationY);
+                    &restStops[counter].locationX,
+                    &restStops[counter].locationY);
+
 
         //displaying debugging informaiton
         /*printf("TruckStop # %d at path[%d] = %d\n", counter, i, path[i]);
@@ -129,7 +126,6 @@ TruckStopInterstate *SetInterstateRestStops(int *map, signed int mapSize, int fr
         counter++; //post increments the counter for the amount of stops to keep track.
     }
     *outNumStops = counter; //assigns the pointer a value that are equal counter.
-    return truckStops;
 }
 
 /**
@@ -140,7 +136,7 @@ TruckStopInterstate *SetInterstateRestStops(int *map, signed int mapSize, int fr
  * @param interStateRoad Struct type of InterStateRoad, containing the start x,y and end x,y
  *
  */
-void SetInterStateRoad(int *map, signed int mapSize, InterStateRoad interStateRoad) {
+void SetInterStateRoad(int *map, unsigned int mapSize, InterStateRoad interStateRoad) {
     //from point (x,y) on map, to (x,y)
     //start point
     const int startIndex = XYToIdx(interStateRoad.startX,interStateRoad.startY, mapSize);
@@ -163,13 +159,13 @@ void SetInterStateRoad(int *map, signed int mapSize, InterStateRoad interStateRo
     printf("\n");*/
     int frequencyOfStops = 5;
     int numStops;
-    TruckStopInterstate *truckStops = SetInterstateRestStops(map, mapSize, frequencyOfStops, path, pathLength, startIndex, goalIndex, &numStops);
+    //TruckStopInterstate *truckStops = SetInterstateRestStops(map, mapSize, frequencyOfStops, path, pathLength, startIndex, goalIndex, &numStops);
 
     //do something with truck stops if needed
     printf("Number of stops: %d\n", numStops);
 
     //frees the memorey allocated for pointers
-    free(truckStops);
+    //free(truckStops);
     free(path);
 }
 void printInterStateRoad(InterStateRoad interStateRoad) {
@@ -188,7 +184,7 @@ static int clamp(int v, int min, int max) {
 }
 
 
-void GenInterStates(int *map, int mapSize) {
+void GenInterStates(int *map, unsigned int mapSize) {
     srand(time(NULL));
 
     InterStateRoad interStateRoad1;

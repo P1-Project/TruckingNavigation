@@ -9,7 +9,10 @@
 #include "DefineConst.h"
 
 
-int *DefineHighwayPath(int *map, signed int mapSize, InterStateRoad interStateRoad, int *outPathLength);
-void SetInterStateRoad(int *map, signed int mapSize, InterStateRoad interStateRoad);
-void GenInterStates(int *map, signed int mapSize);
+int *DefineHighwayPath(int *map, unsigned int mapSize, InterStateRoad interStateRoad, int *outPathLength);
+void SetInterStateRoad(int *map, unsigned int mapSize, InterStateRoad interStateRoad);
+void GenInterStates(int *map, unsigned int mapSize);
+void SetInterstateRestStops(int *map, unsigned int mapSize,
+    int frequencyOfStops, int *path, int pathLength,
+    int startIndex, int goalIndex, int *outNumStops, Stops *restStops);
 #endif //TRUCKINGNAVIGATION_INTERSTATE_H
