@@ -38,15 +38,26 @@ void EnableANSI() {
     SetConsoleMode(hOut, mode);
 }
 
-
-void PrintMap(int *map, unsigned int mapSize) {
+//in this case mapSize can be unsigned since it cant be compared to minus 1 in while loop
+void PrintMap(int *map, int mapSize) {
     EnableANSI();
-    int total = mapSize * mapSize;
-    for (int i = -1; i < mapSize; i++) {
-        if (i == -1 ) {printf("   |"); continue;}
-        if (i <= 9) printf(" ");
-        printf("%d ", i);
+    const int total = mapSize * mapSize;
+    printf("Map size is: %d\n", mapSize);
+    int i = -1;
+    while (i < mapSize) {
+        if (i == -1 ) {
+            printf("   |");
+        }
+        else if (i <= 9){ printf(" %d ", i);}
+        else {
+            printf("%d ", i);
+        }
+        i++;
     }
+
+    /*for (int i = -1; i < mapSize; i++) {
+
+    }*/
     printf("\n");
 
     for (int i = 0; i < total; i++) {
