@@ -92,7 +92,7 @@ void runMapGen(int *map, unsigned int mapSize, Stops *restStops)
     InitMap(map, mapSize); //inits the map and sets all values equal 0
 
     GenBlockadeFunc(map,mapSize,numBlockades); //gen blockades for the map
-    GenerateClusterBlockades(map,mapSize,numBlockades/4,1); //gen cluster blockades for the map
+    GenClusterBlockadeFunc(map,mapSize,numBlockades/4,1); //gen cluster blockades for the map
 
     StopType stopTypesArray[3];
     InitializeTypes(stopTypesArray);

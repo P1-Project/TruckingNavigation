@@ -20,7 +20,7 @@
  * @param outPathLength the amount of indexes in path
  * @return Returns an array of indexes from the map.
  */
-int *DefineHighwayPath(int *map, unsigned int mapSize, InterStateRoad interStateRoad, int *outPathLength) {
+int *DefineHighwayPath(int *map, int mapSize, InterStateRoad interStateRoad, int *outPathLength) {
     //calculate distance absolute distance from startX to endX
     int absDx = abs( interStateRoad.startX - interStateRoad.endX);
     //calculate distance absolute distance from startY to endY
@@ -94,7 +94,7 @@ int *DefineHighwayPath(int *map, unsigned int mapSize, InterStateRoad interState
  * @return An array of TruckInterstate stops related to the amout of stops, and their respective location on the map.
  * The number of stops and the updated map itself
  */
-void SetInterstateRestStops(int *map, unsigned int mapSize, int frequencyOfStops,
+void SetInterstateRestStops(int *map, int mapSize, int frequencyOfStops,
                                             int *path, int pathLength,
                                             int startIndex, int goalIndex,
                                             int *outNumStops,
@@ -142,7 +142,7 @@ void SetInterstateRestStops(int *map, unsigned int mapSize, int frequencyOfStops
  * @param stopTypesArray
  *
  */
-void SetInterStateRoad(int *map, const unsigned int mapSize,
+void SetInterStateRoad(int *map, const int mapSize,
     const InterStateRoad interStateRoad, Stops *restStops, StopType stopTypesArray[3]) {
     //from point (x,y) on map, to (x,y)
     //start point
@@ -175,6 +175,7 @@ void SetInterStateRoad(int *map, const unsigned int mapSize,
     //frees the memorey allocated for pointers
     free(path);
 }
+
 void printInterStateRoad(InterStateRoad interStateRoad) {
     printf("in start (X, Y) : (%d , %d) ", interStateRoad.startX , interStateRoad.startY);
     printf("Start Index : %d\n", XYToIdx(interStateRoad.startX, interStateRoad.startY, 30));
@@ -184,6 +185,13 @@ void printInterStateRoad(InterStateRoad interStateRoad) {
 }
 
 
+/**
+ *
+ * @param v input value
+ * @param min min value always equal to 0
+ * @param max Max value
+ * @return //checks if the value is outside the map array if it does then it returns the max or min value
+ */
 static int clamp(int v, int min, int max) {
     if (v < min) return min;
     if (v > max) return max;
@@ -191,7 +199,7 @@ static int clamp(int v, int min, int max) {
 }
 
 
-void GenInterStates(int *map, unsigned int mapSize, Stops *restStops, StopType stopTypesArray[3]) {
+void GenInterStates(int *map, int mapSize, Stops *restStops, StopType stopTypesArray[3]) {
     srand(time(NULL));
 
     InterStateRoad interStateRoad1;
