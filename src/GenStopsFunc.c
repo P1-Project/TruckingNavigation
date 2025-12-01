@@ -24,20 +24,16 @@ void InitializeTypes(StopType stopTypesArray[3]) {
 }
 
 /**
- * This function creates type 1, type 2 and type 3 stops by percentage, storing them with type and coordinates in an array
- * @param map Pointer to the map array
- * @param mapSize The size of the map (int)
+ * This function creates stops of type 1, type 2 and type 3 stops by percentage
  * @param restStops An array of all the existing restStops
  * @param stopTypesArray An array of the 3 stop types
  */
-void InitializeStops(int *map, int mapSize, Stops restStops[NUMBEROFSTOPS], StopType stopTypesArray[3]) {
+void InitializeStopsType(Stops restStops[NUMBEROFSTOPS], StopType stopTypesArray[3]) {
     double Type2Percentage = 0.86;
     double Type3Percentage = 1.00-Type2Percentage;
 
     int numberOfType2 = ((int)floor((NUMBEROFSTOPS-NUMBEROFINTERSTATESTOPS)*Type2Percentage));
-    int numberOfType3 = ((int)ceil((NUMBEROFSTOPS-NUMBEROFINTERSTATESTOPS)*Type3Percentage));
-
-    int randomX, randomY;
+    int numberOfType3 = NUMBEROFSTOPS-NUMBEROFINTERSTATESTOPS-numberOfType2;
 
     //printf("Creating %d rest stops of type 2 and %d rest stops of type 3.\n", numberOfType2, numberOfType3);
 
@@ -47,7 +43,25 @@ void InitializeStops(int *map, int mapSize, Stops restStops[NUMBEROFSTOPS], Stop
         } else {
             restStops[i].Type = stopTypesArray[2];
         }
+    }
 
+    for (int i = (NUMBEROFSTOPS-NUMBEROFINTERSTATESTOPS); i < NUMBEROFSTOPS; ++i) {
+        restStops[i].Type = stopTypesArray[0];
+    }
+}
+
+/**
+ * This function defines stop 2 and 3's coordinates in an array
+ * @param map Pointer to the map array
+ * @param mapSize The size of the map (int)
+ * @param restStops An array of all the existing restStops
+ */
+void InitializeStopsLocation(int *map, int mapSize, Stops restStops[NUMBEROFSTOPS]) {
+    int randomX, randomY;
+
+    //printf("Creating %d rest stops of type 2 and %d rest stops of type 3.\n", numberOfType2, numberOfType3);
+
+    for (int i = 0; i < (NUMBEROFSTOPS-NUMBEROFINTERSTATESTOPS); ++i) {
         do {
             randomX = rand() % mapSize;
             randomY = rand() % mapSize;
@@ -57,10 +71,6 @@ void InitializeStops(int *map, int mapSize, Stops restStops[NUMBEROFSTOPS], Stop
 
         restStops[i].locationX = randomX;
         restStops[i].locationY = randomY;
-    }
-
-    for (int i = (NUMBEROFSTOPS-NUMBEROFINTERSTATESTOPS); i < NUMBEROFSTOPS; ++i) {
-        restStops[i].Type = stopTypesArray[0];
     }
 }
 

@@ -97,7 +97,8 @@ void runMapGen(void) {
     InitializeTypes(stopTypesArray);
 
     Stops restStops[NUMBEROFSTOPS];
-    InitializeStops(map, mapSize, restStops, stopTypesArray);
+    InitializeStopsType(restStops, stopTypesArray);
+    InitializeStopsLocation(map, mapSize, restStops);
     GenStops(map, mapSize, restStops);
 
     //map[XYToIdx(29, 29, mapSize)] = 5;
