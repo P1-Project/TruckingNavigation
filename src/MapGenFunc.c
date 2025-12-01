@@ -24,7 +24,7 @@ void TestMapGenConnection(void) {
     printf("Testing con from mapGen\n");
 }
 
-void InitMap(int *map, unsigned int mapSize){
+void InitMap(int *map, int mapSize){
     for (int i = 0; i < mapSize*mapSize; i++) {
         map[i] = 0;
     }
@@ -84,7 +84,7 @@ void PrintMap(int *map, int mapSize) {
 }
 
 
-void runMapGen(int *map, unsigned int mapSize, Stops *restStops)
+void runMapGen(int *map, int mapSize, Stops *restStops)
 {
     const int numBlockades = 80;
     srand(time(NULL)); //used to gen a random seed using the time.h libary
@@ -98,12 +98,11 @@ void runMapGen(int *map, unsigned int mapSize, Stops *restStops)
     InitializeTypes(stopTypesArray);
     GenInterStates(map, mapSize, restStops, stopTypesArray); //defines and setes the interstates
 
-    //inits the stops types array
 
-    //inits the restStops array for storrage of the reststops
-    //*restStops[NUMBEROFSTOPS];
-    //InitializeStops(*map, mapSize, &restStops, stopTypesArray);
-    //GenStops(*map, mapSize, &restStops);
+
+
+    InitializeStops(map, mapSize, restStops, stopTypesArray);
+    GenStops(map, mapSize, restStops);
 
 
     //map[XYToIdx(29, 29, mapSize)] = 5;

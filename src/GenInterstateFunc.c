@@ -18,15 +18,15 @@
  * @param mapSize The size of the map width
  * @param interStateRoad Struct type of InterStateRoad, containing the start x,y and end x,y
  * @param outPathLength the amount of indexes in path
- * @return Returns an array of indexes from the map.
+ * @return Returns a pointer of indexes from the map.
  */
-int *DefineHighwayPath(int *map, int mapSize, InterStateRoad interStateRoad, int *outPathLength) {
+int *DefineInterstatePath(int *map, int mapSize, InterStateRoad interStateRoad, int *outPathLength) {
     //calculate distance absolute distance from startX to endX
     int absDx = abs( interStateRoad.startX - interStateRoad.endX);
     //calculate distance absolute distance from startY to endY
     int absDy = abs(interStateRoad.startY - interStateRoad.endY);
 
-    //these intgers below are assigned as an oneline if-statement with return either 1 or -1
+    //these intgers below are assigned as an one line if-statement with return either 1, 0 or -1
     int stepX = (interStateRoad.endX > interStateRoad.startX) ? 1 :
             (interStateRoad.endX < interStateRoad.startX) ? -1 : 0;
 
@@ -38,15 +38,16 @@ int *DefineHighwayPath(int *map, int mapSize, InterStateRoad interStateRoad, int
     int y = interStateRoad.startY;
     int D; //decision var
     int pathLength = 0;
-    int *path = malloc(sizeof(int) * mapSize * mapSize);
     int tempIndex;
+    int *path = malloc(sizeof(int) * mapSize * mapSize);
+
     //printf("tempIndex = %d\n", tempIndex);
     //map[tempIndex-1] = INTERSTATEROAD;
     //printf("map[tempIndex] = %d\n", map[tempIndex]);
 
-    //if the highway is going North to South or East to West, do this else do East West,
+    //if the interstate is going North to South or East to West, do this else do East West,
     if (absDx >= absDy) { //East To west
-        D = 2*absDy - absDx;
+        D = 2 * absDy - absDx;
         for (int i = 0; i <= absDx; i++) {
             tempIndex = XYToIdx(x, y, mapSize);
             map[tempIndex] = INTERSTATEROAD; //sets mapIdx as highway
@@ -62,7 +63,7 @@ int *DefineHighwayPath(int *map, int mapSize, InterStateRoad interStateRoad, int
         }
     }
     else { //North To South
-        D = 2*absDy- absDx;
+        D = 2 * absDy - absDx;
         for (int i = 0; i <= absDy; i++) {
             tempIndex = XYToIdx(x, y, mapSize);
             map[tempIndex] = INTERSTATEROAD; //sets mapIdx as highway
@@ -70,10 +71,10 @@ int *DefineHighwayPath(int *map, int mapSize, InterStateRoad interStateRoad, int
             path[i] = tempIndex;
             if (D > 0) {
                 x += stepX;
-                D -= 2*absDy;
+                D -= 2 * absDy;
             }
             y += stepY;
-            D += 2*absDx;
+            D += 2 * absDx;
         }
     }
     *outPathLength = pathLength;
@@ -88,28 +89,23 @@ int *DefineHighwayPath(int *map, int mapSize, InterStateRoad interStateRoad, int
  * @param frequencyOfStops the frequency of stops need by law fx 3 per 100 km
  * @param path The array of indexes the highway is following on the map
  * @param pathLength The amount of indexes in the path,
- * @param startIndex start index for highway
- * @param goalIndex End index for highway
- * @param outNumStops outputs the number of stops
+ * @param stopCounter
  * @return An array of TruckInterstate stops related to the amout of stops, and their respective location on the map.
  * The number of stops and the updated map itself
  */
-void SetInterstateRestStops(int *map, int mapSize, int frequencyOfStops,
-                                            int *path, int pathLength,
-                                            int startIndex, int goalIndex,
-                                            int *outNumStops,
-                                            Stops *restStops,
-                                            StopType stopTypesArray[3]) {
-    if (path == NULL) {exit(ERROR_PATH);}
-    int counter = NUMBEROFSTOPS-NUMBEROFINTERSTATESTOPS;
-    if (!restStops) return;
-    if (!stopTypesArray) return;
-    printf("\n%d %d %d %d\n", path[0], startIndex, path[29], goalIndex);
+void SetInterstateRestStops(int *map, int mapSize,
+    int frequencyOfStops, int *path, int pathLength,
+    Stops *restStops,
+    StopType stopTypesArray[3],
+    int *stopCounter
+    ){
+    if (!path || !restStops || !stopTypesArray || !stopCounter) {return;}
+    int counter = *stopCounter;
 
     //add interstate rest stops matching length of the path
     for (int i = 0; i < pathLength; i++) {
         //sorting in frequency and the start and end stop.
-        if (i % frequencyOfStops != 0 || path[i] == startIndex || path[i] == goalIndex) {
+        if (i % frequencyOfStops != 0 /*|| i == pathLength - 1 || i == 0*/) {
             continue;
         }
         //sets the type of truckstop to match interstate type
@@ -119,17 +115,16 @@ void SetInterstateRestStops(int *map, int mapSize, int frequencyOfStops,
                     &restStops[counter].locationX,
                     &restStops[counter].locationY);
 
-
         //displaying debugging informaiton
-        printf("TruckStop # %d at path[%d] = %d\n", counter, i, path[i]);
+        /*printf("TruckStop # %d at path[%d] = %d\n", counter, i, path[i]);
         printf("Location (x,y): %d, %d\n",
                 restStops[counter].locationX,
-                restStops[counter].locationY);
+                restStops[counter].locationY);*/
 
         map[path[i]] = INTERSTATESTOP; //value for an interstate truck stop on the map
         counter++; //post increments the counter for the amount of stops to keep track.
     }
-    *outNumStops = counter - abs(NUMBEROFINTERSTATESTOPS - NUMBEROFSTOPS); //assigns the pointer a value that are equal counter.
+    *stopCounter += (pathLength / frequencyOfStops - 2);
 }
 
 /**
@@ -140,37 +135,27 @@ void SetInterstateRestStops(int *map, int mapSize, int frequencyOfStops,
  * @param interStateRoad Struct type of InterStateRoad, containing the start x,y and end x,y
  * @param restStops
  * @param stopTypesArray
+ * @param stopCounter
  *
  */
-void SetInterStateRoad(int *map, const int mapSize,
-    const InterStateRoad interStateRoad, Stops *restStops, StopType stopTypesArray[3]) {
-    //from point (x,y) on map, to (x,y)
-    //start point
-    const int startIndex = XYToIdx(interStateRoad.startX,interStateRoad.startY, mapSize);
-    //value for map start index
-    printf("Start index : %d\n", startIndex);
-    //endpoint
-    const int goalIndex = XYToIdx(interStateRoad.endX, interStateRoad.endY, mapSize);
-    //value for map end index
-    printf("Goal index : %d\n", goalIndex);
-
-    //defines highway with the use of rules,
+void SetInterStateRoad(int *map, int mapSize,
+    InterStateRoad interStateRoad,
+    Stops *restStops,
+    StopType stopTypesArray[3],
+    int *stopCounter) {
+    //defines Interstate,
     int pathLength;
-    int *path = DefineHighwayPath(map, mapSize, interStateRoad, &pathLength);
+    int *path = DefineInterstatePath(map, mapSize, interStateRoad, &pathLength);
 
-    printf("PathLength : %d\n", pathLength);
+    /*printf("PathLength : %d\n", pathLength);
 
     for (int i = 0; i < pathLength; i++) {
         printf("%d, ", path[i]);
     }
-    printf("\n");
-    int frequencyOfStops = 5;
-    int numStops = 0;
+    printf("\n");*/
+    int frequencyOfStops = 1;
     SetInterstateRestStops(map, MAPSIZE, frequencyOfStops, path, pathLength,
-        startIndex, goalIndex, &numStops, restStops, stopTypesArray);
-
-    //do something with truck stops if needed
-    printf("Number of stops: %d\n", numStops);
+     restStops, stopTypesArray, stopCounter);
 
     //frees the memorey allocated for pointers
     free(path);
@@ -225,7 +210,7 @@ void GenInterStates(int *map, int mapSize, Stops *restStops, StopType stopTypesA
     interStateRoad2.endX   = mapSize - 1; // right edge
     interStateRoad2.endY   = clamp(baseY + randomBetween(-wiggle, wiggle), 0, mapSize - 1);
 
-    // 2. Ensure they're not too close to each other
+    // 2. Ensure they are not too close to each other
     int minSeparation = mapSize / 4;
 
     while (abs(interStateRoad1.startX - interStateRoad2.startY) < minSeparation)
@@ -238,6 +223,11 @@ void GenInterStates(int *map, int mapSize, Stops *restStops, StopType stopTypesA
     }
 
     // 3. Draw highways
-    SetInterStateRoad(map, mapSize, interStateRoad1, restStops, stopTypesArray);
-    SetInterStateRoad(map, mapSize, interStateRoad2, restStops, stopTypesArray);
+    int stopCounter = abs(NUMBEROFSTOPS - NUMBEROFINTERSTATESTOPS);
+    printf("stopCounter value : %d\n", stopCounter);
+    SetInterStateRoad(map, mapSize, interStateRoad1, restStops, stopTypesArray, &stopCounter);
+    printf("stopCounter value : %d\n", stopCounter);
+    SetInterStateRoad(map, mapSize, interStateRoad2, restStops, stopTypesArray, &stopCounter);
+    printf("stopCounter value : %d\n", stopCounter);
+
 }

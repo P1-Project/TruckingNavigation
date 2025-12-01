@@ -8,8 +8,8 @@
 
 
 void TestMapGenConnection(void);
-void runMapGen(int *map, unsigned int mapSize, Stops *restStops);
+void runMapGen(int *map, int mapSize, Stops *restStops);
 void PrintMap(int *map, int mapSize);
-void InitMap(int *map, unsigned int mapSize);
+void InitMap(int *map, int mapSize);
 
 #endif //TRUCKINGNAVIGATION_MAPGEN_H
