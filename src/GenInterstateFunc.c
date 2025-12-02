@@ -26,7 +26,7 @@ int *DefineInterstatePath(int *map, int mapSize, InterStateRoad interStateRoad, 
     //calculate distance absolute distance from startY to endY
     int absDy = abs(interStateRoad.startY - interStateRoad.endY);
 
-    //these intgers below are assigned as an one line if-statement with return either 1, 0 or -1
+    //these intgers below are assigned as a one line if-statement with return either 1, 0 or -1
     int stepX = (interStateRoad.endX > interStateRoad.startX) ? 1 :
             (interStateRoad.endX < interStateRoad.startX) ? -1 : 0;
 
@@ -89,6 +89,8 @@ int *DefineInterstatePath(int *map, int mapSize, InterStateRoad interStateRoad, 
  * @param frequencyOfStops the frequency of stops need by law fx 3 per 100 km
  * @param path The array of indexes the highway is following on the map
  * @param pathLength The amount of indexes in the path,
+ * @param restStops
+ * @param stopTypesArray
  * @param stopCounter
  * @return An array of TruckInterstate stops related to the amout of stops, and their respective location on the map.
  * The number of stops and the updated map itself
@@ -155,13 +157,13 @@ void SetInterStateRoad(int *map, int mapSize,
     printf("\n");*/
     int frequencyOfStops = 1;
     SetInterstateRestStops(map, MAPSIZE, frequencyOfStops, path, pathLength,
-     restStops, stopTypesArray, stopCounter);
+        restStops, stopTypesArray, stopCounter);
 
-    //frees the memorey allocated for pointers
+    //frees the memory allocated for pointers
     free(path);
 }
 
-void printInterStateRoad(InterStateRoad interStateRoad) {
+void printInterStateRoad(const InterStateRoad interStateRoad) {
     printf("in start (X, Y) : (%d , %d) ", interStateRoad.startX , interStateRoad.startY);
     printf("Start Index : %d\n", XYToIdx(interStateRoad.startX, interStateRoad.startY, 30));
 
@@ -177,14 +179,14 @@ void printInterStateRoad(InterStateRoad interStateRoad) {
  * @param max Max value
  * @return //checks if the value is outside the map array if it does then it returns the max or min value
  */
-static int clamp(int v, int min, int max) {
+static int clamp(const int v, const int min, const int max) {
     if (v < min) return min;
     if (v > max) return max;
     return v;
 }
 
 
-void GenInterStates(int *map, int mapSize, Stops *restStops, StopType stopTypesArray[3]) {
+void GenInterStates(int *map, const int mapSize, Stops *restStops, StopType stopTypesArray[3]) {
     srand(time(NULL));
 
     InterStateRoad interStateRoad1;

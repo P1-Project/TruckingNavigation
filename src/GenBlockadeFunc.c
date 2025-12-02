@@ -3,9 +3,7 @@
 //
 
 #include "GenBlockadeFunc.h"
-#include "MapGenFunc.h"
 #include "ConverterFunc.h"
-#include "DefineStruct.h"
 #include "DefineConst.h"
 
 
@@ -17,28 +15,26 @@ void TestConGenBlockadeFunc() {
 }
 
 
-void GenBlockadeFunc(int *map, int mapSize, int numBlockades) {
+void GenBlockadeFunc(int *map, const int mapSize, const int numBlockades) {
     for (int i = 0; i < numBlockades; i++) {
-        int row = rand() % mapSize;
-        int col = rand() % mapSize;
-        int idx = XYToIdx(row, col, mapSize);
+        const int row = rand() % mapSize;
+        const int col = rand() % mapSize;
+        const int idx = XYToIdx(row, col, mapSize);
         map[idx] = BLOCKADE; // 5 = blockade
     }
-
-
 }
 
-void GenClusterBlockadeFunc(int *map, int mapSize, int numClusters, int clusterSize) {
+void GenClusterBlockadeFunc(int *map, const int mapSize, const int numClusters, const int clusterSize) {
     for (int c = 0; c < numClusters; c++) {
-        int centerRow = rand() % mapSize;
-        int centerCol = rand() % mapSize;
+        const int centerRow = rand() % mapSize;
+        const int centerCol = rand() % mapSize;
 
         for (int dr = -clusterSize; dr <= clusterSize; dr++) {
             for (int dc = -clusterSize; dc <= clusterSize; dc++) {
-                int row = centerRow + dr;
-                int col = centerCol + dc;
+                const int row = centerRow + dr;
+                const int col = centerCol + dc;
                 if (row >= 0 && row < mapSize && col >= 0 && col < mapSize) {
-                    int idx = row * mapSize + col;
+                    const int idx = row * mapSize + col;
                     map[idx] = BLOCKADE;
                 }
             }
