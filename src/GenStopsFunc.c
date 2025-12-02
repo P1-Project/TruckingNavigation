@@ -20,6 +20,7 @@ void TestConGenStopsFunc() {
  * @param stopTypesArray An array of the 3 stop types
  */
 void InitializeTypes(StopType stopTypesArray[3]) {
+    // Set-up: {Type, Toilet, Fuel, Hotel, Food, Parking}
     stopTypesArray[0] = (StopType){INTERSTATESTOP, 1, 0, 0, 0, 1};
     stopTypesArray[1] = (StopType){TYPE2STOP, 1, 1, 0, 1, 1};
     stopTypesArray[2] = (StopType){TYPE3STOP, 1, 1, 1, 1, 1};
@@ -31,23 +32,19 @@ void InitializeTypes(StopType stopTypesArray[3]) {
  * @param stopTypesArray An array of the 3 stop types
  */
 void InitializeStopsType(Stops restStops[NUMBEROFSTOPS], StopType stopTypesArray[3]) {
-    double Type2Percentage = 0.86;
-    double Type3Percentage = 1.00-Type2Percentage;
+    double Type2Percentage = 0.86; // Set percentage of type 2 rest stops
+    int numberOfType2 = ((int)floor(NUMBEROFSTOPS23*Type2Percentage)); // Calculate number of type 2 rest stops
 
-    int numberOfType2 = ((int)floor((NUMBEROFSTOPS23)*Type2Percentage));
-    int numberOfType3 = NUMBEROFSTOPS23-numberOfType2;
-
-    //printf("Creating %d rest stops of type 2 and %d rest stops of type 3.\n", numberOfType2, numberOfType3);
-
-    for (int i = 0; i < (NUMBEROFSTOPS23); ++i) {
+    //printf("Creating %d rest stops of type 2 and %d rest stops of type 3.\n", numberOfType2, NUMBEROFSTOPS23-numberOfType2);
+    for (int i = 0; i < NUMBEROFSTOPS23; ++i) { // Assign every rest stop a type up until the total number of type 2 and 3 stops
         if (i < numberOfType2) {
-            restStops[i].Type = stopTypesArray[1];
+            restStops[i].Type = stopTypesArray[1]; // Assign type 2 if i is below number of type 2
         } else {
-            restStops[i].Type = stopTypesArray[2];
+            restStops[i].Type = stopTypesArray[2]; // Assign type 3 if i is above number of type 3
         }
     }
 
-    for (int i = (NUMBEROFSTOPS23); i < NUMBEROFSTOPS; ++i) {
+    for (int i = NUMBEROFSTOPS23; i < NUMBEROFSTOPS; ++i) { // Assign the rest of the number of stops the type 1
         restStops[i].Type = stopTypesArray[0];
     }
 }
@@ -60,19 +57,18 @@ void InitializeStopsType(Stops restStops[NUMBEROFSTOPS], StopType stopTypesArray
  */
 void InitializeStopsLocation(int *map, int mapSize, Stops restStops[NUMBEROFSTOPS]) {
     int randomX, randomY;
-
     //printf("Creating %d rest stops of type 2 and %d rest stops of type 3.\n", numberOfType2, numberOfType3);
 
-    for (int i = 0; i < (NUMBEROFSTOPS23); ++i) {
+    for (int i = 0; i < NUMBEROFSTOPS23; ++i) { // Assign a location to every rest stop of type 2 and 3
         do {
-            randomX = rand() % mapSize;
-            randomY = rand() % mapSize;
+            randomX = rand() % mapSize; // Get a random X
+            randomY = rand() % mapSize; // Get a random Y
             //printf("Trying to assign rest stop at (%d, %d)\n", randomX, randomY);
-        } while (SpotOccupied(map, mapSize, randomX, randomY));
+        } while (SpotOccupied(map, mapSize, randomX, randomY)); // If the chosen spot is occupied, try again
         //printf("Successfully assigned rest stop at (%d, %d)\n", randomX, randomY);
 
-        restStops[i].locationX = randomX;
-        restStops[i].locationY = randomY;
+        restStops[i].locationX = randomX; // Assign the given rest stop's x coordinate
+        restStops[i].locationY = randomY; // Assign the given rest stop's x coordinate
     }
 }
 
@@ -84,10 +80,10 @@ void InitializeStopsLocation(int *map, int mapSize, Stops restStops[NUMBEROFSTOP
  * @return 1 if the stop is occupied, 0 if not
  */
 int SpotOccupied(int *map, int mapSize, int X, int Y) {
-    if (map[XYToIdx(X, Y, mapSize)] == NORMALROAD) {
-        return 0;
+    if (map[XYToIdx(X, Y, mapSize)] == NORMALROAD) { // Check what type of road the given index is on the map
+        return 0; // If it is a normal road, return false
     }
-    return 1;
+    return 1; // Else return false
 }
 
 /**
@@ -97,10 +93,10 @@ int SpotOccupied(int *map, int mapSize, int X, int Y) {
  * @param restStops An array of all the existing restStops
  */
 void GenStops(int *map, unsigned int mapSize, Stops restStops[NUMBEROFSTOPS]) {
-    for (int i = 0; i < (NUMBEROFSTOPS23); ++i) {
+    for (int i = 0; i < NUMBEROFSTOPS23; ++i) { // Add every rest stop of type 2 and 3 to the map
         //printf("Setting (%d, %d) to stop type %d\n", restStops[i].locationX, restStops[i].locationY, restStops[i].Type.Type);
-        int index = XYToIdx(restStops[i].locationX, restStops[i].locationY, mapSize);
-        map[index] = restStops[i].Type.Type;
+        int index = XYToIdx(restStops[i].locationX, restStops[i].locationY, mapSize); // Find the index of the given rest stop's coordinates
+        map[index] = restStops[i].Type.Type; // Set the map value of that index to the rest stops type equivalent
     }
 }
 
