@@ -50,5 +50,12 @@ int main(void) {
     //getDestination();
 
 
+    //getDestination()
+
+    //Check destination and start Coordinates
+
+    //Navigate to destination
+
+
     return 0;
 }
