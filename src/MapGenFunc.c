@@ -99,9 +99,6 @@ void runMapGen(int *map, int mapSize, Stops *restStops)
     GenInterStates(map, mapSize, restStops, stopTypesArray); //defines and setes the interstates
 
 
-
-
-    Stops restStops[NUMBEROFSTOPS];
     InitializeStopsType(restStops, stopTypesArray);
     InitializeStopsLocation(map, mapSize, restStops);
     GenStops(map, mapSize, restStops);

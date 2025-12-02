@@ -20,9 +20,9 @@ void TestConGenStopsFunc() {
  * @param stopTypesArray An array of the 3 stop types
  */
 void InitializeTypes(StopType stopTypesArray[3]) {
-    stopTypesArray[0] = (StopType){INTERSTATESTOP, 1, 0, 0, 0, 1}; //49 is 1
-    stopTypesArray[1] = (StopType){TYPE2STOP, 1, 1, 0, 1, 1}; //50 is 2
-    stopTypesArray[2] = (StopType){TYPE3STOP, 1, 1, 1, 1, 1}; //51 is 3
+    stopTypesArray[0] = (StopType){INTERSTATESTOP, 1, 0, 0, 0, 1};
+    stopTypesArray[1] = (StopType){TYPE2STOP, 1, 1, 0, 1, 1};
+    stopTypesArray[2] = (StopType){TYPE3STOP, 1, 1, 1, 1, 1};
 }
 
 /**
@@ -34,12 +34,12 @@ void InitializeStopsType(Stops restStops[NUMBEROFSTOPS], StopType stopTypesArray
     double Type2Percentage = 0.86;
     double Type3Percentage = 1.00-Type2Percentage;
 
-    int numberOfType2 = ((int)floor((NUMBEROFSTOPS-NUMBEROFINTERSTATESTOPS)*Type2Percentage));
-    int numberOfType3 = NUMBEROFSTOPS-NUMBEROFINTERSTATESTOPS-numberOfType2;
+    int numberOfType2 = ((int)floor((NUMBEROFSTOPS23)*Type2Percentage));
+    int numberOfType3 = NUMBEROFSTOPS23-numberOfType2;
 
     //printf("Creating %d rest stops of type 2 and %d rest stops of type 3.\n", numberOfType2, numberOfType3);
 
-    for (int i = 0; i < (NUMBEROFSTOPS-NUMBEROFINTERSTATESTOPS); ++i) {
+    for (int i = 0; i < (NUMBEROFSTOPS23); ++i) {
         if (i < numberOfType2) {
             restStops[i].Type = stopTypesArray[1];
         } else {
@@ -47,7 +47,7 @@ void InitializeStopsType(Stops restStops[NUMBEROFSTOPS], StopType stopTypesArray
         }
     }
 
-    for (int i = (NUMBEROFSTOPS-NUMBEROFINTERSTATESTOPS); i < NUMBEROFSTOPS; ++i) {
+    for (int i = (NUMBEROFSTOPS23); i < NUMBEROFSTOPS; ++i) {
         restStops[i].Type = stopTypesArray[0];
     }
 }
@@ -63,7 +63,7 @@ void InitializeStopsLocation(int *map, int mapSize, Stops restStops[NUMBEROFSTOP
 
     //printf("Creating %d rest stops of type 2 and %d rest stops of type 3.\n", numberOfType2, numberOfType3);
 
-    for (int i = 0; i < (NUMBEROFSTOPS-NUMBEROFINTERSTATESTOPS); ++i) {
+    for (int i = 0; i < (NUMBEROFSTOPS23); ++i) {
         do {
             randomX = rand() % mapSize;
             randomY = rand() % mapSize;
@@ -97,7 +97,7 @@ int SpotOccupied(int *map, int mapSize, int X, int Y) {
  * @param restStops An array of all the existing restStops
  */
 void GenStops(int *map, unsigned int mapSize, Stops restStops[NUMBEROFSTOPS]) {
-    for (int i = 0; i < (NUMBEROFSTOPS-NUMBEROFINTERSTATESTOPS); ++i) {
+    for (int i = 0; i < (NUMBEROFSTOPS23); ++i) {
         //printf("Setting (%d, %d) to stop type %d\n", restStops[i].locationX, restStops[i].locationY, restStops[i].Type.Type);
         int index = XYToIdx(restStops[i].locationX, restStops[i].locationY, mapSize);
         map[index] = restStops[i].Type.Type;
