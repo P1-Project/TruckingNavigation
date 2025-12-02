@@ -101,9 +101,10 @@ void runMapGen(int *map, int mapSize, Stops *restStops)
 
 
 
-    InitializeStops(map, mapSize, restStops, stopTypesArray);
+    Stops restStops[NUMBEROFSTOPS];
+    InitializeStopsType(restStops, stopTypesArray);
+    InitializeStopsLocation(map, mapSize, restStops);
     GenStops(map, mapSize, restStops);
-
 
     //map[XYToIdx(29, 29, mapSize)] = 5;
     //int indexValue = CheckCoordinateSet(map, 29, 29, mapSize); //this function needs fixing if index goes out of bounds
