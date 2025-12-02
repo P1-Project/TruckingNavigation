@@ -7,11 +7,12 @@
 #include "GenBlockadeFunc.h"
 #include "GetDestinationFunc.h"
 #include "GenInterstateFunc.h"
+#include "GenStopsFunc.h"
+#include "DefineConst.h"
+#include "DefineStruct.h"
 
 
-//DEFINES OF CONSTANTS
-#define DRIVINGTIMEMAX 4.5 //hours
-#define DRIVINGSPEED 100 //KM per hour
+
 
 int main(void) {
     //GenMap
@@ -35,13 +36,19 @@ int main(void) {
     TestConGenBlockadeFunc();
 
     //TestPathfindingConcetion();
-    TestMapGenConcetion();
-    
-    //runMapGen()
-    runMapGen();
+    TestMapGenConnection();
 
+    int map[MAPSIZE*MAPSIZE];
+    Stops restStops[NUMBEROFSTOPS];
+
+
+    //runMapGen()
+    runMapGen(map, MAPSIZE, restStops);
+
+
+    PrintMap(map, MAPSIZE);
     //getDestination();
 
-    
+
     return 0;
 }

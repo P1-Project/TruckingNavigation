@@ -4,14 +4,12 @@
 
 #ifndef TRUCKINGNAVIGATION_MAPGEN_H
 #define TRUCKINGNAVIGATION_MAPGEN_H
-#define NORMALROAD 0
-#define INTERSTATEROAD 1
-#define INTERSTATESTOP 2
-#define TYPE2STOP 3
-#define TYPE3STOP 4
-#define BLOCKADE 5
+#include "DefineStruct.h"
 
-void TestMapGenConcetion(void);
-void runMapGen(void);
+
+void TestMapGenConnection(void);
+void runMapGen(int *map, int mapSize, Stops *restStops);
+void PrintMap(int *map, int mapSize);
+void InitMap(int *map, int mapSize);
 
 #endif //TRUCKINGNAVIGATION_MAPGEN_H

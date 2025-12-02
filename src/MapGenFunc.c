@@ -9,6 +9,8 @@
 #include "ConverterFunc.h"
 #include "AnsiColorCodes.h"
 #include "GenBlockadeFunc.h"
+#include "DefineConst.h"
+#include "DefineStruct.h"
 
 
 #include <stdio.h>
@@ -18,19 +20,44 @@
 
 
 
-void TestMapGenConcetion(void) {
+void TestMapGenConnection(void) {
     printf("Testing con from mapGen\n");
 }
 
-
-
-void PrintMap(int *map, int mapSize) {
-    int total = mapSize * mapSize;
-    for (int i = -1; i < mapSize; i++) {
-        if (i == -1 ) {printf("   |"); continue;}
-        if (i <= 9) printf(" ");
-        printf("%d ", i);
+void InitMap(int *map, int mapSize){
+    for (int i = 0; i < mapSize*mapSize; i++) {
+        map[i] = 0;
     }
+}
+
+void EnableANSI() {
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD mode = 0;
+    GetConsoleMode(hOut, &mode);
+    mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hOut, mode);
+}
+
+//in this case mapSize can be unsigned since it cant be compared to minus 1 in while loop
+void PrintMap(int *map, int mapSize) {
+    EnableANSI();
+    const int total = mapSize * mapSize;
+    printf("Map size is: %d\n", mapSize);
+    int i = -1;
+    while (i < mapSize) {
+        if (i == -1 ) {
+            printf("   |");
+        }
+        else if (i <= 9){ printf(" %d ", i);}
+        else {
+            printf("%d ", i);
+        }
+        i++;
+    }
+
+    /*for (int i = -1; i < mapSize; i++) {
+
+    }*/
     printf("\n");
 
     for (int i = 0; i < total; i++) {
@@ -51,50 +78,28 @@ void PrintMap(int *map, int mapSize) {
             case BLOCKADE: c = '#'; color = RED; break;
             default: c = '?'; color = WHT; break;
         }
-
         printf("%s %c %s", color, c, WHT);
     }
     printf("\n");
 }
 
 
-
-void InitMap(int *map, const signed int mapSize) {
-    for (int i = 0; i < mapSize*mapSize; i++) {
-        int num = 0;
-        map[i] = num;
-    }
-}
-
-void EnableANSI() {
-    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    DWORD mode = 0;
-    GetConsoleMode(hOut, &mode);
-    mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-    SetConsoleMode(hOut, mode);
-}
-
-
-
-
-void runMapGen(void) {
-    const signed int mapSize = 30;
+void runMapGen(int *map, int mapSize, Stops *restStops)
+{
     const int numBlockades = 80;
-    srand(time(NULL));
-    int map[mapSize*mapSize];
-    InitMap(map,mapSize);
+    srand(time(NULL)); //used to gen a random seed using the time.h libary
 
-    GenBlockadeFunc(map,mapSize,numBlockades);
-    GenerateClusterBlockades(map,mapSize,numBlockades/4,1);
+    InitMap(map, mapSize); //inits the map and sets all values equal 0
 
-    SetInterStates(map,mapSize);
-
-
-
-    srand(time(NULL));
+    GenBlockadeFunc(map,mapSize,numBlockades); //gen blockades for the map
+    GenClusterBlockadeFunc(map,mapSize,numBlockades/4,1); //gen cluster blockades for the map
 
     StopType stopTypesArray[3];
     InitializeTypes(stopTypesArray);
+    GenInterStates(map, mapSize, restStops, stopTypesArray); //defines and setes the interstates
+
+
+
 
     Stops restStops[NUMBEROFSTOPS];
     InitializeStopsType(restStops, stopTypesArray);
@@ -104,7 +109,4 @@ void runMapGen(void) {
     //map[XYToIdx(29, 29, mapSize)] = 5;
     //int indexValue = CheckCoordinateSet(map, 29, 29, mapSize); //this function needs fixing if index goes out of bounds
     //printf("%d\n", indexValue);
-    EnableANSI();
-    PrintMap(map, mapSize);
-    //printf("\n map index = %d \n", map[155]);
 }
