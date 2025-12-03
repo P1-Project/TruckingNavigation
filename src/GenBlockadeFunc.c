@@ -34,7 +34,7 @@ void GenClusterBlockadeFunc(int *map, const int mapSize, const int numClusters, 
                 const int row = centerRow + dr;
                 const int col = centerCol + dc;
                 if (row >= 0 && row < mapSize && col >= 0 && col < mapSize) {
-                    const int idx = row * mapSize + col;
+                    const int idx = XYToIdx(row, col, mapSize);
                     map[idx] = BLOCKADE;
                 }
             }
