@@ -95,7 +95,7 @@ int SpotOccupied(int *map, int X, int Y) {
  * @param map Pointer to the map array
  * @param restStops An array of all the existing restStops
  */
-void GenStops(int *map, Stops restStops[]) {
+void GenStops(int *map, Stops restStops[], int index) {
     for (int i = 0; i < NUMBEROFSTOPS23; ++i) { // Add every rest stop of type 2 and 3 to the map
         //printf("Setting (%d, %d) to stop type %d\n", restStops[i].locationX, restStops[i].locationY, restStops[i].Type.Type);
         int index = XYToIdx(restStops[i].locationX, restStops[i].locationY, MAPSIZE); // Find the index of the given rest stop's coordinates
