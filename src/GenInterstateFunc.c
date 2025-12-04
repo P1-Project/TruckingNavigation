@@ -126,7 +126,7 @@ void SetInterstateRestStops(int *map, int mapSize,
     StopType stopTypesArray[3],
     int *stopCounter
     ){
-    if (!path || !restStops || !stopTypesArray || !stopCounter) {return;}
+    if (!path || !restStops || !stopTypesArray || !stopCounter) {exit(GENSTOPERROR);}
     int counter = *stopCounter;
 
     //add interstate rest stops matching length of the path
@@ -183,7 +183,10 @@ void SetInterStateRoad(int *map, int mapSize,
 
 
 void GenInterStates(int *map, const int mapSize, Stops *restStops, StopType stopTypesArray[3]) {
+
+    if (!map || !restStops || !stopTypesArray) {exit(GENSTOPERROR);}
     srand(time(NULL));
+
 
     InterStateRoad interStateRoad1;
     InterStateRoad interStateRoad2;
