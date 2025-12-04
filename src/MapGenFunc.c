@@ -16,7 +16,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#ifdef _WIN32
 #include <windows.h>
+#endif
 
 
 
@@ -31,12 +33,16 @@ void InitMap(int *map, int mapSize){
 }
 
 void EnableANSI() {
-    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    DWORD mode = 0;
-    GetConsoleMode(hOut, &mode);
-    mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-    SetConsoleMode(hOut, mode);
-}
+#ifdef _WIN32
+        HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+        DWORD mode = 0;
+        GetConsoleMode(hOut, &mode);
+        mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+        SetConsoleMode(hOut, mode);
+#else
+        // macOS and Linux already support ANSI natively
+#endif
+    }
 
 //in this case mapSize can be unsigned since it cant be compared to minus 1 in while loop
 void PrintMap(int *map, int mapSize) {
@@ -97,11 +103,9 @@ void runMapGen(int *map, int mapSize, Stops *restStops)
     StopType stopTypesArray[3];
     InitializeTypes(stopTypesArray);
     GenInterStates(map, mapSize, restStops, stopTypesArray); //defines and setes the interstates
-    printf("\n");
 
-    //map[XYToIdx(10, 10, mapSize)] = 5;
+
     //int indexValue = CheckCoordinateSet(map, 10, 10, mapSize);
-    //printf("map[%d]\n", indexValue);
 
     InitializeStopsType(restStops, stopTypesArray);
     InitializeStopsLocation(map, restStops);
