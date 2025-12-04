@@ -12,6 +12,31 @@
 #include <time.h>
 
 
+
+
+void printInterStateRoad(const InterStateRoad interStateRoad) {
+    printf("in start (X, Y) : (%d , %d) ", interStateRoad.startX , interStateRoad.startY);
+    printf("Start Index : %d\n", XYToIdx(interStateRoad.startX, interStateRoad.startY, 30));
+
+    printf("in end (X, Y) : (%d , %d) ", interStateRoad.endX, interStateRoad.endY);
+    printf("End Index : %d\n", XYToIdx(interStateRoad.endX, interStateRoad.endY, 30));
+}
+
+
+/**
+ *
+ * @param v input value
+ * @param min min value always equal to 0
+ * @param max Max value
+ * @return //checks if the value is outside the map array if it does then it returns the max or min value
+ */
+static int clamp(const int v, const int min, const int max) {
+    if (v < min) return min;
+    if (v > max) return max;
+    return v;
+}
+
+
 /**
  *
  * @param map int array of the map
@@ -148,41 +173,12 @@ void SetInterStateRoad(int *map, int mapSize,
     //defines Interstate,
     int pathLength;
     int *path = DefineInterstatePath(map, mapSize, interStateRoad, &pathLength);
-
-    /*printf("PathLength : %d\n", pathLength);
-
-    for (int i = 0; i < pathLength; i++) {
-        printf("%d, ", path[i]);
-    }
-    printf("\n");*/
     int frequencyOfStops = 1;
     SetInterstateRestStops(map, MAPSIZE, frequencyOfStops, path, pathLength,
         restStops, stopTypesArray, stopCounter);
 
     //frees the memory allocated for pointers
     free(path);
-}
-
-void printInterStateRoad(const InterStateRoad interStateRoad) {
-    printf("in start (X, Y) : (%d , %d) ", interStateRoad.startX , interStateRoad.startY);
-    printf("Start Index : %d\n", XYToIdx(interStateRoad.startX, interStateRoad.startY, 30));
-
-    printf("in end (X, Y) : (%d , %d) ", interStateRoad.endX, interStateRoad.endY);
-    printf("End Index : %d\n", XYToIdx(interStateRoad.endX, interStateRoad.endY, 30));
-}
-
-
-/**
- *
- * @param v input value
- * @param min min value always equal to 0
- * @param max Max value
- * @return //checks if the value is outside the map array if it does then it returns the max or min value
- */
-static int clamp(const int v, const int min, const int max) {
-    if (v < min) return min;
-    if (v > max) return max;
-    return v;
 }
 
 
