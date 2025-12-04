@@ -173,7 +173,7 @@ void SetInterStateRoad(int *map, int mapSize,
     //defines Interstate,
     int pathLength;
     int *path = DefineInterstatePath(map, mapSize, interStateRoad, &pathLength);
-    int frequencyOfStops = 1;
+    int frequencyOfStops = 2;
     SetInterstateRestStops(map, MAPSIZE, frequencyOfStops, path, pathLength,
         restStops, stopTypesArray, stopCounter);
 
