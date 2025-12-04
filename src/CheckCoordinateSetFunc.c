@@ -3,8 +3,8 @@
 //
 
 #include "CheckCoordinateSetFunc.h"
-#include  "DefineConst.h"
-#include  "ConverterFunc.h"
+#include "DefineConst.h"
+#include "ConverterFunc.h"
 
 #include <stdio.h>
 
@@ -49,7 +49,7 @@ int CheckCoordinateSet(int *map, int x, int y, int mapSize){
         }
 
         j = index_i + (mapSize - 1 * r);             // Diagonal down left
-        if (j >= 0 && j%mapSize < index_i%mapSize) {
+        if (j >= 0 && j < mapSize*mapSize && j%mapSize < index_i%mapSize) {
             if (j > 0 && map[j] != BLOCKADE) return j;
         }
 
@@ -65,4 +65,115 @@ int CheckCoordinateSet(int *map, int x, int y, int mapSize){
     }                                              // Maybe convert back to x,y?
 
 return -1;                                         // No space available
+}
+
+
+
+int runTestIdx63() {
+    int Map[] = {5,0,5,5,5,0,0,5,
+                 0,0,5,5,5,0,0,0,
+                 0,0,0,0,0,0,0,0,
+                 5,0,0,5,5,0,0,0,
+                 5,0,0,5,5,5,0,0,
+                 0,0,0,5,5,5,0,0,
+                 0,0,0,0,0,0,0,5,
+                 5,0,0,0,0,0,5,5};
+
+    int mapSize = 8;
+    return CheckCoordinateSet(Map, 7, 7, mapSize);
+}
+
+int runTestIdx0() {
+    int Map[] = {5,0,5,5,5,0,0,5,
+                 0,0,5,5,5,0,0,0,
+                 0,0,0,0,0,0,0,0,
+                 5,0,0,5,5,0,0,0,
+                 5,0,0,5,5,5,0,0,
+                 0,0,0,5,5,5,0,0,
+                 0,0,0,0,0,0,0,5,
+                 5,0,0,0,0,0,5,5};
+
+    int mapSize = 8;
+    return CheckCoordinateSet(Map, 0, 0, mapSize);
+}
+
+int runTestIdx3() {
+    int Map[] = {5,0,5,5,5,0,0,5,
+                 0,0,5,5,5,0,0,0,
+                 0,0,0,0,0,0,0,0,
+                 5,0,0,5,5,0,0,0,
+                 5,0,0,5,5,5,0,0,
+                 0,0,0,5,5,5,0,0,
+                 0,0,0,0,0,0,0,5,
+                 5,0,0,0,0,0,5,5};
+
+    int mapSize = 8;
+    return CheckCoordinateSet(Map, 3, 0, mapSize);
+}
+
+int runTestIdx7() {
+    int Map[] = {5,0,5,5,5,0,0,5,
+                 0,0,5,5,5,0,0,0,
+                 0,0,0,0,0,0,0,0,
+                 5,0,0,5,5,0,0,0,
+                 5,0,0,5,5,5,0,0,
+                 0,0,0,5,5,5,0,0,
+                 0,0,0,0,0,0,0,5,
+                 5,0,0,0,0,0,5,5};
+
+    int mapSize = 8;
+    int res = 6;
+    return CheckCoordinateSet(Map, 7, 0, mapSize);
+}
+
+int runTestIdx56() {
+    int Map[] = {5,0,5,5,5,0,0,5,
+                 0,0,5,5,5,0,0,0,
+                 0,0,0,0,0,0,0,0,
+                 5,0,0,5,5,0,0,0,
+                 5,0,0,5,5,5,0,0,
+                 0,0,0,5,5,5,0,0,
+                 0,0,0,0,0,0,0,5,
+                 5,0,0,0,0,0,5,5};
+
+    int mapSize = 8;
+    return CheckCoordinateSet(Map, 0, 7, mapSize);
+}
+
+int runTestIdx24() {
+    int Map[] = {5,0,5,5,5,0,0,5,
+                 0,0,5,5,5,0,0,0,
+                 0,0,0,0,0,0,0,0,
+                 5,0,0,5,5,0,0,0,
+                 5,0,0,5,5,5,0,0,
+                 0,0,0,5,5,5,0,0,
+                 0,0,0,0,0,0,0,5,
+                 5,0,0,0,0,0,5,5};
+
+    int mapSize = 8;
+    return CheckCoordinateSet(Map, 0, 3, mapSize);
+}
+
+int runTestIdx36() {
+    int Map[] = {5,0,5,5,5,0,0,5,
+                 0,0,5,5,5,0,0,0,
+                 0,0,0,0,0,0,0,0,
+                 5,0,0,5,5,0,0,0,
+                 5,0,0,5,5,5,0,0,
+                 0,0,0,5,5,5,0,0,
+                 0,0,0,0,0,0,0,5,
+                 5,0,0,0,0,0,5,5};
+
+    int mapSize = 8;
+    return CheckCoordinateSet(Map, 4, 4, mapSize);
+}
+
+void runAllTests() {
+    printf("Index63: %d\n", runTestIdx63());
+    printf("Index0: %d\n", runTestIdx0());
+    printf("Index3: %d\n", runTestIdx3());
+    printf("Index7: %d\n", runTestIdx7());
+    printf("Index56: %d\n", runTestIdx56());
+    printf("Index24: %d\n", runTestIdx24());
+    printf("Index36: %d\n", runTestIdx36());
 }

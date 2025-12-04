@@ -10,6 +10,7 @@
 #include "GenStopsFunc.h"
 #include "DefineConst.h"
 #include "DefineStruct.h"
+#include "CheckCoordinateSetFunc.h"
 
 
 
@@ -55,6 +56,7 @@ int main(void) {
     //Check destination and start Coordinates
 
     //Navigate to destination
+
 
 
     return 0;
