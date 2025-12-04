@@ -22,5 +22,15 @@ TEST_CASE(TestConnection,
     CHECK_EQ_INT(k,2);
 )
 
-
-MAIN_RUN_TESTS(TestConnection, TestConnectionGenStops, TestInitializeTypes, TestInitializeStopsType, TestInitializeStopsLocation, TestSpotOccupied, TestGenStops)
+MAIN_RUN_TESTS(
+    TestConnection, TestConnectionGenStops,
+    /* CheckCoordinateSetFunc tests */
+    /* ConverterFunc tests */
+    /* DijkstraAlgorithm tests */
+    /* GenBlockade tests */
+    /* GenInterstateFunc tests */
+    /* GenStopsFunc tests */ TestInitializeTypes, TestInitializeStopsType, TestInitializeStopsLocation, TestSpotOccupied, TestGenStops
+    /* GetDestinationFunc tests */
+    /* MapGenFunc tests */
+    /* pathFinding tests */
+    )
