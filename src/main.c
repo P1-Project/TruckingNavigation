@@ -57,5 +57,7 @@ int main(void) {
     //Navigate to destination
 
 
+    //runDestination();
+
     return 0;
 }
