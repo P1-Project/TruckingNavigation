@@ -1,12 +1,119 @@
-//
-// Created by rasmk on 20-11-2025.
-//
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#include <time.h>
 
 #include "GenStopsFunc.h"
-
-#include <stdio.h>
+#include "ConverterFunc.h"
+#include "GetDestinationFunc.h"
+#include "MapGenFunc.h"
+#include "DefineConst.h"
+#include "DefineStruct.h"
 
 void TestConGenStopsFunc() {
     printf("Hello, World from GenStopsFunc!");
 
 }
+
+/**
+ * This function takes three stop types from an array, and assigns which facilities it has.
+ * @param stopTypesArray An array of the 3 stop types
+ */
+void InitializeTypes(StopType stopTypesArray[3]) {
+    // Set-up: {Type, Toilet, Fuel, Hotel, Food, Parking}
+    stopTypesArray[0] = (StopType){INTERSTATESTOP, 1, 0, 0, 0, 1};
+    stopTypesArray[1] = (StopType){TYPE2STOP, 1, 1, 0, 1, 1};
+    stopTypesArray[2] = (StopType){TYPE3STOP, 1, 1, 1, 1, 1};
+}
+
+/**
+ * This function creates stops of type 1, type 2 and type 3 stops by percentage
+ * @param restStops An array of all the existing restStops
+ * @param stopTypesArray An array of the 3 stop types
+ */
+void InitializeStopsType(Stops restStops[NUMBEROFSTOPS], StopType stopTypesArray[3]) {
+    double Type2Percentage = 0.86; // Set percentage of type 2 rest stops
+    int numberOfType2 = ((int)floor(NUMBEROFSTOPS23*Type2Percentage)); // Calculate number of type 2 rest stops
+
+    //printf("Creating %d rest stops of type 2 and %d rest stops of type 3.\n", numberOfType2, NUMBEROFSTOPS23-numberOfType2);
+    for (int i = 0; i < NUMBEROFSTOPS23; ++i) { // Assign every rest stop a type up until the total number of type 2 and 3 stops
+        if (i < numberOfType2) {
+            restStops[i].Type = stopTypesArray[1]; // Assign type 2 if i is below number of type 2
+        } else {
+            restStops[i].Type = stopTypesArray[2]; // Assign type 3 if i is above number of type 3
+        }
+    }
+
+    for (int i = NUMBEROFSTOPS23; i < NUMBEROFSTOPS; ++i) { // Assign the rest of the number of stops the type 1
+        restStops[i].Type = stopTypesArray[0];
+    }
+}
+
+/**
+ * This function defines stop 2 and 3's coordinates in an array
+ * @param map Pointer to the map array
+ * @param restStops An array of all the existing restStops
+ */
+void InitializeStopsLocation(int *map, Stops restStops[NUMBEROFSTOPS]) {
+    int randomX, randomY;
+    //printf("Creating %d rest stops of type 2 and %d rest stops of type 3.\n", numberOfType2, numberOfType3);
+
+    for (int i = 0; i < NUMBEROFSTOPS23; ++i) { // Assign a location to every rest stop of type 2 and 3
+        do {
+            randomX = rand() % MAPSIZE; // Get a random X
+            randomY = rand() % MAPSIZE; // Get a random Y
+            //printf("Trying to assign rest stop at (%d, %d)\n", randomX, randomY);
+        } while (SpotOccupied(map, randomX, randomY)); // If the chosen spot is occupied, try again
+        //printf("Successfully assigned rest stop at (%d, %d)\n", randomX, randomY);
+
+        restStops[i].locationX = randomX; // Assign the given rest stop's x coordinate
+        restStops[i].locationY = randomY; // Assign the given rest stop's x coordinate
+    }
+}
+
+/**
+ * This function checks whether the rest stop you're trying to initialize, is being placed on top of an existing rest stop
+ * @param map Pointer to the map array
+ * @param X The x-coordinate of the given stop
+ * @param Y The y-coordinate of the given stop
+ * @return 1 if the stop is occupied, 0 if not
+ */
+int SpotOccupied(int *map, int X, int Y) {
+    if (map[XYToIdx(X, Y, MAPSIZE)] == NORMALROAD) { // Check what type of road the given index is on the map
+        return 0; // If it is a normal road, return false
+    }
+    return 1; // Else return false
+}
+
+/**
+ * This function places the rest stops in their coordinates on the map
+ * @param map Pointer to the map array
+ * @param restStops An array of all the existing restStops
+ */
+void GenStops(int *map, Stops restStops[NUMBEROFSTOPS]) {
+    for (int i = 0; i < NUMBEROFSTOPS23; ++i) { // Add every rest stop of type 2 and 3 to the map
+        //printf("Setting (%d, %d) to stop type %d\n", restStops[i].locationX, restStops[i].locationY, restStops[i].Type.Type);
+        int index = XYToIdx(restStops[i].locationX, restStops[i].locationY, MAPSIZE); // Find the index of the given rest stop's coordinates
+        map[index] = restStops[i].Type.Type; // Set the map value of that index to the rest stops type equivalent
+    }
+}
+
+/*
+int main(void) {
+    srand(time(NULL));
+
+    const unsigned int mapSize = 30;
+    int map[mapSize*mapSize];
+    GenRandomMap(map,mapSize*mapSize);
+
+    StopType stopTypesArray[3];
+    InitializeTypes(stopTypesArray);
+
+    Stops restStops[NUMBEROFSTOPS];
+    InitializeStops(mapSize, restStops, stopTypesArray);
+    GenStops(map, mapSize, restStops);
+
+    PrintMap(map, mapSize*mapSize);
+
+    return 0;
+}*/
