@@ -10,9 +10,9 @@
 void TestConGenStopsFunc();
 
 void InitializeTypes(StopType stopTypesArray[3]);
-void InitializeStopsType(Stops restStops[NUMBEROFSTOPS], StopType stopTypesArray[3]);
-void InitializeStopsLocation(int *map, Stops restStops[NUMBEROFSTOPS]);
+void InitializeStopsType(Stops restStops[], StopType stopTypesArray[3]);
+void InitializeStopsLocation(int *map, Stops restStops[]);
 int SpotOccupied(int *map, int X, int Y);
-void GenStops(int *map, Stops restStops[NUMBEROFSTOPS]);
+void GenStops(int *map, Stops restStops[]);
 
 #endif //TRUCKINGNAVIGATION_GENSTOPSFUNC_H

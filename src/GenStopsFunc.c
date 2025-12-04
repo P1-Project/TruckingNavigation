@@ -31,7 +31,7 @@ void InitializeTypes(StopType stopTypesArray[3]) {
  * @param restStops An array of all the existing restStops
  * @param stopTypesArray An array of the 3 stop types
  */
-void InitializeStopsType(Stops restStops[NUMBEROFSTOPS], StopType stopTypesArray[3]) {
+void InitializeStopsType(Stops restStops[], StopType stopTypesArray[3]) {
     double Type2Percentage = 0.86; // Set percentage of type 2 rest stops
     int numberOfType2 = ((int)floor(NUMBEROFSTOPS23*Type2Percentage)); // Calculate number of type 2 rest stops
 
@@ -54,7 +54,7 @@ void InitializeStopsType(Stops restStops[NUMBEROFSTOPS], StopType stopTypesArray
  * @param map Pointer to the map array
  * @param restStops An array of all the existing restStops
  */
-void InitializeStopsLocation(int *map, Stops restStops[NUMBEROFSTOPS]) {
+void InitializeStopsLocation(int *map, Stops restStops[]) {
     int randomX, randomY;
     //printf("Creating %d rest stops of type 2 and %d rest stops of type 3.\n", numberOfType2, numberOfType3);
 
@@ -90,7 +90,7 @@ int SpotOccupied(int *map, int X, int Y) {
  * @param map Pointer to the map array
  * @param restStops An array of all the existing restStops
  */
-void GenStops(int *map, Stops restStops[NUMBEROFSTOPS]) {
+void GenStops(int *map, Stops restStops[]) {
     for (int i = 0; i < NUMBEROFSTOPS23; ++i) { // Add every rest stop of type 2 and 3 to the map
         //printf("Setting (%d, %d) to stop type %d\n", restStops[i].locationX, restStops[i].locationY, restStops[i].Type.Type);
         int index = XYToIdx(restStops[i].locationX, restStops[i].locationY, MAPSIZE); // Find the index of the given rest stop's coordinates
