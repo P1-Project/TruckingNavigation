@@ -48,7 +48,7 @@ void GetDestination (Destination *destination, int acceptInput, int mapSize){
 
 // What has to go in the main file
 /*
-int main() {
+int runDestination() {
     int choice;
 
 // Initialize random
