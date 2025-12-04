@@ -55,15 +55,18 @@ void InitializeStopsType(Stops restStops[], StopType stopTypesArray[3]) {
  * @param restStops An array of all the existing restStops
  */
 void InitializeStopsLocation(int *map, Stops restStops[]) {
-    int randomX, randomY;
+    int randomX, randomY, index;
     //printf("Creating %d rest stops of type 2 and %d rest stops of type 3.\n", numberOfType2, numberOfType3);
 
     for (int i = 0; i < NUMBEROFSTOPS23; ++i) { // Assign a location to every rest stop of type 2 and 3
         do {
             randomX = rand() % MAPSIZE; // Get a random X
             randomY = rand() % MAPSIZE; // Get a random Y
+            index = XYToIdx(randomX, randomY, MAPSIZE);
             //printf("Trying to assign rest stop at (%d, %d)\n", randomX, randomY);
-        } while (SpotOccupied(map, randomX, randomY)); // If the chosen spot is occupied, try again
+
+            // If the chosen spot is occupied, try again.
+        } while (SpotOccupied(map, randomX, randomY));
         //printf("Successfully assigned rest stop at (%d, %d)\n", randomX, randomY);
 
         restStops[i].locationX = randomX; // Assign the given rest stop's x coordinate
@@ -79,6 +82,8 @@ void InitializeStopsLocation(int *map, Stops restStops[]) {
  * @return 1 if the stop is occupied, 0 if not
  */
 int SpotOccupied(int *map, int X, int Y) {
+    // Check surrounding spots
+
     if (map[XYToIdx(X, Y, MAPSIZE)] == NORMALROAD) { // Check what type of road the given index is on the map
         return 0; // If it is a normal road, return false
     }

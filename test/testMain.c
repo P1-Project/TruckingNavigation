@@ -9,6 +9,11 @@ int TestInitializeTypes(void);
 int TestInitializeStopsType(void);
 int TestInitializeStopsLocation(void);
 int TestGenStops(void);
+int testXYToIdx(void);
+int testIdxToCoords(void);
+int testRandomBetween(void);
+int testLookForNeighbor1(void);
+int testLookForNeighbor2(void);
 
 TEST_CASE(TestConnection,
     /* Arrange */
@@ -25,7 +30,7 @@ TEST_CASE(TestConnection,
 MAIN_RUN_TESTS(
     TestConnection, TestConnectionGenStops,
     /* CheckCoordinateSetFunc tests */
-    /* ConverterFunc tests */
+    /* ConverterFunc tests */ testXYToIdx, testIdxToCoords, testRandomBetween, testLookForNeighbor1, testLookForNeighbor2,
     /* DijkstraAlgorithm tests */
     /* GenBlockade tests */
     /* GenInterstateFunc tests */
