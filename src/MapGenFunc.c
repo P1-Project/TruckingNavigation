@@ -31,12 +31,16 @@ void InitMap(int *map, int mapSize){
 }
 
 void EnableANSI() {
-    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    DWORD mode = 0;
-    GetConsoleMode(hOut, &mode);
-    mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-    SetConsoleMode(hOut, mode);
-}
+#ifdef _WIN32
+        HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+        DWORD mode = 0;
+        GetConsoleMode(hOut, &mode);
+        mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+        SetConsoleMode(hOut, mode);
+#else
+        // macOS and Linux already support ANSI natively
+#endif
+    }
 
 //in this case mapSize can be unsigned since it cant be compared to minus 1 in while loop
 void PrintMap(int *map, int mapSize) {
