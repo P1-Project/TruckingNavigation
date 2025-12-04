@@ -55,18 +55,17 @@ void InitializeStopsType(Stops restStops[], StopType stopTypesArray[3]) {
  * @param restStops An array of all the existing restStops
  */
 void InitializeStopsLocation(int *map, Stops restStops[]) {
-    int randomX, randomY, index;
+    int randomX, randomY;
     //printf("Creating %d rest stops of type 2 and %d rest stops of type 3.\n", numberOfType2, numberOfType3);
 
     for (int i = 0; i < NUMBEROFSTOPS23; ++i) { // Assign a location to every rest stop of type 2 and 3
         do {
             randomX = rand() % MAPSIZE; // Get a random X
             randomY = rand() % MAPSIZE; // Get a random Y
-            index = XYToIdx(randomX, randomY, MAPSIZE);
             //printf("Trying to assign rest stop at (%d, %d)\n", randomX, randomY);
 
             // If the chosen spot is occupied, try again.
-        } while (SpotOccupied(map, randomX, randomY));
+            } while (SpotOccupied(map, randomX, randomY));
         //printf("Successfully assigned rest stop at (%d, %d)\n", randomX, randomY);
 
         restStops[i].locationX = randomX; // Assign the given rest stop's x coordinate
@@ -96,7 +95,7 @@ int SpotOccupied(int *map, int X, int Y) {
  * @param restStops An array of all the existing restStops
  */
 void GenStops(int *map, Stops restStops[]) {
-    for (int i = 0; i < NUMBEROFSTOPS23; ++i) { // Add every rest stop of type 2 and 3 to the map
+    for (int i = 0; i < NUMBEROFSTOPS23; ++i) {
         //printf("Setting (%d, %d) to stop type %d\n", restStops[i].locationX, restStops[i].locationY, restStops[i].Type.Type);
         int index = XYToIdx(restStops[i].locationX, restStops[i].locationY, MAPSIZE); // Find the index of the given rest stop's coordinates
         map[index] = restStops[i].Type.Type; // Set the map value of that index to the rest stops type equivalent

@@ -42,10 +42,10 @@ int main(void) {
     int map[MAPSIZE*MAPSIZE];
     Stops restStops[NUMBEROFSTOPS];
 
-
     //runMapGen()
     runMapGen(map, MAPSIZE, restStops);
 
+    GenStops(map, restStops);
 
     PrintMap(map, MAPSIZE);
     //getDestination();
