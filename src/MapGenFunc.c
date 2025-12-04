@@ -99,9 +99,9 @@ void runMapGen(int *map, int mapSize, Stops *restStops)
     GenInterStates(map, mapSize, restStops, stopTypesArray); //defines and setes the interstates
     printf("\n");
 
-    map[XYToIdx(10, 10, mapSize)] = 5;
-    int indexValue = CheckCoordinateSet(map, 10, 10, mapSize);
-    printf("map[%d]\n", indexValue);
+    //map[XYToIdx(10, 10, mapSize)] = 5;
+    //int indexValue = CheckCoordinateSet(map, 10, 10, mapSize);
+    //printf("map[%d]\n", indexValue);
 
     InitializeStopsType(restStops, stopTypesArray);
     InitializeStopsLocation(map, restStops);
