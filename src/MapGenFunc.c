@@ -5,88 +5,109 @@
 #include "MapGenFunc.h"
 #include "GenInterstateFunc.h"
 #include "CheckCoordinateSetFunc.c"
+#include "GenStopsFunc.h"
+#include "ConverterFunc.h"
+#include "AnsiColorCodes.h"
+#include "GenBlockadeFunc.h"
+#include "DefineConst.h"
+#include "DefineStruct.h"
+
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <windows.h>
 
 
 
-void TestMapGenConcetion(void) {
+void TestMapGenConnection(void) {
     printf("Testing con from mapGen\n");
 }
 
-
-
-void PrintMap(int *map, int mapSize) {
-    int total = mapSize * mapSize;
-    for (int i = -1; i < mapSize; i++) {
-        if (i == -1 ) {printf("   |"); continue;}
-        if (i <= 9) printf(" ");
-        printf("%d ", i);
+void InitMap(int *map, int mapSize){
+    for (int i = 0; i < mapSize*mapSize; i++) {
+        map[i] = 0;
     }
+}
+
+void EnableANSI() {
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD mode = 0;
+    GetConsoleMode(hOut, &mode);
+    mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hOut, mode);
+}
+
+//in this case mapSize can be unsigned since it cant be compared to minus 1 in while loop
+void PrintMap(int *map, int mapSize) {
+    EnableANSI();
+    const int total = mapSize * mapSize;
+    printf("Map size is: %d\n", mapSize);
+    int i = -1;
+    while (i < mapSize) {
+        if (i == -1 ) {
+            printf("   |");
+        }
+        else if (i <= 9){ printf(" %d ", i);}
+        else {
+            printf("%d ", i);
+        }
+        i++;
+    }
+
+    /*for (int i = -1; i < mapSize; i++) {
+
+    }*/
     printf("\n");
 
-
     for (int i = 0; i < total; i++) {
-        //new row:
-
         if (i % mapSize == 0) {
             if (i != 0) printf("\n");
             printf("%2d |", i / mapSize);
         }
 
-        //printsMap
-        char c;
+        const char *color = COLOR_RESET;
+        char c = '?';
+
         switch (map[i]) {
-            case NORMALROAD: c = '.'; break; // Road
-            case INTERSTATEROAD: c = 'H'; break; // Interstate
-            case INTERSTATESTOP: c = '1'; break; // InterstateTruckStop
-            case TYPE2STOP: c = '2'; break; // Type 2 stop
-            case TYPE3STOP: c = '3'; break; // Type 3 Stop
-            case BLOCKADE: c = '#'; break; // Blockade
-            //add more cases for rest stops and more
-            default: c = '?'; break; // unknown
+            case NORMALROAD: c = '.'; color = WHT; break;
+            case INTERSTATEROAD: c = 'H'; color = MAG; break;
+            case INTERSTATESTOP: c = '1'; color = BLU; break;
+            case TYPE2STOP: c = '2'; color = YEL; break;
+            case TYPE3STOP: c = '3'; color = GRN; break;
+            case BLOCKADE: c = '#'; color = RED; break;
+            default: c = '?'; color = WHT; break;
         }
-        //printf("%d ", map[i]);
-        printf(" %c ", c);
-        //if (i % mapSize >= 9) printf(" ");
+        printf("%s %c %s", color, c, WHT);
     }
     printf("\n");
 }
 
 
+void runMapGen(int *map, int mapSize, Stops *restStops)
+{
+    const int numBlockades = 80;
+    srand(time(NULL)); //used to gen a random seed using the time.h libary
 
-void GenRandomMap(int *map, const signed int mapSize) {
-    for (int i = 0; i < mapSize*mapSize; i++) {
-        int num = rand() % (0-6+1)+0;
-        num = 0;
-        map[i] = num;
-    }
-}
+    InitMap(map, mapSize); //inits the map and sets all values equal 0
 
+    GenBlockadeFunc(map,mapSize,numBlockades); //gen blockades for the map
+    GenClusterBlockadeFunc(map,mapSize,numBlockades/4,1); //gen cluster blockades for the map
 
-
-
-
-void runMapGen(void) {
-    const signed int mapSize = 30;
-    int map[mapSize*mapSize];
-    GenRandomMap(map,mapSize);
-    InterStateRoad interStateRoad;
-    interStateRoad.startX = 10, interStateRoad.startY = 0;
-    interStateRoad.endX = 25, interStateRoad.endY = 30;
-
-    SetInterStateRoad(map, mapSize, interStateRoad);
+    StopType stopTypesArray[3];
+    InitializeTypes(stopTypesArray);
+    GenInterStates(map, mapSize, restStops, stopTypesArray); //defines and setes the interstates
     printf("\n");
 
-    map[310] = 5;
+    map[XYToIdx(10, 10, mapSize)] = 5;
     int indexValue = CheckCoordinateSet(map, 10, 10, mapSize);
-    printf("%d\n", indexValue);
+    printf("map[%d]\n", indexValue);
 
-    PrintMap(map, mapSize);
+    InitializeStopsType(restStops, stopTypesArray);
+    InitializeStopsLocation(map, restStops);
+    GenStops(map, restStops);
 
-
-
-
-    //printf("\n map index = %d \n", map[155]);
+    //map[XYToIdx(29, 29, mapSize)] = 5;
+    //int indexValue = CheckCoordinateSet(map, 29, 29, mapSize); //this function needs fixing if index goes out of bounds
+    //printf("%d\n", indexValue);
 }

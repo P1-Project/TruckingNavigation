@@ -4,29 +4,15 @@
 
 #ifndef TRUCKINGNAVIGATION_GENSTOPSFUNC_H
 #define TRUCKINGNAVIGATION_GENSTOPSFUNC_H
-
-#define NUMBEROFSTOPS 10
-
-typedef struct {
-    int Type;
-    int Toilet;
-    int Fuel;
-    int Hotel;
-    int Food;
-    int Parking;
-} StopType ;
-
-typedef struct {
-    StopType Type;
-    unsigned int locationX;
-    unsigned int locationY;
-} Stops ;
+#include "DefineStruct.h"
+#include "DefineConst.h"
 
 void TestConGenStopsFunc();
 
 void InitializeTypes(StopType stopTypesArray[3]);
-void InitializeStops(int mapSize, Stops restStops[NUMBEROFSTOPS], StopType stopTypesArray[3]);
-int StopExists(int X, int Y, Stops restStops[NUMBEROFSTOPS], int stopsPlaced);
-void GenStops(int *map, unsigned int mapSize, Stops restStops[NUMBEROFSTOPS]);
+void InitializeStopsType(Stops restStops[], StopType stopTypesArray[3]);
+void InitializeStopsLocation(int *map, Stops restStops[]);
+int SpotOccupied(int *map, int X, int Y);
+void GenStops(int *map, Stops restStops[]);
 
 #endif //TRUCKINGNAVIGATION_GENSTOPSFUNC_H

@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-# define MAPSIZE 30
+//# define MAPSIZE 30
 
 typedef struct {
     int startX;

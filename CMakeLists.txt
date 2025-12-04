@@ -5,5 +5,10 @@ set(CMAKE_C_STANDARD 11)
 
 #add_executable(TruckingNavigation src/main.c)
 
+include(cmake/mtest.cmake)
+
 add_subdirectory(src)
-#add_subdirectory(test)
+
+#enables testing using mtest from
+enable_testing()
+add_subdirectory(test)

@@ -3,26 +3,14 @@
 //
 
 #include "CheckCoordinateSetFunc.h"
+#include  "DefineConst.h"
+#include  "ConverterFunc.h"
 
 #include <stdio.h>
-#define BLOCKADE 5
 
 void TestConCheckCoordinateSetFunc() {
     printf("Hello, World from CheckCoordinateSetFunc!\n");
 }
-
-int XYToIndex(int x, int y, int mapSize) {
-    return y * mapSize + x;
-}
-
-int IndexToX(int index, int mapSize) {
-    return index % mapSize;
-}
-
-int IndexToY(int index, int mapSize) {
-    return index / mapSize;
-}
-
 
 /**
  * Description: Validating a given destination (x,y) - changing to nearest index if index is a blockade
@@ -33,7 +21,7 @@ int IndexToY(int index, int mapSize) {
  * @return Updated index
  */
 int CheckCoordinateSet(int *map, int x, int y, int mapSize){
-    int index_i = XYToIndex(x, y, mapSize);
+    int index_i = XYToIdx(x, y, mapSize);
     if (map[index_i] != BLOCKADE)
         return index_i;
 
@@ -78,18 +66,3 @@ int CheckCoordinateSet(int *map, int x, int y, int mapSize){
 
 return -1;                                         // No space available
 }
-
-/*int main(void) {
-
-    int x, y, mapSize, i;
-    int map[] = {0, 5, 5, 5, 0, 5,
-                 5, 5, 5, 5, 5, 0,
-                 5, 5, 5, 5, 5, 0,
-                 5, 5, 5, 5, 5, 0,
-                 5, 5, 5, 5, 5, 0,
-                 5, 5, 5, 5, 5, 0,
-
-    };
-    int index = CheckCoordinateSet(map, 2, 1, 6);
-    printf("%d", index);
-}*/

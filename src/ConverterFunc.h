@@ -5,5 +5,6 @@
 #ifndef TRUCKINGNAVIGATION_CONVERTERFUNC_H
 #define TRUCKINGNAVIGATION_CONVERTERFUNC_H
 int XYToIdx(int x, int y, int mapSize);
-void IdxToCoords(int index, int mapSize, int *x, int *y);
+void IdxToCoords(int index, int mapSize, unsigned int *x, unsigned int *y);
+int randomBetween(int a, int b);
 #endif //TRUCKINGNAVIGATION_CONVERTERFUNC_H
