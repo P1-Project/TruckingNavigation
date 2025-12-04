@@ -8,6 +8,9 @@
 
 #include <stdio.h>
 
+#define OUTOFBOUNCE -1
+#define NOSPACEAVAILABLE -2
+
 void TestConCheckCoordinateSetFunc() {
     printf("Hello, World from CheckCoordinateSetFunc!\n");
 }
@@ -21,6 +24,12 @@ void TestConCheckCoordinateSetFunc() {
  * @return Updated index
  */
 int CheckCoordinateSet(int *map, int x, int y, int mapSize){
+
+    if (x < 0 || x >= mapSize || y < 0 || y >= mapSize) {
+        //printf("Destination out of bounce.");
+        return OUTOFBOUNCE;
+    };
+
     int index_i = XYToIdx(x, y, mapSize);
     if (map[index_i] != BLOCKADE)
         return index_i;
@@ -64,7 +73,8 @@ int CheckCoordinateSet(int *map, int x, int y, int mapSize){
         }
     }                                              // Maybe convert back to x,y?
 
-return -1;                                         // No space available
+//printf("No space available.");
+    return NOSPACEAVAILABLE;                                         // No space available
 }
 
 
@@ -168,6 +178,35 @@ int runTestIdx36() {
     return CheckCoordinateSet(Map, 4, 4, mapSize);
 }
 
+int runTestIdx70() {
+    int Map[] = {5,0,5,5,5,0,0,5,
+                 0,0,5,5,5,0,0,0,
+                 0,0,0,0,0,0,0,0,
+                 5,0,0,5,5,0,0,0,
+                 5,0,0,5,5,5,0,0,
+                 0,0,0,5,5,5,0,0,
+                 0,0,0,0,0,0,0,5,
+                 5,0,0,0,0,0,5,5};
+
+    int mapSize = 8;
+    return CheckCoordinateSet(Map, 6, 8, mapSize);
+}
+
+int runTestIdxNULL() {
+    int Map[] = {5,5,5,5,5,5,5,5,
+                 5,5,5,5,5,5,5,5,
+                 5,5,5,5,5,5,5,5,
+                 5,5,5,5,5,5,5,5,
+                 5,5,5,5,5,5,5,5,
+                 5,5,5,5,5,5,5,5,
+                 5,5,5,5,5,5,5,5,
+                 5,5,5,5,5,5,5,5,};
+
+    int mapSize = 8;
+    return CheckCoordinateSet(Map, 5, 5, mapSize);
+}
+
+
 void runAllTests() {
     printf("Index63: %d\n", runTestIdx63());
     printf("Index0: %d\n", runTestIdx0());
@@ -176,4 +215,6 @@ void runAllTests() {
     printf("Index56: %d\n", runTestIdx56());
     printf("Index24: %d\n", runTestIdx24());
     printf("Index36: %d\n", runTestIdx36());
-}
+    printf("Index70: %d\n", runTestIdx70());
+    printf("IndexNULL: %d\n", runTestIdxNULL());
+    }

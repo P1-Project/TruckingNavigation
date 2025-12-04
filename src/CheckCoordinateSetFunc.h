@@ -13,6 +13,8 @@ int runTestIdx24();
 int runTestIdx36();
 int runTestIdx7();
 int runTestIdx56();
+int runTestIdx70();
+int runTestIdxNULL();
 void runAllTests();
 
 #endif //TRUCKINGNAVIGATION_CHECKCOORDINATESETFUNC_H
