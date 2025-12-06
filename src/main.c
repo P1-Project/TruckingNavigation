@@ -45,8 +45,6 @@ int main(void) {
     //runMapGen()
     runMapGen(map, MAPSIZE, restStops);
 
-    GenStops(map, restStops);
-
     PrintMap(map, MAPSIZE);
     //getDestination();
 

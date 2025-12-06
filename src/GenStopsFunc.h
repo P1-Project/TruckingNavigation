@@ -13,6 +13,6 @@ void InitializeTypes(StopType stopTypesArray[3]);
 void InitializeStopsType(Stops restStops[], StopType stopTypesArray[3]);
 void InitializeStopsLocation(int *map, Stops restStops[]);
 int SpotOccupied(int *map, int X, int Y);
-void GenStops(int *map, Stops restStops[]);
+void GenStops(int *map, Stops restStops[], int i);
 
 #endif //TRUCKINGNAVIGATION_GENSTOPSFUNC_H

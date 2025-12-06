@@ -154,7 +154,9 @@ TEST_CASE(TestGenStops,
     }
 
     /* Act */
-    GenStops(map, restStops);
+    for (int i = 0; i < NUMBEROFSTOPS23; i++) {
+        GenStops(map, restStops, i);
+    }
 
     /* Assert */
     // Check that type 2 stops were written as 3
