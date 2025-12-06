@@ -5,6 +5,7 @@
 #include "ConverterFunc.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 
 /**
  *
@@ -34,6 +35,15 @@ int randomBetween(int a, int b) {
     return a + rand() % (b - a + 1);
 }
 
+/**
+ * This function looks for a specific neighbor in a clockwise square pattern around a chosen point. It starts at the top left of the square.
+ * @param map Pointer to the map you want to search in
+ * @param index Index of the point you want to search from
+ * @param mapSize Size of the map you're searching in
+ * @param neighbor The integer value of the neighbor. E.g. 5 for BLOCKADE
+ * @param maxRadius The max radius you want to search in. Choose mapsize here, if you want to search the entire map
+ * @return If no neighbor is found -1 is returned. Else, the index of the found neighbor is returned.
+ */
 int LookForNeighbor(const int* map, int index, int mapSize, int neighbor, int maxRadius) {
     int x, y;
     IdxToCoords(index, mapSize, &x, &y);
@@ -42,22 +52,24 @@ int LookForNeighbor(const int* map, int index, int mapSize, int neighbor, int ma
     for (int r = 1; r <= maxRadius; ++r) {
         for (int dx = -r; dx <= r; ++dx) {
             for (int dy = -r; dy <= r; ++dy) {
-                if (dx == 0 && dy == 0) continue; // skip the starting cell itself
-
-                // If the absolute value of x AND y are both under the current radius, we are inside of a square we have already checked.
-                if (abs(dx) < r && abs(dy) < r) continue;  // skip inner squares where we've already checked.
+                // Skip the starting cell itself
+                if (dx == 0 && dy == 0) continue;
 
                 int nx = x + dx;
                 int ny = y + dy;
 
-                if (nx >= 0 && nx < mapSize && ny >= 0 && ny < mapSize) { // check if the current spot is within the map
-                    int neighborIndex = XYToIdx(nx, ny, mapSize); // find its index
+                //printf("Checking (%d, %d)\n", nx, ny);
 
-                    // check if current cell matches the neighbor type we’re looking for
-                    if (map[neighborIndex] == neighbor) {
-                        // neighbor found, returning index
-                        return neighborIndex;
-                    }
+                if (nx < 0 || nx >= mapSize || ny < 0 || ny >= mapSize) continue; // check if the current spot is within the map
+                //printf("(%d, %d) is within bounds. Continuing\n", nx, ny);
+
+                int neighborIndex = XYToIdx(nx, ny, mapSize); // find its index
+
+                // check if current cell matches the neighbor type we’re looking for
+                if (map[neighborIndex] == neighbor) {
+                    //printf("Neighbor found at (%d, %d). Returning\n", nx, ny);
+                    // neighbor found, returning index
+                    return neighborIndex;
                 }
             }
         }

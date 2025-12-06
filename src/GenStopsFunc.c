@@ -72,9 +72,9 @@ void InitializeStopsLocation(int *map, Stops restStops[]) {
             }
 
             // If the chosen spot is occupied or there is another stop close by, try again.
-        } while (SpotOccupied(map, randomX, randomY) ||
-            LookForNeighbor(map, index, MAPSIZE, TYPE2STOP, 1) != -1 ||
-            LookForNeighbor(map, index, MAPSIZE, TYPE3STOP, 1) != -1);
+            } while (SpotOccupied(map, randomX, randomY) ||
+                LookForNeighbor(map, index, MAPSIZE, TYPE2STOP, 1) != -1 ||
+                LookForNeighbor(map, index, MAPSIZE, TYPE3STOP, 1) != -1);
         //printf("Successfully assigned rest stop at (%d, %d)\n", randomX, randomY);
 
         restStops[i].locationX = randomX; // Assign the given rest stop's x coordinate
@@ -109,6 +109,7 @@ void GenStops(int *map, Stops restStops[], int i) {
     //printf("Setting (%d, %d) to stop type %d\n", restStops[i].locationX, restStops[i].locationY, restStops[i].Type.Type);
     int index = XYToIdx(restStops[i].locationX, restStops[i].locationY, MAPSIZE); // Find the index of the given rest stop's coordinates
     map[index] = restStops[i].Type.Type; // Set the map value of that index to the rest stops type equivalent
+    //printf("Printing stop number %d\n", i);
 }
 
 /*

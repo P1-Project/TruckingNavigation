@@ -162,12 +162,12 @@ TEST_CASE(TestGenStops,
     // Check that type 2 stops were written as 3
     for (int i = 0; i < numberOfType2; i++) {
         int idx = restStops[i].locationY * MAPSIZE + restStops[i].locationX;
-        CHECK_TRUE(map[idx] == 3);
+        CHECK_TRUE(map[idx] == TYPE2STOP);
     }
 
     // Check that type 3 stops were written as 4
     for (int i = numberOfType2; i < NUMBEROFSTOPS23; i++) {
         int idx = restStops[i].locationY * MAPSIZE + restStops[i].locationX;
-        CHECK_TRUE(map[idx] == 4);
+        CHECK_TRUE(map[idx] == TYPE3STOP);
     }
 )
