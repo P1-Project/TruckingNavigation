@@ -35,6 +35,15 @@ int randomBetween(int a, int b) {
     return a + rand() % (b - a + 1);
 }
 
+/**
+ * This function looks for a specific neighbor in a clockwise square pattern around a chosen point. It starts at the top left of the square.
+ * @param map Pointer to the map you want to search in
+ * @param index Index of the point you want to search from
+ * @param mapSize Size of the map you're searching in
+ * @param neighbor The integer value of the neighbor. E.g. 5 for BLOCKADE
+ * @param maxRadius The max radius you want to search in. Choose mapsize here, if you want to search the entire map
+ * @return If no neighbor is found -1 is returned. Else, the index of the found neighbor is returned.
+ */
 int LookForNeighbor(const int* map, int index, int mapSize, int neighbor, int maxRadius) {
     int x, y;
     IdxToCoords(index, mapSize, &x, &y);
