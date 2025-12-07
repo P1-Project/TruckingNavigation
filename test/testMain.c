@@ -15,6 +15,18 @@ int testRandomBetween(void);
 int testLookForNeighbor1(void);
 int testLookForNeighbor2(void);
 
+//MAPGEN Test
+int TestInitMap(void);
+
+//GenBlockade Test
+int TestGenBlockade(void);
+
+//GenInterstate Test
+int TestDefineInterstateStraightEastWest(void);
+int TestDefineInterstateStraightNorthSouth(void);
+int TestDefineInterstateDiagonalNS(void);
+int TestDefineInterstateNSTwoTiles(void);
+
 TEST_CASE(TestConnection,
     /* Arrange */
     int i = 1;
@@ -30,12 +42,20 @@ TEST_CASE(TestConnection,
 MAIN_RUN_TESTS(
     TestConnection, TestConnectionGenStops,
     /* CheckCoordinateSetFunc tests */
-    /* ConverterFunc tests */ testXYToIdx, testIdxToCoords, testRandomBetween, testLookForNeighbor1, testLookForNeighbor2,
-    /* DijkstraAlgorithm tests */
+    /* ConverterFunc tests */
+    testXYToIdx, testIdxToCoords, testRandomBetween,
+    testLookForNeighbor1, testLookForNeighbor2,
+
     /* GenBlockade tests */
+    TestGenBlockade,
     /* GenInterstateFunc tests */
-    /* GenStopsFunc tests */ TestInitializeTypes, TestInitializeStopsType, TestInitializeStopsLocation, TestSpotOccupied, TestGenStops
+    TestDefineInterstateStraightEastWest, TestDefineInterstateStraightNorthSouth,
+    TestDefineInterstateDiagonalNS, TestDefineInterstateNSTwoTiles,
+    /* GenStopsFunc tests */
+    TestInitializeTypes, TestInitializeStopsType,
+    TestInitializeStopsLocation, TestSpotOccupied, TestGenStops,
     /* GetDestinationFunc tests */
     /* MapGenFunc tests */
+    TestInitMap
     /* pathFinding tests */
     )
