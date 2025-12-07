@@ -96,9 +96,10 @@ void runMapGen(int *map, int mapSize, Stops *restStops)
     srand(time(NULL)); //used to gen a random seed using the time.h libary
 
     InitMap(map, mapSize); //inits the map and sets all values equal 0
-
-    GenBlockadeFunc(map,mapSize,numBlockades); //gen blockades for the map
+    //Gen Blockaed can be swaped around depending on what needs to be generated first,
+    //clusters before normal equals more blockades
     GenClusterBlockadeFunc(map,mapSize,numBlockades/4,1); //gen cluster blockades for the map
+    GenBlockadeFunc(map,mapSize,numBlockades); //gen blockades for the map
 
     StopType stopTypesArray[3];
     InitializeTypes(stopTypesArray);

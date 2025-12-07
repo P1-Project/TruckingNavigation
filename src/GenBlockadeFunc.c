@@ -20,6 +20,10 @@ void GenBlockadeFunc(int *map, const int mapSize, const int numBlockades) {
         const int row = rand() % mapSize;
         const int col = rand() % mapSize;
         const int idx = XYToIdx(row, col, mapSize);
+        if (map[idx] == BLOCKADE) {
+            i--;
+            continue;
+        }
         map[idx] = BLOCKADE; // 5 = blockade
     }
 }
