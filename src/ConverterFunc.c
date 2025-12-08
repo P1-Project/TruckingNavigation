@@ -36,13 +36,14 @@ int randomBetween(int a, int b) {
 }
 
 /**
- * This function looks for a specific neighbor in a clockwise square pattern around a chosen point. It starts at the top left of the square.
+ * This function searches for a specific neighbor, in a square one column at a time, around a chosen point.
+ * It starts at the top left of the square.
  * @param map Pointer to the map you want to search in
  * @param index Index of the point you want to search from
  * @param mapSize Size of the map you're searching in
  * @param neighbor The integer value of the neighbor. E.g. 5 for BLOCKADE
  * @param maxRadius The max radius you want to search in. Choose mapsize here, if you want to search the entire map
- * @return If no neighbor is found -1 is returned. Else, the index of the found neighbor is returned.
+ * @return If no neighbor is found -1 is returned. Else, the index of the first found neighbor is returned.
  */
 int LookForNeighbor(const int* map, int index, int mapSize, int neighbor, int maxRadius) {
     int x, y;
@@ -52,15 +53,15 @@ int LookForNeighbor(const int* map, int index, int mapSize, int neighbor, int ma
     for (int r = 1; r <= maxRadius; ++r) {
         for (int dx = -r; dx <= r; ++dx) {
             for (int dy = -r; dy <= r; ++dy) {
-                // Skip the starting cell itself
-                if (dx == 0 && dy == 0) continue;
+                // Skip the cells which are within the search radius 'ring'
+                if (abs(dx) != r && abs(dy) != r) continue;
 
                 int nx = x + dx;
                 int ny = y + dy;
 
                 //printf("Checking (%d, %d)\n", nx, ny);
 
-                if (nx < 0 || nx >= mapSize || ny < 0 || ny >= mapSize) continue; // check if the current spot is within the map
+                if (nx < 0 || nx >= mapSize || ny < 0 || ny >= mapSize) continue; // Skip ahead if the current cell is out of bounds
                 //printf("(%d, %d) is within bounds. Continuing\n", nx, ny);
 
                 int neighborIndex = XYToIdx(nx, ny, mapSize); // find its index
