@@ -98,7 +98,7 @@ void runMapGen(int *map, int mapSize, Stops *restStops)
     InitMap(map, mapSize); //inits the map and sets all values equal 0
     //Gen Blockaed can be swaped around depending on what needs to be generated first,
     //clusters before normal equals more blockades
-    GenClusterBlockadeFunc(map,mapSize,numBlockades/4,1); //gen cluster blockades for the map
+    GenClusterBlockadeFunc(map,mapSize,numBlockades/5,1); //gen cluster blockades for the map
     GenBlockadeFunc(map,mapSize,numBlockades); //gen blockades for the map
 
     StopType stopTypesArray[3];
