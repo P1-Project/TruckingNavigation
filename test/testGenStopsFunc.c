@@ -135,7 +135,6 @@ TEST_CASE(TestGenStops,
     /* Arrange */
     int map[MAPSIZE*MAPSIZE] = {0};
     Stops restStops[4];
-    int numberOfType2 = 4/2;
 
     // Assign some type 2's
     restStops[0].Type.Type = TYPE2STOP;
