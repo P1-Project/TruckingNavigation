@@ -8,7 +8,6 @@ add_library(GenInterstateFunc     GenInterstateFunc.c)
 add_library(GetDestinationFunc    GetDestinationFunc.c)
 add_library(GenStopsFunc          GenStopsFunc.c)
 add_library(CheckCoordinateSetFunc CheckCoordinateSetFunc.c)
-#add_library(DijkstraAlgorithm     DijkstraAlgorithm.c)
 
 
 # --- Include directories (all libraries use the same include dir) ---
@@ -22,7 +21,6 @@ target_include_directories(GenInterstateFunc     PUBLIC ${PROJECT_INCLUDES})
 target_include_directories(GetDestinationFunc    PUBLIC ${PROJECT_INCLUDES})
 target_include_directories(GenStopsFunc          PUBLIC ${PROJECT_INCLUDES})
 target_include_directories(CheckCoordinateSetFunc PUBLIC ${PROJECT_INCLUDES})
-#target_include_directories(DijkstraAlgorithm     PUBLIC ${PROJECT_INCLUDES})
 
 
 

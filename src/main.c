@@ -10,7 +10,6 @@
 #include "GenStopsFunc.h"
 #include "DefineConst.h"
 #include "DefineStruct.h"
-#include "CheckCoordinateSetFunc.h"
 
 
 
@@ -42,10 +41,8 @@ int main(void) {
     int map[MAPSIZE*MAPSIZE];
     Stops restStops[NUMBEROFSTOPS];
 
-
     //runMapGen()
     runMapGen(map, MAPSIZE, restStops);
-
 
     PrintMap(map, MAPSIZE);
     //getDestination();

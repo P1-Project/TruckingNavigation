@@ -3,7 +3,6 @@ add_executable(testTruckingNavigation
         testMain.c
         testCheckCoordinateSetFunc.c
         testConverterFunc.c
-        testDijkstraAlgorithm.c
         testGenBlockadeFunc.c
         testGenInterstateFunc.c
         testGenStopsFunc.c
@@ -25,7 +24,6 @@ target_include_directories(testTruckingNavigation PRIVATE
 add_library(trucking_src
         ../src/CheckCoordinateSetFunc.c
         ../src/ConverterFunc.c
-        ../src/DijkstraAlgorithm.c
         ../src/GenBlockadeFunc.c
         ../src/GenInterstateFunc.c
         ../src/GenStopsFunc.c
