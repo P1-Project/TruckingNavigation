@@ -8,12 +8,14 @@
 
 #include <stdio.h>
 
-#define OUTOFBOUNCE -1
-#define NOSPACEAVAILABLE -2
+#define OUTOFBOUNCE (-1)
+#define NOSPACEAVAILABLE (-2)
+
 
 void TestConCheckCoordinateSetFunc() {
     printf("Hello, World from CheckCoordinateSetFunc!\n");
 }
+
 
 /**
  * Description: Validating a given destination (x,y) - changing to nearest index if index is a blockade
@@ -77,7 +79,7 @@ int CheckCoordinateSet(int *map, int x, int y, int mapSize){
     return NOSPACEAVAILABLE;                                         // No space available
 }
 
-
+/*
 
 int runTestIdx63() {
     int Map[] = {5,0,5,5,5,0,0,5,
@@ -200,7 +202,7 @@ int runTestIdxNULL() {
                  5,5,5,5,5,5,5,5,
                  5,5,5,5,5,5,5,5,
                  5,5,5,5,5,5,5,5,
-                 5,5,5,5,5,5,5,5,};
+                 5,5,5,5,5,5,5,5};
 
     int mapSize = 8;
     return CheckCoordinateSet(Map, 5, 5, mapSize);
@@ -218,3 +220,4 @@ void runAllTests() {
     printf("Index70: %d\n", runTestIdx70());
     printf("IndexNULL: %d\n", runTestIdxNULL());
     }
+*/

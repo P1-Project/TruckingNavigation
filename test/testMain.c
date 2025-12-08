@@ -27,6 +27,18 @@ int TestDefineInterstateStraightNorthSouth(void);
 int TestDefineInterstateDiagonalNS(void);
 int TestDefineInterstateNSTwoTiles(void);
 
+//CheckCoordinateSet Test
+int Idx63(void);
+int Idx0(void);
+int Idx7(void);
+int Idx3(void);
+int Idx56(void);
+int Idx24(void);
+int Idx36(void);
+int Idx70(void);
+int IdxNOSPACE(void);
+
+
 TEST_CASE(TestConnection,
     /* Arrange */
     int i = 1;
@@ -39,13 +51,14 @@ TEST_CASE(TestConnection,
     CHECK_EQ_INT(k,2);
 )
 
+
 MAIN_RUN_TESTS(
     TestConnection, TestConnectionGenStops,
     /* CheckCoordinateSetFunc tests */
+    //Idx63, Idx0, Idx3, Idx7, Idx56, Idx24, Idx36, Idx70, IdxNOSPACE,
     /* ConverterFunc tests */
     testXYToIdx, testIdxToCoords, testRandomBetween,
     testLookForNeighbor1, testLookForNeighbor2,
-
     /* GenBlockade tests */
     TestGenBlockade,
     /* GenInterstateFunc tests */
@@ -59,3 +72,4 @@ MAIN_RUN_TESTS(
     TestInitMap
     /* pathFinding tests */
     )
+
