@@ -50,8 +50,8 @@ void GetDestination (Destination *destination, int acceptInput, int mapSize){
 
 
 // What has to go in the main file
-/*
-int main() {
+
+void runDestination() {
     int choice;
 
 // Initialize random
@@ -68,9 +68,9 @@ int main() {
     printf("Start Point: (%d, %d)\n", destination.startX, destination.startY);
     printf("End Point: (%d, %d)\n", destination.endX, destination.endY);
 
-return 0;
 
-}*/
+
+}
 
 
 void TestConGetDestinationFunc() {
