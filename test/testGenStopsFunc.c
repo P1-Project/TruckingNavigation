@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include "mtest.h"
 #include "../src/GenStopsFunc.h"
-#include "../src/ConverterFunc.h"
 
 TEST_CASE(TestConnectionGenStops,
     /* Arrange */
@@ -117,10 +116,11 @@ TEST_CASE(TestSpotOccupied,
     /* Arrange */
     int miniMap[4] = {NORMALROAD,NORMALROAD,NORMALROAD,NORMALROAD};
     miniMap[2] = BLOCKADE;
-    unsigned int x1, y1;
-    unsigned int x2, y2;
-    IdxToCoords(2, 4, &x1, &y1);
-    IdxToCoords(1, 4, &x2, &y2);
+
+    unsigned int x1 = 2 % 4;
+    unsigned int y1 = 2 / 4;
+    unsigned int x2 = 1 % 4;
+    unsigned int y2 = 1 / 4;
 
     /* Act */
     int result1 = SpotOccupied(miniMap, x1, y1);
@@ -154,18 +154,20 @@ TEST_CASE(TestGenStops,
     }
 
     /* Act */
-    GenStops(map, restStops);
+    for (int i = 0; i < NUMBEROFSTOPS23; i++) {
+        GenStops(map, restStops, i);
+    }
 
     /* Assert */
     // Check that type 2 stops were written as 3
     for (int i = 0; i < numberOfType2; i++) {
         int idx = restStops[i].locationY * MAPSIZE + restStops[i].locationX;
-        CHECK_TRUE(map[idx] == 3);
+        CHECK_TRUE(map[idx] == TYPE2STOP);
     }
 
     // Check that type 3 stops were written as 4
     for (int i = numberOfType2; i < NUMBEROFSTOPS23; i++) {
         int idx = restStops[i].locationY * MAPSIZE + restStops[i].locationX;
-        CHECK_TRUE(map[idx] == 4);
+        CHECK_TRUE(map[idx] == TYPE3STOP);
     }
 )

@@ -1,7 +1,20 @@
 # Define the test executable
 add_executable(testTruckingNavigation
         testMain.c
+        testCheckCoordinateSetFunc.c
+        testConverterFunc.c
+        testGenBlockadeFunc.c
+        testGenInterstateFunc.c
         testGenStopsFunc.c
+        testGetDestinationFunc.c
+        testMapGenFunc.c
+        testpathFinding.c
+)
+
+# Give testTruckingNavigation access to local headers and src headers
+target_include_directories(testTruckingNavigation PRIVATE
+        ${CMAKE_SOURCE_DIR}/include
+        ${CMAKE_SOURCE_DIR}/src
 )
 
 # Husk adgang til de forskellige funktioner som der testet
@@ -9,8 +22,14 @@ add_executable(testTruckingNavigation
 
 # Library for main code
 add_library(trucking_src
+        ../src/CheckCoordinateSetFunc.c
         ../src/ConverterFunc.c
+        ../src/GenBlockadeFunc.c
+        ../src/GenInterstateFunc.c
         ../src/GenStopsFunc.c
+        ../src/GetDestinationFunc.c
+        ../src/MapGenFunc.c
+        ../src/pathFinding.c
 )
 
 # Include directories for trucking_src headers

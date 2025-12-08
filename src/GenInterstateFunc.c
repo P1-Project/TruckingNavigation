@@ -88,7 +88,7 @@ int *DefineInterstatePath(int *map, int mapSize, InterStateRoad interStateRoad, 
         }
     }
     else { //North To South
-        D = 2 * absDy - absDx;
+        D = 2 * absDx - absDy;
         for (int i = 0; i <= absDy; i++) {
             tempIndex = XYToIdx(x, y, mapSize);
             map[tempIndex] = INTERSTATEROAD; //sets mapIdx as highway
@@ -126,7 +126,7 @@ void SetInterstateRestStops(int *map, int mapSize,
     StopType stopTypesArray[3],
     int *stopCounter
     ){
-    if (!path || !restStops || !stopTypesArray || !stopCounter) {return;}
+    if (!path || !restStops || !stopTypesArray || !stopCounter) {exit(GENSTOPERROR);}
     int counter = *stopCounter;
 
     //add interstate rest stops matching length of the path
@@ -173,7 +173,7 @@ void SetInterStateRoad(int *map, int mapSize,
     //defines Interstate,
     int pathLength;
     int *path = DefineInterstatePath(map, mapSize, interStateRoad, &pathLength);
-    int frequencyOfStops = 1;
+    int frequencyOfStops = 2;
     SetInterstateRestStops(map, MAPSIZE, frequencyOfStops, path, pathLength,
         restStops, stopTypesArray, stopCounter);
 
@@ -183,7 +183,9 @@ void SetInterStateRoad(int *map, int mapSize,
 
 
 void GenInterStates(int *map, const int mapSize, Stops *restStops, StopType stopTypesArray[3]) {
-    srand(time(NULL));
+
+    if (!map || !restStops || !stopTypesArray) {exit(GENSTOPERROR);}
+
 
     InterStateRoad interStateRoad1;
     InterStateRoad interStateRoad2;

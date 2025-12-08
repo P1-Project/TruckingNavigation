@@ -4,7 +4,7 @@
 
 #include "MapGenFunc.h"
 #include "GenInterstateFunc.h"
-#include "CheckCoordinateSetFunc.c"
+#include "CheckCoordinateSetFunc.h"
 #include "GenStopsFunc.h"
 #include "ConverterFunc.h"
 #include "AnsiColorCodes.h"
@@ -16,7 +16,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#ifdef _WIN32
 #include <windows.h>
+#endif
 
 
 
@@ -31,12 +33,16 @@ void InitMap(int *map, int mapSize){
 }
 
 void EnableANSI() {
-    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-    DWORD mode = 0;
-    GetConsoleMode(hOut, &mode);
-    mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-    SetConsoleMode(hOut, mode);
-}
+#ifdef _WIN32
+        HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+        DWORD mode = 0;
+        GetConsoleMode(hOut, &mode);
+        mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+        SetConsoleMode(hOut, mode);
+#else
+        // macOS and Linux already support ANSI natively
+#endif
+    }
 
 //in this case mapSize can be unsigned since it cant be compared to minus 1 in while loop
 void PrintMap(int *map, int mapSize) {
@@ -90,22 +96,20 @@ void runMapGen(int *map, int mapSize, Stops *restStops)
     srand(time(NULL)); //used to gen a random seed using the time.h libary
 
     InitMap(map, mapSize); //inits the map and sets all values equal 0
-
+    //Gen Blockaed can be swaped around depending on what needs to be generated first,
+    //clusters before normal equals more blockades
+    GenClusterBlockadeFunc(map,mapSize,numBlockades/5,1); //gen cluster blockades for the map
     GenBlockadeFunc(map,mapSize,numBlockades); //gen blockades for the map
-    GenClusterBlockadeFunc(map,mapSize,numBlockades/4,1); //gen cluster blockades for the map
 
     StopType stopTypesArray[3];
     InitializeTypes(stopTypesArray);
     GenInterStates(map, mapSize, restStops, stopTypesArray); //defines and setes the interstates
-    printf("\n");
 
-    map[XYToIdx(10, 10, mapSize)] = 5;
-    int indexValue = CheckCoordinateSet(map, 10, 10, mapSize);
-    printf("map[%d]\n", indexValue);
+
+    //int indexValue = CheckCoordinateSet(map, 10, 10, mapSize);
 
     InitializeStopsType(restStops, stopTypesArray);
     InitializeStopsLocation(map, restStops);
-    GenStops(map, restStops);
 
     //map[XYToIdx(29, 29, mapSize)] = 5;
     //int indexValue = CheckCoordinateSet(map, 29, 29, mapSize); //this function needs fixing if index goes out of bounds

@@ -16,7 +16,7 @@ typedef struct {
 
 typedef struct {
     StopType Type;
-    unsigned int locationX, locationY;
+    int locationX, locationY;
 } Stops ;
 
 typedef struct {
