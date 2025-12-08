@@ -4,7 +4,7 @@
 
 #include "MapGenFunc.h"
 #include "GenInterstateFunc.h"
-#include "CheckCoordinateSetFunc.c"
+#include "CheckCoordinateSetFunc.h"
 #include "GenStopsFunc.h"
 #include "ConverterFunc.h"
 #include "AnsiColorCodes.h"

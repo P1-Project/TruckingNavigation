@@ -55,7 +55,7 @@ TEST_CASE(TestConnection,
 MAIN_RUN_TESTS(
     TestConnection, TestConnectionGenStops,
     /* CheckCoordinateSetFunc tests */
-    //Idx63, Idx0, Idx3, Idx7, Idx56, Idx24, Idx36, Idx70, IdxNOSPACE,
+    Idx63, Idx0, Idx3, Idx7, Idx56, Idx24, Idx36, Idx70, IdxNOSPACE,
     /* ConverterFunc tests */
     testXYToIdx, testIdxToCoords, testRandomBetween,
     testLookForNeighbor1, testLookForNeighbor2,
