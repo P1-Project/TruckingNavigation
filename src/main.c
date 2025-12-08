@@ -10,7 +10,6 @@
 #include "GenStopsFunc.h"
 #include "DefineConst.h"
 #include "DefineStruct.h"
-#include "CheckCoordinateSetFunc.h"
 
 
 
