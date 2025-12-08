@@ -80,7 +80,7 @@ void InitializeStopsLocation(int *map, Stops restStops[]) {
         restStops[i].locationX = randomX; // Assign the given rest stop's x coordinate
         restStops[i].locationY = randomY; // Assign the given rest stop's x coordinate
 
-        GenStops(map, restStops, i);
+        GenStop(map, restStops, i);
     }
 }
 
@@ -105,7 +105,7 @@ int SpotOccupied(int *map, int X, int Y) {
  * @param map Pointer to the map array
  * @param restStops An array of all the existing restStops
  */
-void GenStops(int *map, Stops restStops[], int i) {
+void GenStop(int *map, Stops restStops[], int i) {
     //printf("Setting (%d, %d) to stop type %d\n", restStops[i].locationX, restStops[i].locationY, restStops[i].Type.Type);
     int index = XYToIdx(restStops[i].locationX, restStops[i].locationY, MAPSIZE); // Find the index of the given rest stop's coordinates
     map[index] = restStops[i].Type.Type; // Set the map value of that index to the rest stops type equivalent

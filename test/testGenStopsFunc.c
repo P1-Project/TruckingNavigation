@@ -155,7 +155,7 @@ TEST_CASE(TestGenStops,
 
     /* Act */
     for (int i = 0; i < NUMBEROFSTOPS23; i++) {
-        GenStops(map, restStops, i);
+        GenStop(map, restStops, i);
     }
 
     /* Assert */
