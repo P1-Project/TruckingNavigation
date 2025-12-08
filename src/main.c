@@ -2,6 +2,7 @@
 
 #include "AStarPathFinding.h"
 #include "CheckCoordinateSetFunc.h"
+#include "ConverterFunc.h"
 #include "pathFinding.h"
 #include "MapGenFunc.h"
 #include "GenStopsFunc.h"
@@ -55,6 +56,24 @@ int main(void) {
     //Check destination and start Coordinates
 
     //Navigate to destination
+
+    int pathLength = 0;
+    int startIdx = XYToIdx(0, 0, MAPSIZE);
+    int goalIdx = XYToIdx(29, 29, MAPSIZE);
+    int *path = runAstarPathFinding(map, MAPSIZE, startIdx, goalIdx, &pathLength);
+
+    if (path) {
+        for (int i = 0; i < pathLength; i++) {
+            printf("%d ", path[i]);
+            map[path[i]] = ROUTE;
+        }
+        free(path);
+    }
+    else {
+        printf("No path found\n");
+    }
+
+    PrintMap(map, MAPSIZE);
 
 
     //runDestination();

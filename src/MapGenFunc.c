@@ -82,6 +82,7 @@ void PrintMap(int *map, int mapSize) {
             case TYPE2STOP: c = '2'; color = YEL; break;
             case TYPE3STOP: c = '3'; color = GRN; break;
             case BLOCKADE: c = '#'; color = RED; break;
+            case ROUTE: c = 'X'; color = CYN; break;
             default: c = '?'; color = WHT; break;
         }
         printf("%s %c %s", color, c, WHT);
