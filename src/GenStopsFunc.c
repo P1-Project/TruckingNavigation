@@ -66,8 +66,8 @@ void InitializeStopsLocation(int *map, Stops restStops[]) {
             index = XYToIdx(randomX, randomY, MAPSIZE);
             //printf("Trying to assign rest stop at (%d, %d)\n", randomX, randomY);
             attempts++;
-            if(attempts > 1000) {
-                printf("Could not place stop after 1000 attempts! Map value at (0,0)=%d\n", map[0]);
+            if(attempts > (MAPSIZE*MAPSIZE)) {
+                printf("Could not place stop after %d attempts!\n", (MAPSIZE*MAPSIZE));
                 break;
             }
 
@@ -92,8 +92,6 @@ void InitializeStopsLocation(int *map, Stops restStops[]) {
  * @return 1 if the stop is occupied, 0 if not
  */
 int SpotOccupied(int *map, int X, int Y) {
-    // Check surrounding spots
-
     if (map[XYToIdx(X, Y, MAPSIZE)] == NORMALROAD) { // Check what type of road the given index is on the map
         return 0; // If it is a normal road, return false
     }

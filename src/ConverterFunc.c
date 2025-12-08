@@ -31,7 +31,7 @@ void IdxToCoords(int index, int mapSize, int *x, int *y) {
     *y = index / mapSize;
 }
 
-int randomBetween(int a, int b) {
+int RandomBetween(int a, int b) {
     return a + rand() % (b - a + 1);
 }
 
