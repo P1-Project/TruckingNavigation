@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+#include "AStarPathFinding.h"
 #include "CheckCoordinateSetFunc.h"
 #include "pathFinding.h"
 #include "MapGenFunc.h"
@@ -37,6 +38,7 @@ int main(void) {
 
     //TestPathfindingConcetion();
     TestMapGenConnection();
+    TestAstarPathFindingConnection();
 
     int map[MAPSIZE*MAPSIZE];
     Stops restStops[NUMBEROFSTOPS];
