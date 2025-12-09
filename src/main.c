@@ -63,6 +63,7 @@ int main(void) {
 
     // Find optimal route between start and end points
     int *path = runAstarPathFinding(map, MAPSIZE, startIdx, goalIdx, &pathLength);
+    int *resultPath = malloc(sizeof(int)*MAPSIZE*MAPSIZE);
     printf("\n");
     if (path) {
         for (int i = 0; i < pathLength; i++) {
@@ -99,12 +100,51 @@ int main(void) {
             exit(-1);
         }
     }
-    int *newPath = malloc(sizeof(int) * MAPSIZE);
+
+    //Reroute for first rest stop
     int newPathLength = 0;
+    int *newPath = runAstarPathFinding(map, MAPSIZE, startIdx, idx[0], &newPathLength);
+    for (int i = 0; i < newPathLength; i++) {
+        printf("%d ", newPath[i]);
+        resultPath[i] = newPath[i];
+        resultPathLength++;
+    }
+    //Calculate route from last point in newPath to goal and divide it again:
+    newPath = runAstarPathFinding(map, MAPSIZE, resultPath[resultPathLength],goalIdx, &newPathLength);
+
+    DivideRoute(map, newPath, newPathLength, searchPointsType3, &numSearchPointsType3,340);
+
+
+    for (int i = 0; i < numSearchPointsType3; i++) {
+        idx[i] = LookForNeighbor(map, searchPointsType3[i], MAPSIZE, TYPE3STOP,5);
+        printf("index : %d\n",idx[i]);
+        int x,y;
+        IdxToCoords(idx[i], MAPSIZE, &x, &y);
+
+        printf("Coordinatess are : %d %d\n", x, y);
+        if (idx[i] == -1) {
+            printf("Failure");
+            exit(-1);
+        }
+    }
+
+
+    for (int i = 0; i < newPathLength; i++) {
+        printf("%d ", newPath[i]);
+        resultPath[i] = newPath[i];
+        resultPathLength++;
+    }
+
+
+
+
+
+
+    /*
     int *resultPath = malloc(sizeof(int) * MAPSIZE * MAPSIZE);
-    newPath = runAstarPathFinding(map, MAPSIZE, startIdx, idx[0], &newPathLength);
     for (int j = 0; j < newPathLength; j++) {
-        *resultPath = newPath[j];
+        *resultPath = *newPath;
+        newPath++;
         resultPath++;
     }
     resultPathLength +=newPathLength;
@@ -113,8 +153,12 @@ int main(void) {
     for (int i = 0; i < resultPathLength; i++) {
         printf("%d ", resultPath[i]);
     }
+    */
 
-
+    printf("\nResult Path :\n");
+    for (int i = 0; i <resultPathLength; i++) {
+        printf("%d ", resultPath[i]);
+    }
 
 
     // Find optimal route between found stops of type 3
@@ -134,11 +178,9 @@ int main(void) {
 
 
 
-    /*
+
     free(newPath);
     free(resultPath);
-    */
-
     free(path);
     return 0;
 }
