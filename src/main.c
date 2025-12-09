@@ -68,16 +68,12 @@ int main(void) {
             //map[path[i]] = ROUTE;
         }
         printf("\nPath length : %d\n", pathLength);
-        free(path);
+        PrintMapWPath(map, MAPSIZE, path, pathLength);
     }
     else {
         printf("No path found\n");
+        PrintMap(map, MAPSIZE);
     }
-
-    PrintMap(map, MAPSIZE, path);
-
-
-    //runDestination();
-
+    free(path);
     return 0;
 }

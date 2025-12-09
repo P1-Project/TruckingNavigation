@@ -3,6 +3,9 @@
 //
 
 #include "MapGenFunc.h"
+
+#include <stdbool.h>
+
 #include "GenInterstateFunc.h"
 #include "CheckCoordinateSetFunc.h"
 #include "GenStopsFunc.h"
@@ -45,25 +48,21 @@ void EnableANSI() {
     }
 
 //in this case mapSize can be unsigned since it cant be compared to minus 1 in while loop
-void PrintMap(int *map, int mapSize, int *path) {
+void PrintMap(int *map, int mapSize) {
     EnableANSI();
     const int total = mapSize * mapSize;
     printf("Map size is: %d\n", mapSize);
-    int i = -1;
-    while (i < mapSize) {
-        if (i == -1 ) {
+    int j = -1;
+    while (j < mapSize) {
+        if (j == -1 ) {
             printf("   |");
         }
-        else if (i <= 9){ printf(" %d ", i);}
+        else if (j <= 9){ printf(" %d ", j);}
         else {
-            printf("%d ", i);
+            printf("%d ", j);
         }
-        i++;
+        j++;
     }
-
-    /*for (int i = -1; i < mapSize; i++) {
-
-    }*/
     printf("\n");
 
     for (int i = 0; i < total; i++) {
@@ -74,52 +73,71 @@ void PrintMap(int *map, int mapSize, int *path) {
 
         const char *color = COLOR_RESET;
         char c = '?';
-        const char *bgcolor = RESET;
-
         switch (map[i]) {
-            case NORMALROAD: {
-                c = '.';
-                color = WHT;
-                if (i == path[i]) {
-                    bgcolor = CYNHB;
-                }
-                break;
+                case NORMALROAD: c = '.'; color = WHT; break;
+                case INTERSTATEROAD: c = 'H'; color = MAG; break;
+                case INTERSTATESTOP: c = '1'; color = BLU; break;
+                case TYPE2STOP: c = '2'; color = YEL; break;
+                case TYPE3STOP: c = '3'; color = GRN; break;
+                case BLOCKADE: c = '#'; color = RED; break;
+                case ROUTE: c = 'X'; color = CYN; break;
+                default: c = '?'; color = WHT; break;
             }
-            case INTERSTATEROAD: {
-                c = 'H';
-                color = MAG;
-                if (i == path[i]) {
-                    bgcolor = CYNHB;
-                }
-                break;
-            }
-            case INTERSTATESTOP: {
-                c = '1';
-                color = BLU;
-                if (i == path[i]) {
-                    bgcolor = CYNHB;
-                }
-                break;
-            }
-            case TYPE2STOP: {
-                c = '2';
-                color = YEL;
-                if (i == path[i]) {
-                    bgcolor = CYNHB;
-                }
-                break;
-            }
-            case TYPE3STOP: {
-                c = '3';
-                color = GRN;
-                if (i == path[i]) {
-                    bgcolor = CYNHB;
-                }
-                break;}
-            case BLOCKADE: c = '#'; color = RED; break;
-            case ROUTE: c = 'X'; color = CYN; break;
-            default: c = '?'; color = WHT; break;
+        //}
+        printf("%s %c %s", color, c, WHT);
+    }
+    printf("\n");
+}
+bool isOnPath(int i, int *path, int pathLength) {
+    for (int p = 0; p < pathLength; p++) {
+        if (path[p] == i) return true;
+    }
+    return false;
+}
+
+
+
+void PrintMapWPath(int *map, int mapSize, int *path, int pathLength) {
+    EnableANSI();
+    const int total = mapSize * mapSize;
+    printf("Map size is: %d\n", mapSize);
+    int j = -1;
+    while (j < mapSize) {
+        if (j == -1 ) {
+            printf("   |");
         }
+        else if (j <= 9){ printf(" %d ", j);}
+        else {
+            printf("%d ", j);
+        }
+        j++;
+    }
+    printf("\n");
+
+    for (int i = 0; i < total; i++) {
+        if (i % mapSize == 0) {
+            if (i != 0) printf("\n");
+            printf("%2d |", i / mapSize);
+        }
+
+        const char *color = COLOR_RESET;
+        char c = '?';
+        if (path) {
+            switch (map[i]) {
+                case NORMALROAD: c = '.'; color = WHT; break;
+                case INTERSTATEROAD: c = 'H'; color = MAG; break;
+                case INTERSTATESTOP: c = '1'; color = BLU; break;
+                case TYPE2STOP: c = '2'; color = YEL; break;
+                case TYPE3STOP: c = '3'; color = GRN; break;
+                case BLOCKADE: c = '#'; color = RED; break;
+                case ROUTE: c = 'X'; color = CYN; break;
+                default: c = '?'; color = WHT; break;
+            }
+        }
+        if (isOnPath(i, path, pathLength)) {
+            color = CYNHB;
+        }
+
         printf("%s %c %s", color, c, WHT);
     }
     printf("\n");
