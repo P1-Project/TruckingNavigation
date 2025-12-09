@@ -74,7 +74,7 @@ void InitializeStopsLocation(int *map, Stops restStops[]) {
             // If the chosen spot is occupied or there is another stop close by, try again.
             } while (SpotOccupied(map, randomX, randomY) ||
                 LookForNeighbor(map, index, MAPSIZE, TYPE2STOP, 1) != -1 ||
-                LookForNeighbor(map, index, MAPSIZE, TYPE3STOP, 1) != -1);
+                LookForNeighbor(map, index, MAPSIZE, TYPE3STOP, 3) != -1);
         //printf("Successfully assigned rest stop at (%d, %d)\n", randomX, randomY);
 
         restStops[i].locationX = randomX; // Assign the given rest stop's x coordinate
