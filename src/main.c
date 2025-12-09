@@ -107,12 +107,12 @@ int main(void) {
         int *path = runAstarPathFinding(map, MAPSIZE, current, goalIdx, &pathLength);
         if (!path || pathLength <= 1) break;
 
-        // 1. Divide path into sections (this fills searchPointsType3)
+        //Divide path into sections (this fills searchPointsType3)
         numSearchPointsType3 = 0;
         DivideRoute(map, path, pathLength,
                     searchPointsType3,
                     &numSearchPointsType3,
-                    340);   // Time spendt drining aka section size = 13 tiles before first reststop
+                    340);   // Time spent driving aka section size = 13 tiles before first rest stop
 
         if (numSearchPointsType3 == 0) {
             for (int i = 0; i < pathLength; i++)
@@ -123,14 +123,14 @@ int main(void) {
             break;
         }
 
-        // 2. Find the nearest TYPE3STOP to the next section break
-        int targetSection = searchPointsType3[0];     // next section point
+        //Find the nearest TYPE3STOP to the next section break
+        int targetSection = searchPointsType3[0]; // next section point
         int restStopIdx = LookForNeighbor(map, targetSection,
             MAPSIZE, TYPE3STOP, 5);
 
         free(path);
 
-        // 3. Recalculate A* to the rest stop
+        // Recalculate A* to the rest stop
         int *pathToStop = runAstarPathFinding(map, MAPSIZE,
             current, restStopIdx, &pathLength);
         // Append subsection to fullPath
@@ -145,7 +145,7 @@ int main(void) {
         // Update current position to rest stop
         current = restStopIdx;
         free(pathToStop);
-        // Loop continues and A* now runs from rest stop → goal
+        // Loop continues and A* now runs from rest stop to goal
     }
     printPath(fullPath, fullPathLength);
     PrintMapWPath(map, MAPSIZE, fullPath, fullPathLength);
