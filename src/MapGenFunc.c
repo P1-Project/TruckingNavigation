@@ -45,7 +45,7 @@ void EnableANSI() {
     }
 
 //in this case mapSize can be unsigned since it cant be compared to minus 1 in while loop
-void PrintMap(int *map, int mapSize) {
+void PrintMap(int *map, int mapSize, int *path) {
     EnableANSI();
     const int total = mapSize * mapSize;
     printf("Map size is: %d\n", mapSize);
@@ -74,13 +74,48 @@ void PrintMap(int *map, int mapSize) {
 
         const char *color = COLOR_RESET;
         char c = '?';
+        const char *bgcolor = RESET;
 
         switch (map[i]) {
-            case NORMALROAD: c = '.'; color = WHT; break;
-            case INTERSTATEROAD: c = 'H'; color = MAG; break;
-            case INTERSTATESTOP: c = '1'; color = BLU; break;
-            case TYPE2STOP: c = '2'; color = YEL; break;
-            case TYPE3STOP: c = '3'; color = GRN; break;
+            case NORMALROAD: {
+                c = '.';
+                color = WHT;
+                if (i == path[i]) {
+                    bgcolor = CYNHB;
+                }
+                break;
+            }
+            case INTERSTATEROAD: {
+                c = 'H';
+                color = MAG;
+                if (i == path[i]) {
+                    bgcolor = CYNHB;
+                }
+                break;
+            }
+            case INTERSTATESTOP: {
+                c = '1';
+                color = BLU;
+                if (i == path[i]) {
+                    bgcolor = CYNHB;
+                }
+                break;
+            }
+            case TYPE2STOP: {
+                c = '2';
+                color = YEL;
+                if (i == path[i]) {
+                    bgcolor = CYNHB;
+                }
+                break;
+            }
+            case TYPE3STOP: {
+                c = '3';
+                color = GRN;
+                if (i == path[i]) {
+                    bgcolor = CYNHB;
+                }
+                break;}
             case BLOCKADE: c = '#'; color = RED; break;
             case ROUTE: c = 'X'; color = CYN; break;
             default: c = '?'; color = WHT; break;

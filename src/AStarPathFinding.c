@@ -15,15 +15,17 @@ void TestAstarPathFindingConnection(void) {
 
 #define INF 999999999
 // Heuristic (Euclidean Distance)
-int heuristic(int a, int b, int mapSize) {
+int heuristic(const int a, const int b, const int mapSize) {
     int ax, ay, bx, by;
     IdxToCoords(a, mapSize, &ax, &ay);
     IdxToCoords(b, mapSize, &bx, &by);
-    int deltaX = ax - bx;
-    int deltaY = ay - by;
+    const int deltaX = ax - bx;
+    const int deltaY = ay - by;
 
     return (int)sqrt(deltaX * deltaX + deltaY * deltaY);
 }
+
+// Heuristic (Manhattan)
 int heuristicManhattan(int a, int b, int mapSize) {
     int ax, ay, bx, by;
     IdxToCoords(a, mapSize, &ax, &ay);
@@ -75,14 +77,14 @@ int heapPop(MinHeap *h) {
 
     int i = 0;
     while (1) {
-        int l = 2*i + 1;
-        int r = 2*i + 2;
+        int left = 2*i + 1;
+        int right = 2*i + 2;
         int smallest = i;
 
-        if (l < h->size && h->data[l].fScore < h->data[smallest].fScore)
-            smallest = l;
-        if (r < h->size && h->data[r].fScore < h->data[smallest].fScore)
-            smallest = r;
+        if (left < h->size && h->data[left].fScore < h->data[smallest].fScore)
+            smallest = left;
+        if (right < h->size && h->data[right].fScore < h->data[smallest].fScore)
+            smallest = right;
 
         if (smallest == i) break;
         heapSwap(&h->data[i], &h->data[smallest]);
@@ -142,6 +144,7 @@ int* runAstarPathFinding(const int *map, const int mapSize, const int pointA, co
 
         int current = heapPop(openSet);
 
+        //checks if current == goal of pointB if true then free memory and return the path
         if (current == pointB) {
             int *path = reconstruct(cameFrom, current, outLength);
             free(cameFrom); free(gScore); free(fScore);
@@ -155,11 +158,13 @@ int* runAstarPathFinding(const int *map, const int mapSize, const int pointA, co
         int neighbors[8];
         int ncount = 0;
 
+        //Getting N,S,E,W neighbors to array
         if (cx > 0) neighbors[ncount++] = XYToIdx(cx-1, cy, mapSize);
         if (cx < mapSize-1) neighbors[ncount++] = XYToIdx(cx+1, cy, mapSize);
         if (cy > 0) neighbors[ncount++] = XYToIdx(cx, cy-1, mapSize);
         if (cy < mapSize-1) neighbors[ncount++] = XYToIdx(cx, cy+1, mapSize);
 
+        //Getting NE, NW, SE, SW to neighbors array
         if (cx > 0 && cy > 0)
             neighbors[ncount++] = XYToIdx(cx-1, cy-1, mapSize);
         if (cx < mapSize-1 && cy > 0)

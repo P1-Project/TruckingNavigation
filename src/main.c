@@ -46,8 +46,8 @@ int main(void) {
 
     //runMapGen()
     runMapGen(map, MAPSIZE, restStops);
-
-    PrintMap(map, MAPSIZE);
+    //int *path = 0;
+    //PrintMap(map, MAPSIZE, path);
     //getDestination();
 
 
@@ -58,22 +58,23 @@ int main(void) {
     //Navigate to destination
 
     int pathLength = 0;
-    int startIdx = XYToIdx(0, 0, MAPSIZE);
-    int goalIdx = XYToIdx(29, 29, MAPSIZE);
+    int startIdx = CheckCoordinateSet(map, 0, 0, MAPSIZE);
+    int goalIdx = CheckCoordinateSet(map, 29, 29, MAPSIZE);
     int *path = runAstarPathFinding(map, MAPSIZE, startIdx, goalIdx, &pathLength);
-
+    printf("\n");
     if (path) {
         for (int i = 0; i < pathLength; i++) {
             printf("%d ", path[i]);
-            map[path[i]] = ROUTE;
+            //map[path[i]] = ROUTE;
         }
+        printf("\nPath length : %d\n", pathLength);
         free(path);
     }
     else {
         printf("No path found\n");
     }
 
-    PrintMap(map, MAPSIZE);
+    PrintMap(map, MAPSIZE, path);
 
 
     //runDestination();
