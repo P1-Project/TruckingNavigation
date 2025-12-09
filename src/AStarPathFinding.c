@@ -40,7 +40,7 @@ int movementCost(int cellType) {
         return INF;  // not passable
     if (cellType == INTERSTATEROAD || cellType == INTERSTATESTOP) return 24;
 
-    return 40;        // simple version: all roads cost 1
+    return 24*2;
 }
 
 
@@ -186,7 +186,7 @@ int* runAstarPathFinding(const int *map, const int mapSize, const int pointA, co
             if (tentative_g < gScore[nb]) {
                 cameFrom[nb] = current;
                 gScore[nb] = tentative_g;
-                fScore[nb] = tentative_g + heuristic(nb, pointB, mapSize);
+                fScore[nb] = tentative_g + heuristicManhattan(nb, pointB, mapSize);
 
                 heapPush(openSet, nb, fScore[nb]);
             }

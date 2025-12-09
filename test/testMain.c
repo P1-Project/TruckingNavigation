@@ -45,6 +45,11 @@ int testDivideRouteFunc1(void);
 int testDivideRouteFunc2(void);
 int testDivideRouteFunc3(void);
 
+
+//Test AstarPathFinding
+int TestClearMap(void);
+int TestSnakeMap(void);
+
 TEST_CASE(TestConnection,
     /* Arrange */
     int i = 1;
@@ -77,7 +82,8 @@ MAIN_RUN_TESTS(
     TestInitializeStopsLocation, TestSpotOccupied, TestGenStops,
     /* GetDestinationFunc tests */
     /* MapGenFunc tests */
-    TestInitMap
+    TestInitMap,
     /* pathFinding tests */
+    TestClearMap, TestSnakeMap
     )
 
