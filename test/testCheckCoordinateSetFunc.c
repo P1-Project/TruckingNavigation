@@ -2,6 +2,26 @@
 #include "mtest.h"
 #include "../src/CheckCoordinateSetFunc.h"
 
+TEST_CASE(IdxEDGE,
+    /* Arrange */
+    int Map[] = {5,5,5,5,5,5,5,5,
+                 5,5,5,5,5,5,5,5,
+                 5,5,5,5,5,5,5,5,
+                 5,5,5,5,5,5,5,5,
+                 5,5,5,5,5,5,5,5,
+                 5,5,5,5,5,5,5,5,
+                 5,5,5,5,5,5,5,5,
+                 5,5,5,5,5,5,0,5};
+
+    int mapSize = 8;
+
+    /* Act */
+    int result = CheckCoordinateSet(Map, 2, 2, mapSize);
+
+    /* Assert */
+    CHECK_EQ_INT(result, 62);
+)
+
 TEST_CASE(Idx63,
     /* Arrange */
     int Map[] = {5,0,5,5,5,0,0,5,
@@ -39,7 +59,7 @@ TEST_CASE(Idx0,
     int result = CheckCoordinateSet(Map, 0, 0, mapSize);
 
     /* Assert */
-    CHECK_EQ_INT(result, 1);
+    CHECK_EQ_INT(result, 8);
 )
 
 TEST_CASE(Idx3,
@@ -59,7 +79,7 @@ TEST_CASE(Idx3,
     int result = CheckCoordinateSet(Map, 3, 0, mapSize);
 
     /* Assert */
-    CHECK_EQ_INT(result, 5);
+    CHECK_EQ_INT(result, 1);
 )
 
 TEST_CASE(Idx7,
@@ -99,7 +119,7 @@ TEST_CASE(Idx56,
     int result = CheckCoordinateSet(Map, 0, 7, mapSize);
 
     /* Assert */
-    CHECK_EQ_INT(result, 57);
+    CHECK_EQ_INT(result, 48);
 )
 
 TEST_CASE(Idx24,
@@ -119,7 +139,7 @@ TEST_CASE(Idx24,
     int result = CheckCoordinateSet(Map, 0, 3, mapSize);
 
     /* Assert */
-    CHECK_EQ_INT(result, 25);
+    CHECK_EQ_INT(result, 16);
 )
 
 TEST_CASE(Idx36,

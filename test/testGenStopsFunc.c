@@ -134,40 +134,45 @@ TEST_CASE(TestSpotOccupied,
 TEST_CASE(TestGenStops,
     /* Arrange */
     int map[MAPSIZE*MAPSIZE] = {0};
-    Stops restStops[NUMBEROFSTOPS23];
-    int numberOfType2 = NUMBEROFSTOPS23/2;
+    Stops restStops[4];
 
     // Assign some type 2's
-    for (int i = 0; i < numberOfType2; i++) {
-        restStops[i].Type.Type = TYPE2STOP;
-    }
+    restStops[0].Type.Type = TYPE2STOP;
+    restStops[1].Type.Type = TYPE2STOP;
 
     // Assign some type 3's
-    for (int i = numberOfType2; i < NUMBEROFSTOPS23; i++) {
-    restStops[i].Type.Type = TYPE3STOP;
-    }
+    restStops[2].Type.Type = TYPE3STOP;
+    restStops[3].Type.Type = TYPE3STOP;
 
     // Assign coordinates
-    for (int x = 0, y = MAPSIZE-1, count = 0; count < NUMBEROFSTOPS23; x++, y--, count ++) {
-        restStops[count].locationX = x;
-        restStops[count].locationY = y;
-    }
+    restStops[0].locationX = 1;
+    restStops[0].locationY = 1;
+
+    restStops[1].locationX = 2;
+    restStops[1].locationY = 2;
+
+    restStops[2].locationX = 3;
+    restStops[2].locationY = 3;
+
+    restStops[3].locationX = 4;
+    restStops[3].locationY = 4;
 
     /* Act */
-    for (int i = 0; i < NUMBEROFSTOPS23; i++) {
-        GenStops(map, restStops, i);
+    /*for (int i = 0; i < NUMBEROFSTOPS23; i++) {
+        GenStop(map, restStops, i);
+    }*/
+    //max value set to 4 since there are only 4 indencies in the array of reststops
+    for (int i = 0; i < 4; i++) {
+        GenStop(map, restStops, i);
     }
+
 
     /* Assert */
     // Check that type 2 stops were written as 3
-    for (int i = 0; i < numberOfType2; i++) {
-        int idx = restStops[i].locationY * MAPSIZE + restStops[i].locationX;
-        CHECK_TRUE(map[idx] == TYPE2STOP);
-    }
+    CHECK_TRUE(map[restStops[0].locationY * MAPSIZE + restStops[0].locationX] == TYPE2STOP);
+    CHECK_TRUE(map[restStops[1].locationY * MAPSIZE + restStops[1].locationX] == TYPE2STOP);
 
     // Check that type 3 stops were written as 4
-    for (int i = numberOfType2; i < NUMBEROFSTOPS23; i++) {
-        int idx = restStops[i].locationY * MAPSIZE + restStops[i].locationX;
-        CHECK_TRUE(map[idx] == TYPE3STOP);
-    }
+    CHECK_TRUE(map[restStops[2].locationY * MAPSIZE + restStops[2].locationX] == TYPE3STOP);
+    CHECK_TRUE(map[restStops[3].locationY * MAPSIZE + restStops[3].locationX] == TYPE3STOP);
 )

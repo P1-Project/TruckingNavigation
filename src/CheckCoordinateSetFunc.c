@@ -7,8 +7,9 @@
 #include "ConverterFunc.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
-#define OUTOFBOUNCE (-1)
+#define OUTOFBOUNDS (-1)
 #define NOSPACEAVAILABLE (-2)
 
 
@@ -28,11 +29,34 @@ void TestConCheckCoordinateSetFunc() {
 int CheckCoordinateSet(int *map, int x, int y, int mapSize){
 
     if (x < 0 || x >= mapSize || y < 0 || y >= mapSize) {
-        //printf("Destination out of bounce.");
-        return OUTOFBOUNCE;
+        return OUTOFBOUNDS;         // Return error if destination is out of bounds
     };
 
-    int index_i = XYToIdx(x, y, mapSize);
+    if (int idxDestination = XYToIdx(x, y, mapSize) != BLOCKADE) {
+        return idxDestination;
+    };
+
+    for (int r = 1; r <= mapSize; ++r) {
+        for (int dx = -r; dx <= r; ++dx) {
+            for (int dy = -r; dy <= r; ++dy) {
+                // Skip the cells which are within the search radius 'ring'
+                if (abs(dx) != r && abs(dy) != r) continue;
+
+                int nx = x + dx;
+                int ny = y + dy;
+
+                if (nx < 0 || nx >= mapSize || ny < 0 || ny >= mapSize) continue; // Skip ahead if the current cell is out of bounds
+
+                int NEWidxDestination = XYToIdx(nx, ny, mapSize); // Find corresponding index
+
+                if (map[NEWidxDestination] != BLOCKADE) {          // Return if current cell is not blockade
+                    return NEWidxDestination;
+                }
+            }
+        }
+    }
+
+    /*int index_i = XYToIdx(x, y, mapSize);
     if (map[index_i] != BLOCKADE)
         return index_i;
 
@@ -73,10 +97,10 @@ int CheckCoordinateSet(int *map, int x, int y, int mapSize){
         if (j >= 0 && j%mapSize < index_i%mapSize) {
             if (map[j] != BLOCKADE) return j;
         }
-    }                                              // Maybe convert back to x,y?
+    }                                              // Maybe convert back to x,y? */
 
-//printf("No space available.");
-    return NOSPACEAVAILABLE;                                         // No space available
+
+    return NOSPACEAVAILABLE;                       // Return error if no space available
 }
 
 /*

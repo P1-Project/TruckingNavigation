@@ -28,6 +28,7 @@ int TestDefineInterstateDiagonalNS(void);
 int TestDefineInterstateNSTwoTiles(void);
 
 //CheckCoordinateSet Test
+int IdxEDGE(void);
 int Idx63(void);
 int Idx0(void);
 int Idx7(void);
@@ -38,6 +39,10 @@ int Idx36(void);
 int Idx70(void);
 int IdxNOSPACE(void);
 
+//DivideRouteFunc Test
+int testDivideRouteFunc1(void);
+int testDivideRouteFunc2(void);
+int testDivideRouteFunc3(void);
 
 TEST_CASE(TestConnection,
     /* Arrange */
@@ -55,10 +60,12 @@ TEST_CASE(TestConnection,
 MAIN_RUN_TESTS(
     TestConnection, TestConnectionGenStops,
     /* CheckCoordinateSetFunc tests */
-    Idx63, Idx0, Idx3, Idx7, Idx56, Idx24, Idx36, Idx70, IdxNOSPACE,
+    Idx63, Idx0, Idx3, Idx7, Idx56, Idx24, Idx36, Idx70, IdxNOSPACE,IdxEDGE,
     /* ConverterFunc tests */
     testXYToIdx, testIdxToCoords, testRandomBetween,
     testLookForNeighbor1, testLookForNeighbor2,
+    /* DivideFunction */
+    testDivideRouteFunc1, testDivideRouteFunc2, testDivideRouteFunc3,
     /* GenBlockade tests */
     TestGenBlockade,
     /* GenInterstateFunc tests */
