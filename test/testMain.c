@@ -39,6 +39,10 @@ int Idx36(void);
 int Idx70(void);
 int IdxNOSPACE(void);
 
+//DivideRouteFunc Test
+int testDivideRouteFunc1(void);
+int testDivideRouteFunc2(void);
+int testDivideRouteFunc3(void);
 
 TEST_CASE(TestConnection,
     /* Arrange */
@@ -60,6 +64,8 @@ MAIN_RUN_TESTS(
     /* ConverterFunc tests */
     testXYToIdx, testIdxToCoords, testRandomBetween,
     testLookForNeighbor1, testLookForNeighbor2,
+    /* DivideFunction */
+    testDivideRouteFunc1, testDivideRouteFunc2, testDivideRouteFunc3,
     /* GenBlockade tests */
     TestGenBlockade,
     /* GenInterstateFunc tests */
