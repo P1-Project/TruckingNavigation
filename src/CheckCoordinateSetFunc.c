@@ -32,9 +32,9 @@ int CheckCoordinateSet(int *map, int x, int y, int mapSize){
         return OUTOFBOUNDS;         // Return error if destination is out of bounds
     };
 
-    if (int idxDestination = XYToIdx(x, y, mapSize) != BLOCKADE) {
-        return idxDestination;
-    };
+    // Return index if available
+    int destination = XYToIdx(x, y, mapSize);
+    if (map[destination] != BLOCKADE) return destination;
 
     for (int r = 1; r <= mapSize; ++r) {
         for (int dx = -r; dx <= r; ++dx) {
@@ -47,10 +47,10 @@ int CheckCoordinateSet(int *map, int x, int y, int mapSize){
 
                 if (nx < 0 || nx >= mapSize || ny < 0 || ny >= mapSize) continue; // Skip ahead if the current cell is out of bounds
 
-                int NEWidxDestination = XYToIdx(nx, ny, mapSize); // Find corresponding index
+                int idxDestination = XYToIdx(nx, ny, mapSize); // Find corresponding index
 
-                if (map[NEWidxDestination] != BLOCKADE) {          // Return if current cell is not blockade
-                    return NEWidxDestination;
+                if (map[idxDestination] != BLOCKADE) {          // Return if current cell is not blockade
+                    return idxDestination;
                 }
             }
         }

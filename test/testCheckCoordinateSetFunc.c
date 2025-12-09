@@ -2,6 +2,26 @@
 #include "mtest.h"
 #include "../src/CheckCoordinateSetFunc.h"
 
+TEST_CASE(IdxGO,
+    /* Arrange */
+    int Map[] = {5,5,5,5,5,5,5,5,
+                 5,5,5,5,5,5,5,5,
+                 5,5,5,0,5,5,5,5,
+                 5,5,5,5,5,5,5,5,
+                 5,5,5,5,5,5,5,5,
+                 5,5,5,5,5,5,5,5,
+                 5,5,5,5,5,5,5,5,
+                 5,5,5,5,5,5,0,5};
+
+    int mapSize = 8;
+
+    /* Act */
+    int result = CheckCoordinateSet(Map, 3, 2, mapSize);
+
+    /* Assert */
+    CHECK_EQ_INT(result, 19);
+)
+
 TEST_CASE(IdxEDGE,
     /* Arrange */
     int Map[] = {5,5,5,5,5,5,5,5,
