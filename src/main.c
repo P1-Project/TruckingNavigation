@@ -89,13 +89,6 @@ int main(void) {
 
 /////////////////////////////////
 
-    /*int currentIdx = startIdx;
-    while (currentIdx != goalIdx) {
-        int *path = runAstarPathFinding(map, MAPSIZE, currentIdx, goalIdx, &pathLength);
-        if (!path || pathLength <= 1) {break;} //Error og no movement possible
-        //printing the hole path
-        printPath(path, pathLength);
-    }*/
     int *searchPointsType3 = malloc(sizeof(int)*MAPSIZE);
     int numSearchPointsType3;
     int *numberStops = malloc(sizeof(int)* MAPSIZE);
