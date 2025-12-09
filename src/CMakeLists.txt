@@ -8,6 +8,7 @@ add_library(GenInterstateFunc     GenInterstateFunc.c)
 add_library(GetDestinationFunc    GetDestinationFunc.c)
 add_library(GenStopsFunc          GenStopsFunc.c)
 add_library(CheckCoordinateSetFunc CheckCoordinateSetFunc.c)
+add_library(AstarFunc             AStarPathFinding.c)
 add_library(DivideRouteFunc       DivideRouteFunc.c)
 
 
@@ -22,6 +23,8 @@ target_include_directories(GenInterstateFunc     PUBLIC ${PROJECT_INCLUDES})
 target_include_directories(GetDestinationFunc    PUBLIC ${PROJECT_INCLUDES})
 target_include_directories(GenStopsFunc          PUBLIC ${PROJECT_INCLUDES})
 target_include_directories(CheckCoordinateSetFunc PUBLIC ${PROJECT_INCLUDES})
+target_include_directories(AstarFunc PUBLIC ${PROJECT_INCLUDES})
+
 target_include_directories(DivideRouteFunc PUBLIC ${PROJECT_INCLUDES})
 
 
@@ -31,6 +34,7 @@ target_include_directories(DivideRouteFunc PUBLIC ${PROJECT_INCLUDES})
 target_link_libraries(GenInterstateFunc  PUBLIC ConverterFunc)
 target_link_libraries(CheckCoordinateSetFunc PUBLIC ConverterFunc)
 target_link_libraries(GenStopsFunc       PUBLIC ConverterFunc)
+target_link_libraries(AstarFunc PUBLIC ConverterFunc)
 
 # Two-way or multiple dependencies
 target_link_libraries(MapGenFunc PUBLIC
@@ -45,6 +49,8 @@ target_link_libraries(GenBlockadeFunc PUBLIC
 )
 
 
+
+
 # --- Executable ------------------------------------------------------
 
 add_executable(TruckingNavigation main.c)
@@ -57,5 +63,6 @@ target_link_libraries(TruckingNavigation
         GenStopsFunc
         GetDestinationFunc
         CheckCoordinateSetFunc
+        AstarFunc
         DivideRouteFunc
 )

@@ -18,6 +18,7 @@
 #define TYPE2STOP 3
 #define TYPE3STOP 4
 #define BLOCKADE 5
+#define ROUTE 6
 
 //Errorcodes for program
 #define MAPGENERROR 10

@@ -70,7 +70,7 @@ int *DefineInterstatePath(int *map, int mapSize, InterStateRoad interStateRoad, 
     //map[tempIndex-1] = INTERSTATEROAD;
     //printf("map[tempIndex] = %d\n", map[tempIndex]);
 
-    //if the interstate is going North to South or East to West, do this else do East West,
+    //if the interstate is going North to South or East to West, do this else do North to South,
     if (absDx >= absDy) { //East To west
         D = 2 * absDy - absDx;
         for (int i = 0; i <= absDx; i++) {
@@ -190,7 +190,7 @@ void GenInterStates(int *map, const int mapSize, Stops *restStops, StopType stop
     InterStateRoad interStateRoad1;
     InterStateRoad interStateRoad2;
 
-    int wiggle = 5;
+    int wiggle = 7;
 
 
     // interStateRoad1 = vertical-ish
