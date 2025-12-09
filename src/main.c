@@ -56,10 +56,13 @@ int main(void) {
     //Check destination and start Coordinates
 
     //Navigate to destination
-
     int pathLength = 0;
-    int startIdx = CheckCoordinateSet(map, 0, 0, MAPSIZE);
-    int goalIdx = CheckCoordinateSet(map, 29, 29, MAPSIZE);
+    Destination pointA;
+
+    GetDestination(&pointA,0,MAPSIZE);
+    int startIdx = CheckCoordinateSet(map, pointA.startX, pointA.startY, MAPSIZE);
+    int goalIdx = CheckCoordinateSet(map, pointA.endX, pointA.endY, MAPSIZE);
+
     int *path = runAstarPathFinding(map, MAPSIZE, startIdx, goalIdx, &pathLength);
     printf("\n");
     if (path) {
