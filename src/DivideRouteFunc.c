@@ -2,49 +2,50 @@
 // Created by steph on 08/12/2025.
 //
 
-#include "DivideRouteFunc.h"
-
+#include <stdio.h>
 #include <stdlib.h>
 
+#include "DivideRouteFunc.h"
 #include "DefineConst.h"
 
-int RunDivideRoute() {
-    int mapSize = 5;
-    int map[25] = {
-        0, 1, 0, 0, 0,
-        0, 1, 0, 0, 0,
-        0, 0, 1, 0, 0,
-        0, 0, 1, 0, 0,
-        0, 0, 1, 0, 0
-    };
-    int route[] = {1, 6, 12, 17, 22};
-    int routeLength = 5;
+/**
+ * This function divides a route into break points by simulating travel time between consecutive points on the route.
+ * If adding the next move would exceed maxTime, it records the current point as a break and resets the timer.
+ * @param map Pointer to the map array
+ * @param route Pointer to the route array
+ * @param routeLength Number of points on route
+ * @param searchPoints Pointer to output array for break points
+ * @param numberOfPoints Pointer to count of break points
+ * @param maxTime Maximum time allowed before a break
+ * @return Pointer to searchPoints
+ */
+int *DivideRoute(int *map, int *route, int routeLength, int *searchPoints, int *numberOfPoints, int maxTime) {
+    int timer = 0;
 
-    int *searchPoints = malloc(sizeof(int)*mapSize*mapSize);
+    // Iterates through move 'pairs'
+    for (int i = 0; i < routeLength - 1; ++i) {
+        int current = route[i];
+        int next = route[i+1];
+        int moveCost;
 
-    searchPoints = DivideRoute(map, route, routeLength, searchPoints);
+        int currentIsInterstate = (map[current] == INTERSTATEROAD) || (map[current] == INTERSTATESTOP);
+        int nextIsInterstate = (map[next] == INTERSTATEROAD) || (map[next] == INTERSTATESTOP);
 
-    free(searchPoints);
-
-    return 0;
-}
-
-int *DivideRoute(int *map, int *route, int routeLength, int *searchPoints) {
-    int timer = 0, numberOfPoints = 0;
-
-    for (int i = 0; i < routeLength; ++i) {
-        if (((map[route[i]] == INTERSTATEROAD) || (map[route[i]] == INTERSTATESTOP)) &&
-            ((map[route[i+1]] == INTERSTATEROAD) || (map[route[i+1]] == INTERSTATESTOP))) {
-            timer += 24;
+        // Decide move cost
+        if (currentIsInterstate && nextIsInterstate) {
+            moveCost = 24;
         } else {
-            timer += 40;
+            moveCost = 40;
         }
 
-        if (timer >= 150) {
-            searchPoints[numberOfPoints] = route[i];
-            numberOfPoints++;
+        // Check if next move pushes us over the max time
+        if (timer + moveCost > maxTime) {
+            searchPoints[*numberOfPoints] = current;
+            (*numberOfPoints)++;
             timer = 0;
         }
+
+        timer += moveCost;
     }
 
     return searchPoints;

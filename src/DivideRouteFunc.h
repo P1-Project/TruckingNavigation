@@ -5,7 +5,6 @@
 #ifndef TRUCKINGNAVIGATION_DIVIDEROUTEFUNC_H
 #define TRUCKINGNAVIGATION_DIVIDEROUTEFUNC_H
 
-int RunDivideRoute();
-int *DivideRoute(int *map, int *route, int routeLength, int *searchPoints);
+int *DivideRoute(int *map, int *route, int routeLength, int *searchPoints, int *numberOfPoints, int maxTime);
 
 #endif //TRUCKINGNAVIGATION_DIVIDEROUTEFUNC_H

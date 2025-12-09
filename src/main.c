@@ -10,8 +10,7 @@
 #include "GenStopsFunc.h"
 #include "DefineConst.h"
 #include "DefineStruct.h"
-
-
+#include "DivideRouteFunc.h"
 
 
 int main(void) {
@@ -53,7 +52,6 @@ int main(void) {
     //Check destination and start Coordinates
 
     //Navigate to destination
-
 
     //runDestination();
 
