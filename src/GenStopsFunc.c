@@ -66,21 +66,21 @@ void InitializeStopsLocation(int *map, Stops restStops[]) {
             index = XYToIdx(randomX, randomY, MAPSIZE);
             //printf("Trying to assign rest stop at (%d, %d)\n", randomX, randomY);
             attempts++;
-            if(attempts > 1000) {
-                printf("Could not place stop after 1000 attempts! Map value at (0,0)=%d\n", map[0]);
+            if(attempts > (MAPSIZE*MAPSIZE)) {
+                printf("Could not place stop after %d attempts!\n", (MAPSIZE*MAPSIZE));
                 break;
             }
 
             // If the chosen spot is occupied or there is another stop close by, try again.
             } while (SpotOccupied(map, randomX, randomY) ||
                 LookForNeighbor(map, index, MAPSIZE, TYPE2STOP, 1) != -1 ||
-                LookForNeighbor(map, index, MAPSIZE, TYPE3STOP, 1) != -1);
+                LookForNeighbor(map, index, MAPSIZE, TYPE3STOP, 3) != -1);
         //printf("Successfully assigned rest stop at (%d, %d)\n", randomX, randomY);
 
         restStops[i].locationX = randomX; // Assign the given rest stop's x coordinate
         restStops[i].locationY = randomY; // Assign the given rest stop's x coordinate
 
-        GenStops(map, restStops, i);
+        GenStop(map, restStops, i);
     }
 }
 
@@ -92,8 +92,6 @@ void InitializeStopsLocation(int *map, Stops restStops[]) {
  * @return 1 if the stop is occupied, 0 if not
  */
 int SpotOccupied(int *map, int X, int Y) {
-    // Check surrounding spots
-
     if (map[XYToIdx(X, Y, MAPSIZE)] == NORMALROAD) { // Check what type of road the given index is on the map
         return 0; // If it is a normal road, return false
     }
@@ -105,7 +103,7 @@ int SpotOccupied(int *map, int X, int Y) {
  * @param map Pointer to the map array
  * @param restStops An array of all the existing restStops
  */
-void GenStops(int *map, Stops restStops[], int i) {
+void GenStop(int *map, Stops restStops[], int i) {
     //printf("Setting (%d, %d) to stop type %d\n", restStops[i].locationX, restStops[i].locationY, restStops[i].Type.Type);
     int index = XYToIdx(restStops[i].locationX, restStops[i].locationY, MAPSIZE); // Find the index of the given rest stop's coordinates
     map[index] = restStops[i].Type.Type; // Set the map value of that index to the rest stops type equivalent

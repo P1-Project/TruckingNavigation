@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-//# define MAPSIZE 30
+#define MAPSIZE 30
 
 typedef struct {
     int startX;
@@ -18,6 +18,8 @@ typedef struct {
 }Destination;
 
 void GetDestination (Destination *destination, int acceptInput, int mapSize);
+
+void runDestination();
 
 void TestConGetDestinationFunc();
 #endif //TRUCKINGNAVIGATION_GETDESTINATIONFUNC_H

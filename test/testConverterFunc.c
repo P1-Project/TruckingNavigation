@@ -60,7 +60,7 @@ TEST_CASE(testRandomBetween,
 
     for (int i = 0; i < 5; i++) {
         /* Act */
-        actualResult[i] = randomBetween(a[i], b[i]);
+        actualResult[i] = RandomBetween(a[i], b[i]);
 
         /* Assert */
         CHECK_TRUE((a[i] <= actualResult[i]) && (actualResult[i] <= b[i]));

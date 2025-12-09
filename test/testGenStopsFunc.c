@@ -158,8 +158,8 @@ TEST_CASE(TestGenStops,
     restStops[3].locationY = 4;
 
     /* Act */
-    for (int i = 0; i < 4; i++) {
-        GenStops(map, restStops, i);
+    for (int i = 0; i < NUMBEROFSTOPS23; i++) {
+        GenStop(map, restStops, i);
     }
 
     /* Assert */
