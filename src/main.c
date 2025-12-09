@@ -46,12 +46,16 @@ int main(void) {
     //runMapGen()
     runMapGen(map, MAPSIZE, restStops);
 
+    //PrintMap(map, MAPSIZE);
+
+    // Find optimal route between start and end points
 
 
 
 
     int pathLength = 0;
-    int resultPathLength = 0;
+    int *fullPath = malloc(MAPSIZE * MAPSIZE * sizeof(int));
+    int fullPathLength = 0;
     Destination destination;
     // Get start and end points
     /*GetDestination(&destination,0,MAPSIZE);
@@ -60,19 +64,21 @@ int main(void) {
     int startIdx = CheckCoordinateSet(map, 0, 0, MAPSIZE);
     int goalIdx = CheckCoordinateSet(map, 29, 29, MAPSIZE);
 
+    //print map with start and end
+    map[startIdx] = ROUTE;
+    map[goalIdx] = ROUTE;
 
-    // Find optimal route between start and end points
-    int *path = runAstarPathFinding(map, MAPSIZE, startIdx, goalIdx, &pathLength);
-    int *resultPath = malloc(sizeof(int)*MAPSIZE*MAPSIZE);
+
+    int *path1 = runAstarPathFinding(map, MAPSIZE, startIdx, goalIdx, &pathLength);
     printf("\n");
-    if (path) {
+    if (path1) {
         for (int i = 0; i < pathLength; i++) {
             // Print route
-            printf("%d ", path[i]);
+            printf("%d ", path1[i]);
             //map[path[i]] = ROUTE;
         }
         printf("\nPath length : %d\n", pathLength);
-        PrintMapWPath(map, MAPSIZE, path, pathLength);
+        PrintMapWPath(map, MAPSIZE, path1, pathLength);
     }
     else {
         printf("No path found\n");
@@ -81,9 +87,84 @@ int main(void) {
     printf("\n\n");
 
 
+/////////////////////////////////
 
+    /*int currentIdx = startIdx;
+    while (currentIdx != goalIdx) {
+        int *path = runAstarPathFinding(map, MAPSIZE, currentIdx, goalIdx, &pathLength);
+        if (!path || pathLength <= 1) {break;} //Error og no movement possible
+        //printing the hole path
+        printPath(path, pathLength);
+    }*/
     int *searchPointsType3 = malloc(sizeof(int)*MAPSIZE);
     int numSearchPointsType3;
+    int *numberStops = malloc(sizeof(int)* MAPSIZE);
+    int current = startIdx;
+    int numSections = 0;
+
+    while (current != goalIdx) {
+
+        int *path = runAstarPathFinding(map, MAPSIZE, current, goalIdx, &pathLength);
+        if (!path || pathLength <= 1) break;
+
+        // 1. Divide path into sections (this fills searchPointsType3)
+        numSearchPointsType3 = 0;
+        DivideRoute(map, path, pathLength,
+                    searchPointsType3,
+                    &numSearchPointsType3,
+                    340);   // Time spendt drining aka section size = 13 tiles before first reststop
+
+        if (numSearchPointsType3 == 0) {
+            for (int i = 0; i < pathLength; i++)
+                fullPath[fullPathLength++] = path[i];
+
+            current = goalIdx;
+            free(path);
+            break;
+        }
+
+        // 2. Find the nearest TYPE3STOP to the next section break
+        int targetSection = searchPointsType3[0];     // next section point
+        int restStopIdx = LookForNeighbor(map, targetSection,
+            MAPSIZE, TYPE3STOP, 5);
+
+        free(path);
+
+        // 3. Recalculate A* to the rest stop
+        int *pathToStop = runAstarPathFinding(map, MAPSIZE,
+            current, restStopIdx, &pathLength);
+        // Append subsection to fullPath
+        for (int i = 0; i < pathLength; i++) {
+            // avoid duplicate node when paths connect
+            if (fullPathLength == 0 || fullPath[fullPathLength - 1] != pathToStop[i]) {
+                fullPath[fullPathLength++] = pathToStop[i];
+            }
+        }
+        numberStops[numSections] = restStopIdx;
+        numSections++;
+        // Update current position to rest stop
+        current = restStopIdx;
+        free(pathToStop);
+        // Loop continues and A* now runs from rest stop → goal
+    }
+    printPath(fullPath, fullPathLength);
+    PrintMapWPath(map, MAPSIZE, fullPath, fullPathLength);
+
+    printf("\n");
+    printf("number of stops : %d\n", numSections);
+
+    for (int i = 0; i < numSections; i++) {
+        printf("stop at index : %d ", numberStops[i]);
+    }
+
+
+    free(fullPath);
+    free(numberStops);
+    /*
+
+
+
+
     // Divide route with ~x hour intervals (xxx minutes)
     DivideRoute(map, path, pathLength, searchPointsType3, &numSearchPointsType3,340);
     // LookForNeighbor(type 3) at found points
@@ -112,6 +193,7 @@ int main(void) {
     //Calculate route from last point in newPath to goal and divide it again:
     newPath = runAstarPathFinding(map, MAPSIZE, resultPath[resultPathLength],goalIdx, &newPathLength);
 
+
     DivideRoute(map, newPath, newPathLength, searchPointsType3, &numSearchPointsType3,340);
 
 
@@ -134,6 +216,7 @@ int main(void) {
         resultPath[i] = newPath[i];
         resultPathLength++;
     }
+    */
 
 
 
@@ -155,10 +238,12 @@ int main(void) {
     }
     */
 
+    /*
     printf("\nResult Path :\n");
     for (int i = 0; i <resultPathLength; i++) {
         printf("%d ", resultPath[i]);
     }
+    */
 
 
     // Find optimal route between found stops of type 3
@@ -179,8 +264,9 @@ int main(void) {
 
 
 
+    /*
     free(newPath);
     free(resultPath);
-    free(path);
+    free(path);*/
     return 0;
 }
