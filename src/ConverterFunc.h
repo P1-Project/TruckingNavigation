@@ -8,5 +8,6 @@ int XYToIdx(int x, int y, int mapSize);
 void IdxToCoords(int index, int mapSize, int *x, int *y);
 int RandomBetween(int a, int b);
 int LookForNeighbor(const int* map, int index, int mapSize, int neighbor, int maxRadius);
+int CalculatePathTime(int *map, int *path, int pathLength);
 
 #endif //TRUCKINGNAVIGATION_CONVERTERFUNC_H
