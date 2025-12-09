@@ -54,9 +54,12 @@ int main(void) {
     int resultPathLength = 0;
     Destination destination;
     // Get start and end points
-    GetDestination(&destination,0,MAPSIZE);
+    /*GetDestination(&destination,0,MAPSIZE);
     int startIdx = CheckCoordinateSet(map, destination.startX, destination.startY, MAPSIZE);
-    int goalIdx = CheckCoordinateSet(map, destination.endX, destination.endY, MAPSIZE);
+    int goalIdx = CheckCoordinateSet(map, destination.endX, destination.endY, MAPSIZE);*/
+    int startIdx = CheckCoordinateSet(map, 0, 0, MAPSIZE);
+    int goalIdx = CheckCoordinateSet(map, 29, 29, MAPSIZE);
+
 
     // Find optimal route between start and end points
     int *path = runAstarPathFinding(map, MAPSIZE, startIdx, goalIdx, &pathLength);
@@ -77,7 +80,7 @@ int main(void) {
     printf("\n\n");
 
 
-    /*
+
     int *searchPointsType3 = malloc(sizeof(int)*MAPSIZE);
     int numSearchPointsType3;
     // Divide route with ~x hour intervals (xxx minutes)
@@ -87,6 +90,10 @@ int main(void) {
     for (int i = 0; i < numSearchPointsType3; i++) {
         idx[i] = LookForNeighbor(map, searchPointsType3[i], MAPSIZE, TYPE3STOP,5);
         printf("index : %d\n",idx[i]);
+        int x,y;
+        IdxToCoords(idx[i], MAPSIZE, &x, &y);
+
+        printf("Coordinatess are : %d %d\n", x, y);
         if (idx[i] == -1) {
             printf("Failure");
             exit(-1);
@@ -106,7 +113,7 @@ int main(void) {
     for (int i = 0; i < resultPathLength; i++) {
         printf("%d ", resultPath[i]);
     }
-    */
+
 
 
 
