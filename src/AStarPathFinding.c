@@ -251,83 +251,99 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
 
     //vaiables in use
 
-    int numSearchPointsType3;
+    int numSearchPoints;
     int current = startIdx;
     int numSections = 0;
-    int numSerchPointsType2 = 0;
-    int FindStopType2or3 = 1;
+    int stopCount = 0;
     int restStopIdx = 0;
-    int restStop2Idx = 0;
+
+    int baseSearchRadius = 5;
+    int drivingTime = 340; //equal to 13 tiles;
+    int desiredType;
 
     int *numberStops = malloc(sizeof(int)* mapSize);
-    int *searchPointsType2 = malloc(sizeof(int)*mapSize);
-    int *searchPointsType3 = malloc(sizeof(int)*mapSize);
+    int *searchPoints = malloc(sizeof(int)*mapSize);
 
     while (current != goalIdx) {
-
         //First Run should equal the original path,
         int *path = RunAstarPathFinding(map, mapSize, current, goalIdx, &pathLength);
         if (!path || pathLength <= 1) break;
 
-        //Divide path into sections (this fills searchPointsType3)
-        numSearchPointsType3 = 0;
+        numSearchPoints = 0;
         DivideRoute(map, path, pathLength,
-                    searchPointsType3,
-                    &numSearchPointsType3,
-                    340);   // Time spent driving aka section size = 13 tiles before first rest stop
-
+                    searchPoints,
+                    &numSearchPoints,
+                    drivingTime/2);
+        // Time spent driving aka section size = 13 tiles before first rest stop
         //if the path is too short the program returns the full path from start to end
-        if (numSearchPointsType3 == 0) {
+        if (numSearchPoints == 0) {
             for (int i = 0; i < pathLength; i++)
                 fullPath[fullPathLength++] = path[i];
             free(path);
             break;
         }
 
+        //The route must be divided for the driver to follow regulations
+
+        if (numSections == 0) {
+            desiredType = 0; //Stop type can be both.
+        }
+        else {//numSections % 2 == 0 chose type 3 otherwise type 2
+            desiredType = (numSections % 2 != 0) ? TYPE2STOP : TYPE3STOP;
+        }
+
         //Find the nearest TYPE3STOP to the next section break
-        int targetSection = searchPointsType3[0]; // next section point
-        restStopIdx = LookForNeighbor(map, targetSection,
-            mapSize, TYPE3STOP, 5);
+        int targetSection = searchPoints[0]; // next section point
+        int t2 = LookForNeighbor(map, targetSection, mapSize, TYPE2STOP, baseSearchRadius);
+        int t3 = LookForNeighbor(map, targetSection, mapSize, TYPE3STOP, baseSearchRadius);
+
+        if (t2 ==-1 && t3 == -1) { //widedens scope
+            t2 = LookForNeighbor(map, targetSection, mapSize, TYPE2STOP, ++baseSearchRadius);
+            t3 = LookForNeighbor(map, targetSection, mapSize, TYPE3STOP, ++baseSearchRadius);
+        }
+        //if still no reststop found
+        if (t2 == -1 && t3 == -1) {
+            printf("No path found\n");
+            free(path);
+            break;
+        }
+
+
+
+        if (desiredType == 0) { //pick type closest
+            if (t2 == -1 ) restStopIdx = t3;
+            else if (t3 == -1 ) restStopIdx = t2;
+            else {
+                int distance2 = heuristicManhattan(targetSection, t2 , mapSize);
+                int distance3 = heuristicManhattan(targetSection, t3 , mapSize);
+                if (distance2 == distance3) {
+                    int goalDistance2 = heuristicManhattan(t2, goalIdx, mapSize);
+                    int goalDistance3 = heuristicManhattan(t3, goalIdx, mapSize);
+                    restStopIdx = (goalDistance2 < goalDistance3) ? t2 : t3;
+                }
+                else {
+                    restStopIdx = (distance2 < distance3 ? t2 : t3);
+                }
+            }
+        } else if (desiredType == TYPE3STOP) {
+            restStopIdx = (t3 != -1) ? t3 : t2;
+        } else { // TYPE2STOP
+            restStopIdx = (t2 != -1) ? t2 : t3;
+        }
+
         if (restStopIdx == -1) {
             printf("Could not find rest stop of type 3 at target section %d", targetSection);
+            free(path);
+            break;
         }
         //frees path for next loop,
         free(path);
-
+        //Divide path into sections (this fills searchPointsType3)
         // Recalculate A* to the rest stop
         int *pathToStop = RunAstarPathFinding(map, mapSize,
             current, restStopIdx, &pathLength);
+
         // Append subsection to fullPath
-
-        if (FindStopType2or3) {
-            //divide again for type 2 stop:
-            printf("Searching for stop type 2\n");
-            numSerchPointsType2 = 0;
-            DivideRoute(map, pathToStop, pathLength, searchPointsType2,
-                &numSerchPointsType2, 340/2);
-            targetSection = searchPointsType2[0];
-
-            printf("Search point type 2: %d\n", searchPointsType2[0]);
-            int tempX, tempY;
-            IdxToCoords(searchPointsType2[0], mapSize, &tempX, &tempY);
-            printf("section points coordinates: (%d, %d)\n", tempX, tempY);
-
-            restStopIdx = LookForNeighbor(map, targetSection, mapSize, TYPE2STOP, 5);
-            if (restStopIdx == -1) {
-                printf("Could not find rest stop of type 2 at target section %d ", targetSection);
-            }
-
-            //recaluclate path to stop 2;
-            pathToStop = RunAstarPathFinding(map, mapSize, current, restStopIdx, &pathLength);
-
-            /*numberStops[numSections] = restStopIdx;
-            numSections++;*/
-            FindStopType2or3--;
-        }
-        else {
-            FindStopType2or3++;
-
-        }
         for (int i = 0; i < pathLength; i++) {
             // avoid duplicate node when paths connect
             if (fullPathLength == 0 || fullPath[fullPathLength - 1] != pathToStop[i]) {
@@ -339,11 +355,8 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
         // Update current position to rest stop
         current = restStopIdx;
 
-
-
-
-        free(pathToStop);
         // Loop continues and A* now runs from rest stop to goal
+        free(pathToStop);
     }
     printPath(fullPath, fullPathLength);
     PrintMapWPath(map, mapSize, fullPath, fullPathLength);
@@ -352,7 +365,7 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
     printf("number of stops : %d\n", numSections);
 
     for (int i = 0; i < numSections; i++) {
-        printf("stop at index : %d  ", numberStops[i]);
+        printf("stop at index : %d of type %d ", numberStops[i], map[numberStops[i]]);
         int tempX, tempY;
         IdxToCoords(numberStops[i], mapSize, &tempX, &tempY);
         printf("coordinates: (%d, %d)\n", tempX, tempY);
