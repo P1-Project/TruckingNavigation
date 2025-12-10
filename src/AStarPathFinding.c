@@ -252,12 +252,10 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
 /////////////////////////////////
 
     //vaiables in use
-
     int numSearchPoints = 0;
     int current = startIdx;
     int numSections = 0;
     int restStopIdx = 0;
-
     int baseSearchRadius = 5;
     const int drivingTime = 340; //equal to 13 tiles;
     int desiredType;
