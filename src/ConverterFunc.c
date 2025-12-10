@@ -49,6 +49,11 @@ int LookForNeighbor(const int* map, int index, int mapSize, int neighbor, int ma
     int x, y;
     IdxToCoords(index, mapSize, &x, &y);
 
+    // Check own coordinate
+    if (map[index] == neighbor) {
+        return -2;
+    }
+
     // search
     for (int r = 1; r <= maxRadius; ++r) {
         for (int dx = -r; dx <= r; ++dx) {
