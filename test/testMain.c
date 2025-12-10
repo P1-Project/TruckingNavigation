@@ -14,6 +14,7 @@ int testIdxToCoords(void);
 int testRandomBetween(void);
 int testLookForNeighbor1(void);
 int testLookForNeighbor2(void);
+int testLookForNeighbor3(void);
 
 //MAPGEN Test
 int TestInitMap(void);
@@ -69,7 +70,7 @@ MAIN_RUN_TESTS(
     Idx63, Idx0, Idx3, Idx7, Idx56, Idx24, Idx36, Idx70, IdxNOSPACE,IdxEDGE, IdxGO,
     /* ConverterFunc tests */
     testXYToIdx, testIdxToCoords, testRandomBetween,
-    testLookForNeighbor1, testLookForNeighbor2,
+    testLookForNeighbor1, testLookForNeighbor2, testLookForNeighbor3,
     /* DivideFunction */
     testDivideRouteFunc1, testDivideRouteFunc2, testDivideRouteFunc3,
     /* GenBlockade tests */
