@@ -211,8 +211,8 @@ int* RunAstarPathFinding(const int *map, const int mapSize, const int pointA, co
  * @param mapSize The Size of the map needed
  */
 void Navigate(int *map, const int mapSize, const Destination destination) {
-    int pathLength = 0, pathLength2 = 0;
-    int *fullPath = malloc(MAPSIZE * MAPSIZE * sizeof(int));
+    int pathLength = 0;
+    int *fullPath = malloc(sizeof(int) * (mapSize * mapSize));
     int fullPathLength = 0;
 
     // Get start and end points
@@ -246,23 +246,24 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
     }
     printf("\n\n");
 
+    free(originalPath);
+
 
 /////////////////////////////////
 
     //vaiables in use
 
-    int numSearchPoints;
+    int numSearchPoints = 0;
     int current = startIdx;
     int numSections = 0;
-    int stopCount = 0;
     int restStopIdx = 0;
 
     int baseSearchRadius = 5;
-    int drivingTime = 340; //equal to 13 tiles;
+    const int drivingTime = 340; //equal to 13 tiles;
     int desiredType;
 
-    int *numberStops = malloc(sizeof(int)* mapSize);
-    int *searchPoints = malloc(sizeof(int)*mapSize);
+    int *numberStops = malloc(sizeof(int) * (mapSize * mapSize));
+    int *searchPoints = malloc(sizeof(int)* (mapSize * mapSize));
 
     while (current != goalIdx) {
         //First Run should equal the original path,
@@ -273,7 +274,8 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
         DivideRoute(map, path, pathLength,
                     searchPoints,
                     &numSearchPoints,
-                    drivingTime/2);
+                    drivingTime * 2/3);
+        printf("numSearchPoints = %d\n", numSearchPoints);
         // Time spent driving aka section size = 13 tiles before first rest stop
         //if the path is too short the program returns the full path from start to end
         if (numSearchPoints == 0) {
@@ -284,12 +286,11 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
         }
 
         //The route must be divided for the driver to follow regulations
-
         if (numSections == 0) {
             desiredType = 0; //Stop type can be both.
         }
         else {//numSections % 2 == 0 chose type 3 otherwise type 2
-            desiredType = (numSections % 2 != 0) ? TYPE2STOP : TYPE3STOP;
+            desiredType = (numSections % 2 != 0) ? TYPE3STOP : TYPE2STOP;
         }
 
         //Find the nearest TYPE3STOP to the next section break
@@ -302,13 +303,11 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
             t3 = LookForNeighbor(map, targetSection, mapSize, TYPE3STOP, ++baseSearchRadius);
         }
         //if still no reststop found
-        if (t2 == -1 && t3 == -1) {
+        if (t2 <= -1 && t3 <= -1) {
             printf("No path found\n");
             free(path);
             break;
         }
-
-
 
         if (desiredType == 0) { //pick type closest
             if (t2 == -1 ) restStopIdx = t3;
@@ -337,7 +336,14 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
             break;
         }
         //frees path for next loop,
-        free(path);
+
+        //debugging print and checks
+        int maxNodes = mapSize * mapSize;
+        if (current < 0 || current >= maxNodes) { fprintf(stderr,"BAD current=%d\n", current); abort(); }
+        if (targetSection < 0 || targetSection >= maxNodes) { fprintf(stderr,"BAD targetSection=%d\n", targetSection); abort(); }
+        if (t2 < -1 || t2 >= maxNodes || t3 < -1 || t3 >= maxNodes) { fprintf(stderr,"BAD neighbor t2=%d t3=%d\n", t2, t3); abort(); }
+
+
         //Divide path into sections (this fills searchPointsType3)
         // Recalculate A* to the rest stop
         int *pathToStop = RunAstarPathFinding(map, mapSize,
@@ -357,6 +363,7 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
 
         // Loop continues and A* now runs from rest stop to goal
         free(pathToStop);
+        free(path);
     }
     printPath(fullPath, fullPathLength);
     PrintMapWPath(map, mapSize, fullPath, fullPathLength);

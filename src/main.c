@@ -14,7 +14,6 @@
 #include "DefineStruct.h"
 #include "DivideRouteFunc.h"
 
-
 int main(void) {
     //GenMap
 
