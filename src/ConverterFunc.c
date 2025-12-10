@@ -51,7 +51,7 @@ int LookForNeighbor(const int* map, int index, int mapSize, int neighbor, int ma
 
     // Check own coordinate
     if (map[index] == neighbor) {
-        return -2;
+        return index;
     }
 
     // search
