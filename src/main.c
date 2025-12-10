@@ -120,6 +120,9 @@ int main(void) {
         int targetSection = searchPointsType3[0]; // next section point
         int restStopIdx = LookForNeighbor(map, targetSection,
             MAPSIZE, TYPE3STOP, 5);
+        if (restStopIdx == -1) {
+            printf("Could not find rest stop of type 3 at target section %d", targetSection);
+        }
 
         free(path);
 
@@ -147,7 +150,10 @@ int main(void) {
     printf("number of stops : %d\n", numSections);
 
     for (int i = 0; i < numSections; i++) {
-        printf("stop at index : %d ", numberStops[i]);
+        printf("stop 3 at index : %d  ", numberStops[i]);
+        int tempX, tempY;
+        IdxToCoords(numberStops[i], MAPSIZE, &tempX, &tempY);
+        printf("coordinates: (%d, %d)\n", tempX, tempY);
     }
 
 
