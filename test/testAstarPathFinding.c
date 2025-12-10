@@ -34,7 +34,7 @@ TEST_CASE(TestClearMap,
     int len = sizeof(expectedPath) / sizeof(expectedPath[0]);
     /* Act */
     int outlength = 0;
-    int *path = runAstarPathFinding(map, mapSize, startIdx, goalIdx,&outlength);
+    int *path = RunAstarPathFinding(map, mapSize, startIdx, goalIdx,&outlength);
 
     /* Assert */
 
@@ -65,7 +65,7 @@ TEST_CASE(TestSnakeMap,
     int expectedPath[] = {0, 1, 2, 3, 9, 13, 12, 11, 15, 21, 22, 23, 24};
     /* Act */
     int outlength = 0;
-    int *path = runAstarPathFinding(map, mapSize, startIdx, goalIdx,&outlength);
+    int *path = RunAstarPathFinding(map, mapSize, startIdx, goalIdx,&outlength);
 
     /* Assert */
 

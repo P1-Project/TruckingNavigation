@@ -3,6 +3,8 @@
 #define TRUCKINGNAVIGATION_ASTARPATHFINDING_H
 #include <stdbool.h>
 
+#include "DefineStruct.h"
+
 // Priority Queue (min-heap)
 typedef struct {
     int node;
@@ -20,7 +22,10 @@ int heapPop(MinHeap *h);
 bool heapEmpty(MinHeap *h);
 int* reconstruct(const int *cameFrom, int current, int *outLength);
 
-int* runAstarPathFinding(const int *map, int mapSize,
+int* RunAstarPathFinding(const int *map, int mapSize,
     int pointA, int pointB, int *outLength);
+void Navigate(int *map,int mapSize, Destination destination);
+
 void TestAstarPathFindingConnection(void);
+
 #endif //TRUCKINGNAVIGATION_ASTARPATHFINDING_H
