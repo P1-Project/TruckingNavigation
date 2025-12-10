@@ -221,8 +221,8 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
 
 
     //Use these for these lines for debugging
-    startIdx = CheckCoordinateSet(map, 0, 0, mapSize);
-    goalIdx = CheckCoordinateSet(map, 29, 29, mapSize);
+    /*startIdx = CheckCoordinateSet(map, 0, 0, mapSize);
+    goalIdx = CheckCoordinateSet(map, 29, 29, mapSize);*/
 
     //print map with start and end
     map[startIdx] = ROUTE;
