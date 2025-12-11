@@ -5,9 +5,12 @@
 #include <math.h>
 #include <stdbool.h>
 
+#include "CheckCoordinateSetFunc.h"
 #include "ConverterFunc.h"
 #include "DefineConst.h"
 #include "DefineStruct.h"
+#include "DivideRouteFunc.h"
+#include "MapGenFunc.h"
 
 void TestAstarPathFindingConnection(void) {
     printf("TestAstarPathFindingConnection\n");
@@ -15,6 +18,7 @@ void TestAstarPathFindingConnection(void) {
 
 #define INF 999999999
 // Heuristic (Euclidean Distance)
+/*
 int heuristic(const int a, const int b, const int mapSize) {
     int ax, ay, bx, by;
     IdxToCoords(a, mapSize, &ax, &ay);
@@ -24,6 +28,7 @@ int heuristic(const int a, const int b, const int mapSize) {
 
     return (int)sqrt(deltaX * deltaX + deltaY * deltaY);
 }
+*/
 
 // Heuristic (Manhattan)
 int heuristicManhattan(int a, int b, int mapSize) {
@@ -40,7 +45,7 @@ int movementCost(int cellType) {
         return INF;  // not passable
     if (cellType == INTERSTATEROAD || cellType == INTERSTATESTOP) return 24;
 
-    return 40;        // simple version: all roads cost 1
+    return 50;
 }
 
 
@@ -121,7 +126,7 @@ int* reconstruct(const int *cameFrom, int current, int *outLength) {
 
 
 // A* main algorithm
-int* runAstarPathFinding(const int *map, const int mapSize, const int pointA, const int pointB, int *outLength){
+int* RunAstarPathFinding(const int *map, const int mapSize, const int pointA, const int pointB, int *outLength){
     const int total = mapSize * mapSize;
 
     int *cameFrom = malloc(sizeof(int) * total);
@@ -135,7 +140,7 @@ int* runAstarPathFinding(const int *map, const int mapSize, const int pointA, co
     }
 
     gScore[pointA] = 0;
-    fScore[pointA] = heuristic(pointA, pointB, mapSize);
+    fScore[pointA] = heuristicManhattan(pointA, pointB, mapSize);
 
     MinHeap *openSet = heapCreate(total);
     heapPush(openSet, pointA, fScore[pointA]);
@@ -186,7 +191,7 @@ int* runAstarPathFinding(const int *map, const int mapSize, const int pointA, co
             if (tentative_g < gScore[nb]) {
                 cameFrom[nb] = current;
                 gScore[nb] = tentative_g;
-                fScore[nb] = tentative_g + heuristic(nb, pointB, mapSize);
+                fScore[nb] = tentative_g + heuristicManhattan(nb, pointB, mapSize);
 
                 heapPush(openSet, nb, fScore[nb]);
             }
@@ -199,3 +204,7 @@ int* runAstarPathFinding(const int *map, const int mapSize, const int pointA, co
     free(openSet->data); free(openSet);
     return NULL;
 }
+
+
+
+

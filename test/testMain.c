@@ -16,6 +16,7 @@ int testIdxToCoords(void);
 int testRandomBetween(void);
 int testLookForNeighbor1(void);
 int testLookForNeighbor2(void);
+int testLookForNeighbor3(void);
 int CalculatePathTime1(void);
 
 //MAPGEN Tests
@@ -48,6 +49,11 @@ int testDivideRouteFunc1(void);
 int testDivideRouteFunc2(void);
 int testDivideRouteFunc3(void);
 
+
+//Test AstarPathFinding
+int TestClearMap(void);
+int TestSnakeMap(void);
+
 TEST_CASE(TestConnection,
     /* Arrange */
     int i = 1;
@@ -69,6 +75,7 @@ MAIN_RUN_TESTS(
     testXYToIdx, testIdxToCoords, testRandomBetween,
     testLookForNeighbor1, testLookForNeighbor2,
     CalculatePathTime1,
+    testLookForNeighbor1, testLookForNeighbor2, testLookForNeighbor3,
     /* DivideFunction */
     testDivideRouteFunc1, testDivideRouteFunc2, testDivideRouteFunc3,
     /* GenBlockade tests */
@@ -81,7 +88,8 @@ MAIN_RUN_TESTS(
     TestInitializeStopsLocation, TestSpotOccupied, TestGenStops,
     /* GetDestinationFunc tests */
     /* MapGenFunc tests */
-    TestInitMap
+    TestInitMap,
     /* pathFinding tests */
+    TestClearMap, TestSnakeMap
     )
 
