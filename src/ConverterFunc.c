@@ -1,11 +1,8 @@
-//
-// Created by rasmk on 22-11-2025.
-//
-
 #include "ConverterFunc.h"
 
 #include <stdlib.h>
 #include <stdio.h>
+#include "DefineConst.h"
 
 /**
  *
@@ -96,4 +93,32 @@ int LookForNeighbor(const int* map, int index, int mapSize, int neighbor, int ma
     00 03 05 08 00      12 -S -S -S 23
     00 00 00 00 00      13 15 17 19 24
     */
+}
+
+/**
+ * This function calculates the time it takes to drive a path. It looks at whether you drive on normal road or interstate.
+ * @param map Pointer to the map you want to search in
+ * @param path Pointer to the path you want to measure
+ * @param pathLength Length of path. integer.
+ * @return Returns the time it takes to drive the path in minutes. integer.
+ */
+int CalculatePathTime(int *map, int *path, int pathLength) {
+    int time = 0;
+
+    // Iterates through move 'pairs'
+    for (int i = 0; i < pathLength - 1; ++i) {
+        int current = path[i];
+        int next = path[i+1];
+
+        int currentIsInterstate = (map[current] == INTERSTATEROAD) || (map[current] == INTERSTATESTOP);
+        int nextIsInterstate = (map[next] == INTERSTATEROAD) || (map[next] == INTERSTATESTOP);
+
+        // Decide move cost
+        if (currentIsInterstate && nextIsInterstate) {
+            time += 24; // If you're on an interstate and moving to another interstate, it only takes 24
+        } else {
+            time += 40; // Otherwise it takes 40
+        }
+    }
+    return time; // Return total time
 }

@@ -3,32 +3,35 @@
 
 int TestConnectionGenStops(void);
 
-// GenStopsFunc tests
+// GenStopsFunc Tests
 int TestSpotOccupied(void);
 int TestInitializeTypes(void);
 int TestInitializeStopsType(void);
 int TestInitializeStopsLocation(void);
 int TestGenStops(void);
+
+// ConverterFunc Tests
 int testXYToIdx(void);
 int testIdxToCoords(void);
 int testRandomBetween(void);
 int testLookForNeighbor1(void);
 int testLookForNeighbor2(void);
 int testLookForNeighbor3(void);
+int CalculatePathTime1(void);
 
-//MAPGEN Test
+//MAPGEN Tests
 int TestInitMap(void);
 
-//GenBlockade Test
+//GenBlockade Tests
 int TestGenBlockade(void);
 
-//GenInterstate Test
+//GenInterstate Tests
 int TestDefineInterstateStraightEastWest(void);
 int TestDefineInterstateStraightNorthSouth(void);
 int TestDefineInterstateDiagonalNS(void);
 int TestDefineInterstateNSTwoTiles(void);
 
-//CheckCoordinateSet Test
+//CheckCoordinateSet Tests
 int IdxGO(void);
 int IdxEDGE(void);
 int Idx63(void);
@@ -41,7 +44,7 @@ int Idx36(void);
 int Idx70(void);
 int IdxNOSPACE(void);
 
-//DivideRouteFunc Test
+//DivideRouteFunc Tests
 int testDivideRouteFunc1(void);
 int testDivideRouteFunc2(void);
 int testDivideRouteFunc3(void);
@@ -70,6 +73,8 @@ MAIN_RUN_TESTS(
     Idx63, Idx0, Idx3, Idx7, Idx56, Idx24, Idx36, Idx70, IdxNOSPACE,IdxEDGE, IdxGO,
     /* ConverterFunc tests */
     testXYToIdx, testIdxToCoords, testRandomBetween,
+    testLookForNeighbor1, testLookForNeighbor2,
+    CalculatePathTime1,
     testLookForNeighbor1, testLookForNeighbor2, testLookForNeighbor3,
     /* DivideFunction */
     testDivideRouteFunc1, testDivideRouteFunc2, testDivideRouteFunc3,

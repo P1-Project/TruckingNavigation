@@ -134,6 +134,42 @@ TEST_CASE(testLookForNeighbor2,
     CHECK_EQ_INT(actualResult, expectedResult);
 )
 
+TEST_CASE(CalculatePathTime1,
+    /* Arrange */
+    int map[25] = {
+        0, 0, 0, 1, 0,
+        0, 0, 0, 1, 0,
+        0, 0, 1, 0, 0,
+        0, 0, 1, 0, 0,
+        0, 0, 1, 0, 0
+    };
+
+    int pathLength1 = 6;
+    int path1[6] = {1, 6, 12, 17, 22, 23};
+
+    int pathLength2 = 9;
+    int path2[9] = {4, 9, 14, 19, 18, 17, 12, 8, 3};
+
+    /* as index
+    00, 01, 02, 03, 04,
+    05, 06, 07, 08, 09,
+    10, 11, 12, 13, 14,
+    15, 16, 17, 18, 19,
+    20, 21, 22, 23, 24
+    */
+
+    int expectedTime1 = 168;
+    int expectedTime2 = 272;
+
+    /* Act */
+    int actualTime1 = CalculatePathTime(map, path1, pathLength1);
+    int actualTime2 = CalculatePathTime(map, path2, pathLength2);
+
+    /* Assert */
+    CHECK_EQ_INT(actualTime1, expectedTime1);
+    CHECK_EQ_INT(actualTime2, expectedTime2);
+)
+
 TEST_CASE(testLookForNeighbor3,
     /* Arrange */
     int mapsize = 5;
