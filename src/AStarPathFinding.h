@@ -24,7 +24,7 @@ int* reconstruct(const int *cameFrom, int current, int *outLength);
 
 int* RunAstarPathFinding(const int *map, int mapSize,
     int pointA, int pointB, int *outLength);
-void Navigate(int *map,int mapSize, Destination destination);
+int heuristicManhattan(int a, int b, int mapSize);
 
 void TestAstarPathFindingConnection(void);
 
