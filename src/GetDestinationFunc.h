@@ -10,9 +10,6 @@
 
 #include "DefineStruct.h"
 
-#define MAPSIZE 30
-
-
 void GetDestination (Destination *destination, int acceptInput, int mapSize);
 
 void runDestination();

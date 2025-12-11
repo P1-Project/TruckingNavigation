@@ -3,7 +3,6 @@
 #include "AStarPathFinding.h"
 #include "CheckCoordinateSetFunc.h"
 #include "ConverterFunc.h"
-#include "pathFinding.h"
 #include "MapGenFunc.h"
 #include "GenStopsFunc.h"
 #include "GenBlockadeFunc.h"
@@ -13,6 +12,8 @@
 #include "DefineConst.h"
 #include "DefineStruct.h"
 #include "DivideRouteFunc.h"
+#include "Navigation.h"
+
 
 int main(void) {
     //GenMap
