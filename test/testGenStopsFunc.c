@@ -114,17 +114,18 @@ TEST_CASE(TestInitializeStopsLocation,
 
 TEST_CASE(TestSpotOccupied,
     /* Arrange */
-    int miniMap[4] = {NORMALROAD,NORMALROAD,NORMALROAD,NORMALROAD};
+    int miniMap[4] = {
+        NORMALROAD,NORMALROAD,
+        NORMALROAD,NORMALROAD
+    };
     miniMap[2] = BLOCKADE;
 
-    unsigned int x1 = 2 % 4;
-    unsigned int y1 = 2 / 4;
-    unsigned int x2 = 1 % 4;
-    unsigned int y2 = 1 / 4;
+    int index1 = 2;
+    int index2 = 1;
 
     /* Act */
-    int result1 = SpotOccupied(miniMap, x1, y1);
-    int result2 = SpotOccupied(miniMap, x2, y2);
+    int result1 = SpotOccupied(miniMap, index1);
+    int result2 = SpotOccupied(miniMap, index2);
 
     /* Assert */
     CHECK_EQ_INT(result1, 1);
