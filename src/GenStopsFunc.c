@@ -56,13 +56,11 @@ void InitializeStopsType(Stops restStops[], StopType stopTypesArray[3]) {
  */
 void InitializeStopsLocation(int *map, Stops restStops[]) {
     int randomIdx, newX, newY;
-    //printf("Creating %d rest stops of type 2 and %d rest stops of type 3.\n", numberOfType2, numberOfType3);
 
     for (int i = 0; i < NUMBEROFSTOPS23; ++i) { // Assign a location to every rest stop of type 2 and 3
         int attempts = 0;
         do {
             randomIdx = rand() % (MAPSIZE*MAPSIZE); // Get a random index
-            //printf("Trying to assign rest stop at (%d, %d)\n", randomX, randomY);
             attempts++;
             if(attempts > (MAPSIZE*MAPSIZE)) {
                 printf("Could not place stop after %d attempts!\n", (MAPSIZE*MAPSIZE));
@@ -73,10 +71,9 @@ void InitializeStopsLocation(int *map, Stops restStops[]) {
             } while (SpotOccupied(map, randomIdx) ||
                 LookForNeighbor(map, randomIdx, MAPSIZE, TYPE2STOP, 1) != -1 ||
                 LookForNeighbor(map, randomIdx, MAPSIZE, TYPE3STOP, 3) != -1);
-        //printf("Successfully assigned rest stop at (%d, %d)\n", randomX, randomY);
 
         IdxToCoords(randomIdx, MAPSIZE, &newX, &newY);
-
+        //printf("Successfully assigned rest stop at (%d, %d)\n", randomX, randomY);
         restStops[i].locationX = newX; // Assign the given rest stop's x coordinate
         restStops[i].locationY = newY; // Assign the given rest stop's x coordinate
 
