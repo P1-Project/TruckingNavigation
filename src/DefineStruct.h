@@ -23,6 +23,8 @@ typedef struct {
     int startX, startY, endX, endY;
 } InterStateRoad;
 
-
+typedef struct {
+    int startX, startY, endX, endY;
+} Destination;
 
 #endif //TRUCKINGNAVIGATION_DEFINESTRUCTS_H

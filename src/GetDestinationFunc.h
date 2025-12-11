@@ -8,14 +8,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define MAPSIZE 30
-
-typedef struct {
-    int startX;
-    int startY;
-    int endX;
-    int endY;
-}Destination;
+#include "DefineStruct.h"
 
 void GetDestination (Destination *destination, int acceptInput, int mapSize);
 

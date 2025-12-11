@@ -3,13 +3,15 @@
 //
 
 #include "GetDestinationFunc.h"
-
+#include "ConverterFunc.h"
+#include "DefineConst.h"
+#include "DefineStruct.h"
 
 #include <time.h>
 #include <stdio.h>
 
 
-void GetDestination (Destination *destination, int acceptInput, int mapSize){
+void GetDestination(Destination *destination, int acceptInput, int mapSize){
 
     if (acceptInput == 1) {
 

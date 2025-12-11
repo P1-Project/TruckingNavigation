@@ -143,6 +143,16 @@ void PrintMapWPath(int *map, int mapSize, int *path, int pathLength) {
     printf("\n");
 }
 
+void printPath(int *path, int pathLength) {
+    printf("Path length : %d\n", pathLength);
+    for (int i = 0; i <pathLength; i++) {
+        printf("%d ", path[i]);
+    }
+    printf("\n");
+}
+
+
+
 
 void runMapGen(int *map, int mapSize, Stops *restStops)
 {
