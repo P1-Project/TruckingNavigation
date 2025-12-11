@@ -73,7 +73,6 @@ MAIN_RUN_TESTS(
     Idx63, Idx0, Idx3, Idx7, Idx56, Idx24, Idx36, Idx70, IdxNOSPACE,IdxEDGE, IdxGO,
     /* ConverterFunc tests */
     testXYToIdx, testIdxToCoords, testRandomBetween,
-    testLookForNeighbor1, testLookForNeighbor2,
     CalculatePathTime1,
     testLookForNeighbor1, testLookForNeighbor2, testLookForNeighbor3,
     /* DivideFunction */

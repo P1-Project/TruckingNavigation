@@ -63,19 +63,19 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
 
     //vaiables in use
     int numSearchPoints = 0;
-    int current = startIdx;
+    int currentIdx = startIdx;
     int numSections = 0;
     int restStopIdx = 0;
     int baseSearchRadius = 5;
     const int drivingTime = 340; //equal to 13 tiles;
     int desiredType;
 
-    int *numberStops = malloc(sizeof(int) * (mapSize * mapSize));
-    int *searchPoints = malloc(sizeof(int)* (mapSize * mapSize));
+    int *numberStops = malloc(sizeof(int) * (mapSize));
+    int *searchPoints = malloc(sizeof(int)* (mapSize));
 
-    while (current != goalIdx) {
+    while (currentIdx != goalIdx) {
         //First Run should equal the original path,
-        int *path = RunAstarPathFinding(map, mapSize, current, goalIdx, &pathLength);
+        int *path = RunAstarPathFinding(map, mapSize, currentIdx, goalIdx, &pathLength);
         if (!path || pathLength <= 1) break;
 
         numSearchPoints = 0;
@@ -147,7 +147,7 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
 
         //debugging print and checks
         int maxNodes = mapSize * mapSize;
-        if (current < 0 || current >= maxNodes) { fprintf(stderr,"BAD current=%d\n", current); abort(); }
+        if (currentIdx < 0 || currentIdx >= maxNodes) { fprintf(stderr,"BAD current=%d\n", currentIdx); abort(); }
         if (targetSection < 0 || targetSection >= maxNodes) { fprintf(stderr,"BAD targetSection=%d\n", targetSection); abort(); }
         if (t2 < -1 || t2 >= maxNodes || t3 < -1 || t3 >= maxNodes) { fprintf(stderr,"BAD neighbor t2=%d t3=%d\n", t2, t3); abort(); }
 
@@ -155,7 +155,7 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
         //Divide path into sections (this fills searchPointsType3)
         // Recalculate A* to the rest stop
         int *pathToStop = RunAstarPathFinding(map, mapSize,
-            current, restStopIdx, &pathLength);
+            currentIdx, restStopIdx, &pathLength);
 
         // Append subsection to fullPath
         for (int i = 0; i < pathLength; i++) {
@@ -167,7 +167,7 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
         numberStops[numSections] = restStopIdx;
         numSections++;
         // Update current position to rest stop
-        current = restStopIdx;
+        currentIdx = restStopIdx;
 
         // Loop continues and A* now runs from rest stop to goal
         free(pathToStop);
