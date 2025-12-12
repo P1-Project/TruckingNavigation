@@ -58,12 +58,5 @@ int main(void) {
 
 
     // Divide route with ~2.5 hour intervals (150 minutes)
-
-    //Navigate to destination
-
-    // LookForNeighbor(type 2) at found points
-
-    // Find optimal route between found stops of type 2, 3 and start and end points
-
     return 0;
 }
