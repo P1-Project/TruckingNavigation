@@ -22,12 +22,17 @@ int heapPop(MinHeap *h);
 bool heapEmpty(MinHeap *h);
 int* reconstruct(const int *cameFrom, int current, int *outLength);
 
-int* RunAstarPathFinding(const int *map, int mapSize,
-    int pointA, int pointB, int *outLength);
-int heuristicManhattan(int a, int b, int mapSize);
-int heuristic(int a, int b, int mapSize);
+
+int HeuristicManhattan(int a, int b, int mapSize);
+int HeuristicEuclidean(int a, int b, int mapSize);
 int chebyshevDistance(int a, int b, int mapSize);
 
 void TestAstarPathFindingConnection(void);
+
+int* RunAstarPathFindingChebyshev(const int *map, int mapSize, int pointA, int pointB, int *outLength);
+int* RunAstarPathFindingEuclidean(const int *map, int mapSize, int pointA, int pointB, int *outLength);
+int* RunAstarPathFindingManhattan(const int *map, int mapSize, int pointA, int pointB, int *outLength);
+
+
 
 #endif //TRUCKINGNAVIGATION_ASTARPATHFINDING_H

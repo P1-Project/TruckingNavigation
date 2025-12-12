@@ -40,7 +40,8 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
     map[goalIdx] = ROUTE;
 
     //Original path saved
-    int *originalPath = RunAstarPathFinding(map, mapSize, startIdx, goalIdx, &pathLength);
+    printf("Manhattan Heuristic");
+    int *originalPath = RunAstarPathFindingManhattan(map, mapSize, startIdx, goalIdx, &pathLength);
     printf("\n");
     if (originalPath) {
         for (int i = 0; i < pathLength; i++) {
@@ -55,6 +56,41 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
         PrintMap(map, mapSize);
     }
     printf("\n\n");
+
+    printf("Euclidean Heuristic");
+    originalPath = RunAstarPathFindingEuclidean(map, mapSize, startIdx, goalIdx, &pathLength);
+    printf("\n");
+    if (originalPath) {
+        for (int i = 0; i < pathLength; i++) {
+            // Print route
+            printf("%d ", originalPath[i]);
+        }
+        printf("\nPath length : %d\n", pathLength);
+        PrintMapWPath(map, mapSize, originalPath, pathLength);
+    }
+    else {
+        printf("No path found\n");
+        PrintMap(map, mapSize);
+    }
+    printf("\n\n");
+
+    printf("Chebyshev Heuristic");
+    originalPath = RunAstarPathFindingChebyshev(map, mapSize, startIdx, goalIdx, &pathLength);
+    printf("\n");
+    if (originalPath) {
+        for (int i = 0; i < pathLength; i++) {
+            // Print route
+            printf("%d ", originalPath[i]);
+        }
+        printf("\nPath length : %d\n", pathLength);
+        PrintMapWPath(map, mapSize, originalPath, pathLength);
+    }
+    else {
+        printf("No path found\n");
+        PrintMap(map, mapSize);
+    }
+    printf("\n\n");
+
 
     free(originalPath);
 
@@ -75,7 +111,7 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
 
     while (currentIdx != goalIdx) {
         //First Run should equal the original path,
-        int *path = RunAstarPathFinding(map, mapSize, currentIdx, goalIdx, &pathLength);
+        int *path = RunAstarPathFindingChebyshev(map, mapSize, currentIdx, goalIdx, &pathLength);
         if (!path || pathLength <= 1) break;
 
         numSearchPoints = 0;
@@ -121,11 +157,11 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
             if (t2 == -1 ) restStopIdx = t3;
             else if (t3 == -1 ) restStopIdx = t2;
             else {
-                int distance2 = heuristicManhattan(targetSection, t2 , mapSize);
-                int distance3 = heuristicManhattan(targetSection, t3 , mapSize);
+                int distance2 = HeuristicManhattan(targetSection, t2 , mapSize);
+                int distance3 = HeuristicManhattan(targetSection, t3 , mapSize);
                 if (distance2 == distance3) {
-                    int goalDistance2 = heuristicManhattan(t2, goalIdx, mapSize);
-                    int goalDistance3 = heuristicManhattan(t3, goalIdx, mapSize);
+                    int goalDistance2 = HeuristicManhattan(t2, goalIdx, mapSize);
+                    int goalDistance3 = HeuristicManhattan(t3, goalIdx, mapSize);
                     restStopIdx = (goalDistance2 < goalDistance3) ? t2 : t3;
                 }
                 else {
@@ -154,7 +190,7 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
 
         //Divide path into sections (this fills searchPointsType3)
         // Recalculate A* to the rest stop
-        int *pathToStop = RunAstarPathFinding(map, mapSize,
+        int *pathToStop = RunAstarPathFindingChebyshev(map, mapSize,
             currentIdx, restStopIdx, &pathLength);
 
         // Append subsection to fullPath

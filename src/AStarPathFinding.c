@@ -34,7 +34,7 @@ int chebyshevDistance(const int a, const int b, const int mapSize) {
 
 
 // Heuristic (Euclidean Distance)
-int heuristic(const int a, const int b, const int mapSize) {
+int HeuristicEuclidean(const int a, const int b, const int mapSize) {
     int ax, ay, bx, by;
     IdxToCoords(a, mapSize, &ax, &ay);
     IdxToCoords(b, mapSize, &bx, &by);
@@ -45,7 +45,7 @@ int heuristic(const int a, const int b, const int mapSize) {
 }
 
 // Heuristic (Manhattan)
-int heuristicManhattan(int a, int b, int mapSize) {
+int HeuristicManhattan(int a, int b, int mapSize) {
     int ax, ay, bx, by;
     IdxToCoords(a, mapSize, &ax, &ay);
     IdxToCoords(b, mapSize, &bx, &by);
@@ -140,7 +140,7 @@ int* reconstruct(const int *cameFrom, int current, int *outLength) {
 
 
 // A* main algorithm
-int* RunAstarPathFinding(const int *map, const int mapSize, const int pointA, const int pointB, int *outLength){
+int* RunAstarPathFindingChebyshev(const int *map, const int mapSize, const int pointA, const int pointB, int *outLength){
     const int total = mapSize * mapSize;
 
     int *cameFrom = malloc(sizeof(int) * total);
@@ -168,7 +168,7 @@ int* RunAstarPathFinding(const int *map, const int mapSize, const int pointA, co
             int *path = reconstruct(cameFrom, current, outLength);
             free(cameFrom); free(costSoFar); free(estimatedTotalCost);
             free(openSet->data); free(openSet);
-            return path;
+            return path; //Returns path if goal is reached
         }
 
         int cx, cy;
@@ -219,8 +219,178 @@ int* RunAstarPathFinding(const int *map, const int mapSize, const int pointA, co
     *outLength = 0;
     free(cameFrom); free(costSoFar); free(estimatedTotalCost);
     free(openSet->data); free(openSet);
-    return NULL;
+    return NULL; //returns NULL if no path found
 }
+
+
+// A* main algorithm
+int* RunAstarPathFindingManhattan(const int *map, const int mapSize, const int pointA, const int pointB, int *outLength){
+    const int total = mapSize * mapSize;
+
+    int *cameFrom = malloc(sizeof(int) * total);
+    int *costSoFar = malloc(sizeof(int) * total);
+    int *estimatedTotalCost = malloc(sizeof(int) * total);
+
+    for (int i = 0; i < total; i++) {
+        cameFrom[i] = -1;
+        costSoFar[i] = INF;
+        estimatedTotalCost[i] = INF;
+    }
+
+    costSoFar[pointA] = 0; //current score
+    estimatedTotalCost[pointA] = HeuristicManhattan(pointA, pointB, mapSize); //Score from current to goal,
+
+    MinHeap *openSet = heapCreate(total); //initializes the min heap tree
+    heapPush(openSet, pointA, estimatedTotalCost[pointA]); //push the first node, point A with the
+
+    while (!heapEmpty(openSet)) {
+
+        int current = heapPop(openSet);
+
+        //checks if current == goal of pointB if true then free memory and return the path
+        if (current == pointB) {
+            int *path = reconstruct(cameFrom, current, outLength);
+            free(cameFrom); free(costSoFar); free(estimatedTotalCost);
+            free(openSet->data); free(openSet);
+            return path; //Returns path if goal is reached
+        }
+
+        int cx, cy;
+        IdxToCoords(current, mapSize, &cx, &cy);
+
+        int neighbors[8];
+        int ncount = 0;
+
+        //Getting N,S,E,W neighbors to array
+        if (cx > 0) neighbors[ncount++] = XYToIdx(cx-1, cy, mapSize);
+        if (cx < mapSize-1) neighbors[ncount++] = XYToIdx(cx+1, cy, mapSize);
+        if (cy > 0) neighbors[ncount++] = XYToIdx(cx, cy-1, mapSize);
+        if (cy < mapSize-1) neighbors[ncount++] = XYToIdx(cx, cy+1, mapSize);
+
+        //Getting NE, NW, SE, SW to neighbors array
+        if (cx > 0 && cy > 0)
+            neighbors[ncount++] = XYToIdx(cx-1, cy-1, mapSize);
+        if (cx < mapSize-1 && cy > 0)
+            neighbors[ncount++] = XYToIdx(cx+1, cy-1, mapSize);
+        if (cx > 0 && cy < mapSize-1)
+            neighbors[ncount++] = XYToIdx(cx-1, cy+1, mapSize);
+        if (cx < mapSize-1 && cy < mapSize-1)
+            neighbors[ncount++] = XYToIdx(cx+1, cy+1, mapSize);
+
+        //loops through the neighbors
+        for (int i = 0; i < ncount; i++) {
+            //sets nb as the array value at that index
+            int nb = neighbors[i];
+            //cost is calculated
+            int cost = movementCost(map[nb]); //normal road is more than interstate
+            if (cost == INF) continue; // blocked road
+
+            int costThroughCurrent = costSoFar[current] + cost; //adding cost of the path to the node plus the next cost
+
+            if (costThroughCurrent < costSoFar[nb]) {
+                cameFrom[nb] = current; //curent becoms camefrom[nb]
+                costSoFar[nb] = costThroughCurrent; //Setting costSoFar as costThroughCurrent
+                //Estimating cost to goal
+                estimatedTotalCost[nb] = costThroughCurrent + HeuristicManhattan(nb, pointB, mapSize);
+
+                //Adding the node to the min-heap
+                heapPush(openSet, nb, estimatedTotalCost[nb]);
+            }
+        }
+    }
+
+    // no path found
+    *outLength = 0;
+    free(cameFrom); free(costSoFar); free(estimatedTotalCost);
+    free(openSet->data); free(openSet);
+    return NULL; //returns NULL if no path found
+}
+
+
+
+// A* main algorithm
+int* RunAstarPathFindingEuclidean(const int *map, const int mapSize, const int pointA, const int pointB, int *outLength){
+    const int total = mapSize * mapSize;
+
+    int *cameFrom = malloc(sizeof(int) * total);
+    int *costSoFar = malloc(sizeof(int) * total);
+    int *estimatedTotalCost = malloc(sizeof(int) * total);
+
+    for (int i = 0; i < total; i++) {
+        cameFrom[i] = -1;
+        costSoFar[i] = INF;
+        estimatedTotalCost[i] = INF;
+    }
+
+    costSoFar[pointA] = 0; //current score
+    estimatedTotalCost[pointA] = HeuristicEuclidean(pointA, pointB, mapSize); //Score from current to goal,
+
+    MinHeap *openSet = heapCreate(total); //initializes the min heap tree
+    heapPush(openSet, pointA, estimatedTotalCost[pointA]); //push the first node, point A with the
+
+    while (!heapEmpty(openSet)) {
+
+        int current = heapPop(openSet);
+
+        //checks if current == goal of pointB if true then free memory and return the path
+        if (current == pointB) {
+            int *path = reconstruct(cameFrom, current, outLength);
+            free(cameFrom); free(costSoFar); free(estimatedTotalCost);
+            free(openSet->data); free(openSet);
+            return path; //Returns path if goal is reached
+        }
+
+        int cx, cy;
+        IdxToCoords(current, mapSize, &cx, &cy);
+
+        int neighbors[8];
+        int ncount = 0;
+
+        //Getting N,S,E,W neighbors to array
+        if (cx > 0) neighbors[ncount++] = XYToIdx(cx-1, cy, mapSize);
+        if (cx < mapSize-1) neighbors[ncount++] = XYToIdx(cx+1, cy, mapSize);
+        if (cy > 0) neighbors[ncount++] = XYToIdx(cx, cy-1, mapSize);
+        if (cy < mapSize-1) neighbors[ncount++] = XYToIdx(cx, cy+1, mapSize);
+
+        //Getting NE, NW, SE, SW to neighbors array
+        if (cx > 0 && cy > 0)
+            neighbors[ncount++] = XYToIdx(cx-1, cy-1, mapSize);
+        if (cx < mapSize-1 && cy > 0)
+            neighbors[ncount++] = XYToIdx(cx+1, cy-1, mapSize);
+        if (cx > 0 && cy < mapSize-1)
+            neighbors[ncount++] = XYToIdx(cx-1, cy+1, mapSize);
+        if (cx < mapSize-1 && cy < mapSize-1)
+            neighbors[ncount++] = XYToIdx(cx+1, cy+1, mapSize);
+
+        //loops through the neighbors
+        for (int i = 0; i < ncount; i++) {
+            //sets nb as the array value at that index
+            int nb = neighbors[i];
+            //cost is calculated
+            int cost = movementCost(map[nb]); //normal road is more than interstate
+            if (cost == INF) continue; // blocked road
+
+            int costThroughCurrent = costSoFar[current] + cost; //adding cost of the path to the node plus the next cost
+
+            if (costThroughCurrent < costSoFar[nb]) {
+                cameFrom[nb] = current; //curent becoms camefrom[nb]
+                costSoFar[nb] = costThroughCurrent; //Setting costSoFar as costThroughCurrent
+                //Estimating cost to goal
+                estimatedTotalCost[nb] = costThroughCurrent + HeuristicEuclidean(nb, pointB, mapSize);
+
+                //Adding the node to the min-heap
+                heapPush(openSet, nb, estimatedTotalCost[nb]);
+            }
+        }
+    }
+
+    // no path found
+    *outLength = 0;
+    free(cameFrom); free(costSoFar); free(estimatedTotalCost);
+    free(openSet->data); free(openSet);
+    return NULL; //returns NULL if no path found
+}
+
 
 
 
