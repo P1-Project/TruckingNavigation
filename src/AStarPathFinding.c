@@ -17,8 +17,23 @@ void TestAstarPathFindingConnection(void) {
 }
 
 #define INF 999999999
-// Heuristic (Euclidean Distance)
 
+
+int chebyshevDistance(const int a, const int b, const int mapSize) {
+    int ax, ay, bx, by;
+    IdxToCoords(a, mapSize, &ax, &ay);
+    IdxToCoords(b, mapSize, &bx, &by);
+
+    int deltaX = abs(ax - bx);
+    int deltaY = abs(ay - by);
+
+    // Chebyshev distance: max of deltaX and deltaY
+    return (deltaX > deltaY) ? deltaX : deltaY;
+}
+
+
+
+// Heuristic (Euclidean Distance)
 int heuristic(const int a, const int b, const int mapSize) {
     int ax, ay, bx, by;
     IdxToCoords(a, mapSize, &ax, &ay);
@@ -139,7 +154,7 @@ int* RunAstarPathFinding(const int *map, const int mapSize, const int pointA, co
     }
 
     costSoFar[pointA] = 0; //current score
-    estimatedTotalCost[pointA] = heuristic(pointA, pointB, mapSize); //Score from current to goal,
+    estimatedTotalCost[pointA] = chebyshevDistance(pointA, pointB, mapSize); //Score from current to goal,
 
     MinHeap *openSet = heapCreate(total); //initializes the min heap tree
     heapPush(openSet, pointA, estimatedTotalCost[pointA]); //push the first node, point A with the
@@ -192,7 +207,7 @@ int* RunAstarPathFinding(const int *map, const int mapSize, const int pointA, co
                 cameFrom[nb] = current; //curent becoms camefrom[nb]
                 costSoFar[nb] = costThroughCurrent; //Setting costSoFar as costThroughCurrent
                 //Estimating cost to goal
-                estimatedTotalCost[nb] = costThroughCurrent + heuristic(nb, pointB, mapSize);
+                estimatedTotalCost[nb] = costThroughCurrent + chebyshevDistance(nb, pointB, mapSize);
 
                 //Adding the node to the min-heap
                 heapPush(openSet, nb, estimatedTotalCost[nb]);
