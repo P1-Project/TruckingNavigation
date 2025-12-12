@@ -31,8 +31,6 @@ int chebyshevDistance(const int a, const int b, const int mapSize) {
     return (deltaX > deltaY) ? deltaX : deltaY;
 }
 
-
-
 // Heuristic (Euclidean Distance)
 int HeuristicEuclidean(const int a, const int b, const int mapSize) {
     int ax, ay, bx, by;
