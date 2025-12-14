@@ -5,7 +5,7 @@
 #ifndef TRUCKINGNAVIGATION_DEFINESCONST_H
 #define TRUCKINGNAVIGATION_DEFINESCONST_H
 //DEFINES OF CONSTANTS
-#define DRIVINGTIMEMAX 4.5 //hours
+#define DRIVINGTIMEMAX 340 //Minuts result in 13 tiels
 #define DRIVINGSPEED 100 //KM per hour
 #define MAPSIZE 30
 #define NUMBEROFSTOPS 182
@@ -20,6 +20,8 @@
 #define TYPE3STOP 4
 #define BLOCKADE 5
 #define ROUTE 6
+#define NORMALROADCOST 40
+#define INTERSTATEROADCOST 24
 
 //Errorcodes for program
 #define MAPGENERROR 10

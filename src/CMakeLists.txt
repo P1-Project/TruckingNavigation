@@ -1,7 +1,6 @@
 # --- Libraries -------------------------------------------------------
 
 add_library(MapGenFunc MapGenFunc.c)
-add_library(pathfinding pathfinding.c)
 add_library(ConverterFunc ConverterFunc.c)
 add_library(GenBlockadeFunc GenBlockadeFunc.c)
 add_library(GenInterstateFunc GenInterstateFunc.c)
@@ -17,7 +16,6 @@ add_library(DivideRouteFunc DivideRouteFunc.c)
 set(PROJECT_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_include_directories(MapGenFunc PUBLIC ${PROJECT_INCLUDES})
-target_include_directories(pathfinding PUBLIC ${PROJECT_INCLUDES})
 target_include_directories(ConverterFunc PUBLIC ${PROJECT_INCLUDES})
 target_include_directories(GenBlockadeFunc PUBLIC ${PROJECT_INCLUDES})
 target_include_directories(GenInterstateFunc PUBLIC ${PROJECT_INCLUDES})

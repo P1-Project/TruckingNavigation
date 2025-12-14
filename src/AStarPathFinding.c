@@ -55,9 +55,9 @@ int HeuristicManhattan(int a, int b, int mapSize) {
 int movementCost(int cellType) {
     if (cellType == BLOCKADE)
         return INF;  // not passable
-    if (cellType == INTERSTATEROAD || cellType == INTERSTATESTOP) return 24;
+    if (cellType == INTERSTATEROAD || cellType == INTERSTATESTOP) return INTERSTATEROADCOST;
 
-    return 50;
+    return NORMALROADCOST;
 }
 
 

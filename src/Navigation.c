@@ -39,6 +39,7 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
     map[startIdx] = ROUTE;
     map[goalIdx] = ROUTE;
 
+    /*
     //Original path saved
     printf("Manhattan Heuristic");
     int *originalPath = RunAstarPathFindingManhattan(map, mapSize, startIdx, goalIdx, &pathLength);
@@ -56,7 +57,9 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
         PrintMap(map, mapSize);
     }
     printf("\n\n");
+    */
 
+    /*
     printf("Euclidean Heuristic");
     originalPath = RunAstarPathFindingEuclidean(map, mapSize, startIdx, goalIdx, &pathLength);
     printf("\n");
@@ -72,10 +75,10 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
         printf("No path found\n");
         PrintMap(map, mapSize);
     }
-    printf("\n\n");
+    printf("\n\n");*/
 
     printf("Chebyshev Heuristic");
-    originalPath = RunAstarPathFindingChebyshev(map, mapSize, startIdx, goalIdx, &pathLength);
+    int *originalPath = RunAstarPathFindingChebyshev(map, mapSize, startIdx, goalIdx, &pathLength);
     printf("\n");
     if (originalPath) {
         for (int i = 0; i < pathLength; i++) {
@@ -83,11 +86,11 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
             printf("%d ", originalPath[i]);
         }
         printf("\nPath length : %d\n", pathLength);
-        PrintMapWPath(map, mapSize, originalPath, pathLength);
+        PrintMap(map, mapSize, originalPath, pathLength);
     }
     else {
         printf("No path found\n");
-        PrintMap(map, mapSize);
+        PrintMap(map, mapSize, originalPath, pathLength);
     }
     printf("\n\n");
 
@@ -103,7 +106,6 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
     int numSections = 0;
     int restStopIdx = 0;
     int baseSearchRadius = 5;
-    const int drivingTime = 340; //equal to 13 tiles;
     int desiredType;
 
     int *numberStops = malloc(sizeof(int) * (mapSize));
@@ -118,7 +120,7 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
         DivideRoute(map, path, pathLength,
                     searchPoints,
                     &numSearchPoints,
-                    drivingTime * 2/3);
+                    DRIVINGTIMEMAX);
         printf("numSearchPoints = %d\n", numSearchPoints);
         // Time spent driving aka section size = 13 tiles before first rest stop
         //if the path is too short the program returns the full path from start to end
@@ -211,8 +213,8 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
     }
 
     //print map with full complete path
-    printPath(fullPath, fullPathLength);
-    PrintMapWPath(map, mapSize, fullPath, fullPathLength);
+    PrintPath(fullPath, fullPathLength);
+    PrintMap(map, mapSize, fullPath, fullPathLength);
 
     printf("\n");
     printf("number of stops : %d\n", numSections);

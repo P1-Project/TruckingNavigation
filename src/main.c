@@ -44,7 +44,7 @@ int main(void) {
     Stops restStops[NUMBEROFSTOPS];
 
     //runMapGen()
-    runMapGen(map, MAPSIZE, restStops);
+    RunMapGen(map, MAPSIZE, restStops);
 
     //PrintMap(map, MAPSIZE);
 

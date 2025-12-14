@@ -47,70 +47,32 @@ void EnableANSI() {
 #endif
     }
 
-//in this case mapSize can be unsigned since it cant be compared to minus 1 in while loop
-void PrintMap(int *map, int mapSize) {
-    EnableANSI();
-    const int total = mapSize * mapSize;
-    printf("Map size is: %d\n", mapSize);
-    int j = -1;
-    while (j < mapSize) {
-        if (j == -1 ) {
-            printf("   |");
-        }
-        else if (j <= 9){ printf(" %d ", j);}
-        else {
-            printf("%d ", j);
-        }
-        j++;
-    }
-    printf("\n");
-
-    for (int i = 0; i < total; i++) {
-        if (i % mapSize == 0) {
-            if (i != 0) printf("\n");
-            printf("%2d |", i / mapSize);
-        }
-
-        const char *color = COLOR_RESET;
-        char c = '?';
-        switch (map[i]) {
-                case NORMALROAD: c = '.'; color = WHT; break;
-                case INTERSTATEROAD: c = 'H'; color = MAG; break;
-                case INTERSTATESTOP: c = '1'; color = BLU; break;
-                case TYPE2STOP: c = '2'; color = YEL; break;
-                case TYPE3STOP: c = '3'; color = GRN; break;
-                case BLOCKADE: c = '#'; color = RED; break;
-                case ROUTE: c = 'X'; color = CYN; break;
-                default: c = '?'; color = WHT; break;
-            }
-        //}
-        printf("%s %c %s", color, c, WHT);
-    }
-    printf("\n");
-}
-bool isOnPath(int i, int *path, int pathLength) {
+int IsOnPath(const int i, const int *path, const int pathLength) {
     for (int p = 0; p < pathLength; p++) {
-        if (path[p] == i) return true;
+        if (path[p] == i) return 1;
     }
-    return false;
+    return 0;
 }
 
-
-
-void PrintMapWPath(int *map, int mapSize, int *path, int pathLength) {
+void PrintPath(int *path, int pathLength) {
+    printf("Path length : %d\n", pathLength);
+    for (int i = 0; i <pathLength; i++) {
+        printf("%d ", path[i]);
+    }
+    printf("\n");
+}
+//in this case mapSize can be unsigned since it cant be compared to minus 1 in while loop
+void PrintMap(int *map, int mapSize, int *path, int pathLength){
     EnableANSI();
     const int total = mapSize * mapSize;
+
     printf("Map size is: %d\n", mapSize);
-    int j = -1;
-    while (j < mapSize) {
-        if (j == -1 ) {
-            printf("   |");
-        }
-        else if (j <= 9){ printf(" %d ", j);}
-        else {
-            printf("%d ", j);
-        }
-        j++;
+
+    // Column header
+    for (int j = -1; j < mapSize; j++) {
+        if (j == -1)       printf("   |");
+        else if (j <= 9)   printf(" %d ", j);
+        else               printf("%d ", j);
     }
     printf("\n");
 
@@ -120,21 +82,22 @@ void PrintMapWPath(int *map, int mapSize, int *path, int pathLength) {
             printf("%2d |", i / mapSize);
         }
 
-        const char *color = COLOR_RESET;
+        const char *color = WHT;
         char c = '?';
-        if (path) {
-            switch (map[i]) {
-                case NORMALROAD: c = '.'; color = WHT; break;
-                case INTERSTATEROAD: c = 'H'; color = MAG; break;
-                case INTERSTATESTOP: c = '1'; color = BLU; break;
-                case TYPE2STOP: c = '2'; color = YEL; break;
-                case TYPE3STOP: c = '3'; color = GRN; break;
-                case BLOCKADE: c = '#'; color = RED; break;
-                case ROUTE: c = 'X'; color = CYN; break;
-                default: c = '?'; color = WHT; break;
-            }
+
+        switch (map[i]) {
+            case NORMALROAD: c = '.'; color = WHT; break;
+            case INTERSTATEROAD: c = 'H'; color = MAG; break;
+            case INTERSTATESTOP: c = '1'; color = BLU; break;
+            case TYPE2STOP: c = '2'; color = YEL; break;
+            case TYPE3STOP: c = '3'; color = GRN; break;
+            case BLOCKADE: c = '#'; color = RED; break;
+            case ROUTE: c = 'X'; color = CYN; break;
+            default: c = '?'; color = WHT; break;
         }
-        if (isOnPath(i, path, pathLength)) {
+
+        // Highlight path if provided
+        if (path && pathLength > 0 && IsOnPath(i, path, pathLength)) {
             color = CYNHB;
         }
 
@@ -143,21 +106,12 @@ void PrintMapWPath(int *map, int mapSize, int *path, int pathLength) {
     printf("\n");
 }
 
-void printPath(int *path, int pathLength) {
-    printf("Path length : %d\n", pathLength);
-    for (int i = 0; i <pathLength; i++) {
-        printf("%d ", path[i]);
-    }
-    printf("\n");
-}
 
 
 
-
-void runMapGen(int *map, int mapSize, Stops *restStops)
+void RunMapGen(int *map, int mapSize, Stops *restStops)
 {
-    srand(time(NULL)); //used to gen a random seed using the time.h libary
-
+    srand(time(NULL)); //used to gen a random seed using the time.h library
     InitMap(map, mapSize); //inits the map and sets all values equal 0
     //Gen Blockaed can be swaped around depending on what needs to be generated first,
     //clusters before normal equals more blockades
@@ -166,15 +120,10 @@ void runMapGen(int *map, int mapSize, Stops *restStops)
 
     StopType stopTypesArray[3];
     InitializeTypes(stopTypesArray);
-    GenInterStates(map, mapSize, restStops, stopTypesArray); //defines and setes the interstates
+    GenInterStates(map, mapSize, restStops, stopTypesArray); //defines and sets the interstates
 
-
-    //int indexValue = CheckCoordinateSet(map, 10, 10, mapSize);
-
+    //initialized rest stops and locates them on the map
     InitializeStopsType(restStops, stopTypesArray);
     InitializeStopsLocation(map, restStops);
-
-    //map[XYToIdx(29, 29, mapSize)] = 5;
-    //int indexValue = CheckCoordinateSet(map, 29, 29, mapSize); //this function needs fixing if index goes out of bounds
-    //printf("%d\n", indexValue);
+    //Returns the map through its memory address as a pointer.
 }
