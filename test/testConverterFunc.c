@@ -134,6 +134,39 @@ TEST_CASE(testLookForNeighbor2,
     CHECK_EQ_INT(actualResult, expectedResult);
 )
 
+TEST_CASE(testLookForNeighbor3,
+    /* Arrange */
+    int mapsize = 5;
+    int maxRadius = mapsize;
+    int map[25] = {
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0,
+        0, 0, 3, 0, 0,
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0
+    };
+
+    /* as index
+    00, 01, 02, 03, 04,
+    05, 06, 07, 08, 09,
+    10, 11, 12, 13, 14,
+    15, 16, 17, 18, 19,
+    20, 21, 22, 23, 24
+    */
+
+    int index = 12; // start index
+    int neighbor = TYPE2STOP; // 3
+    printf("%d \n", TYPE2STOP);
+    printf("%d \n", neighbor);
+    int expectedResult = 12;
+
+    /* Act */
+    int actualResult = LookForNeighbor(map, index, mapsize, neighbor, maxRadius);
+    printf("%d \n", actualResult);
+    /* Assert */
+    CHECK_EQ_INT(actualResult, expectedResult);
+)
+
 TEST_CASE(CalculatePathTime1,
     /* Arrange */
     int map[25] = {
@@ -168,37 +201,4 @@ TEST_CASE(CalculatePathTime1,
     /* Assert */
     CHECK_EQ_INT(actualTime1, expectedTime1);
     CHECK_EQ_INT(actualTime2, expectedTime2);
-)
-
-TEST_CASE(testLookForNeighbor3,
-    /* Arrange */
-    int mapsize = 5;
-    int maxRadius = mapsize;
-    int map[25] = {
-        0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0,
-        0, 0, 3, 0, 0,
-        0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0
-    };
-
-    /* as index
-    00, 01, 02, 03, 04,
-    05, 06, 07, 08, 09,
-    10, 11, 12, 13, 14,
-    15, 16, 17, 18, 19,
-    20, 21, 22, 23, 24
-    */
-
-    int index = 12; // start index
-    int neighbor = TYPE2STOP; // 3
-    printf("%d \n", TYPE2STOP);
-    printf("%d \n", neighbor);
-    int expectedResult = 12;
-
-    /* Act */
-    int actualResult = LookForNeighbor(map, index, mapsize, neighbor, maxRadius);
-    printf("%d \n", actualResult);
-    /* Assert */
-    CHECK_EQ_INT(actualResult, expectedResult);
 )
