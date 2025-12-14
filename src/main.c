@@ -53,10 +53,10 @@ int main(void) {
     GetDestination(&destination,0,MAPSIZE);
 
 
-    // Find optimal route between found stops of type 3
+    // Find optimal route between found stops of type 3 and display to user
     Navigate(map, MAPSIZE, destination);
 
 
-    // Divide route with ~2.5 hour intervals (150 minutes)
+
     return 0;
 }
