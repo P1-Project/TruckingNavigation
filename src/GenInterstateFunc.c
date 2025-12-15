@@ -38,7 +38,7 @@ static int clamp(const int v, const int min, const int max) {
 
 
 /**
- *
+ *The function takes the map, mapsize and the structure interstateRoad and outputs a path length
  * @param map int array of the map
  * @param mapSize The size of the map width
  * @param interStateRoad Struct type of InterStateRoad, containing the start x,y and end x,y
@@ -50,26 +50,17 @@ int *DefineInterstatePath(int *map, int mapSize, InterStateRoad interStateRoad, 
     int absDx = abs( interStateRoad.startX - interStateRoad.endX);
     //calculate distance absolute distance from startY to endY
     int absDy = abs(interStateRoad.startY - interStateRoad.endY);
-
     //these intgers below are assigned as a one line if-statement with return either 1, 0 or -1
     int stepX = (interStateRoad.endX > interStateRoad.startX) ? 1 :
             (interStateRoad.endX < interStateRoad.startX) ? -1 : 0;
-
     int stepY = (interStateRoad.endY > interStateRoad.startY) ? 1 :
                 (interStateRoad.endY < interStateRoad.startY) ? -1 : 0;
-
-
     int x = interStateRoad.startX;
     int y = interStateRoad.startY;
     int D; //decision var
     int pathLength = 0;
     int tempIndex;
     int *path = malloc(sizeof(int) * mapSize * mapSize);
-
-    //printf("tempIndex = %d\n", tempIndex);
-    //map[tempIndex-1] = INTERSTATEROAD;
-    //printf("map[tempIndex] = %d\n", map[tempIndex]);
-
     //if the interstate is going North to South or East to West, do this else do North to South,
     if (absDx >= absDy) { //East To west
         D = 2 * absDy - absDx;
@@ -78,7 +69,6 @@ int *DefineInterstatePath(int *map, int mapSize, InterStateRoad interStateRoad, 
             map[tempIndex] = INTERSTATEROAD; //sets mapIdx as highway
             pathLength++;
             path[i] = tempIndex;
-
             if (D > 0) {
                 y += stepY; //adds or subtracts depending on the absDy above
                 D -= 2*absDx;
@@ -103,7 +93,6 @@ int *DefineInterstatePath(int *map, int mapSize, InterStateRoad interStateRoad, 
         }
     }
     *outPathLength = pathLength;
-
     return path;
 }
 
