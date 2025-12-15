@@ -25,7 +25,7 @@ int main(void) {
 
     int map[MAPSIZE*MAPSIZE];
     Stops restStops[NUMBEROFSTOPS];
-
+    srand(time(NULL));
     // Find optimal route between start and end points
     Destination destination;
     GetDestination(&destination,0,MAPSIZE);

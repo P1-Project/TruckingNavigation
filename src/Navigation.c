@@ -26,6 +26,7 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
     int pathLength = 0;
     int *fullPath = malloc(sizeof(int) * (mapSize * mapSize));
     int fullPathLength = 0;
+    int time = 0;
 
     // Get start and end points
     int startIdx = CheckCoordinateSet(map, destination.startX, destination.startY, mapSize);
@@ -38,44 +39,6 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
     //print map with start and end
     map[startIdx] = ROUTE;
     map[goalIdx] = ROUTE;
-
-    /*
-    //Original path saved
-    printf("Manhattan Heuristic");
-    int *originalPath = RunAstarPathFindingManhattan(map, mapSize, startIdx, goalIdx, &pathLength);
-    printf("\n");
-    if (originalPath) {
-        for (int i = 0; i < pathLength; i++) {
-            // Print route
-            printf("%d ", originalPath[i]);
-        }
-        printf("\nPath length : %d\n", pathLength);
-        PrintMapWPath(map, mapSize, originalPath, pathLength);
-    }
-    else {
-        printf("No path found\n");
-        PrintMap(map, mapSize);
-    }
-    printf("\n\n");
-    */
-
-    /*
-    printf("Euclidean Heuristic");
-    originalPath = RunAstarPathFindingEuclidean(map, mapSize, startIdx, goalIdx, &pathLength);
-    printf("\n");
-    if (originalPath) {
-        for (int i = 0; i < pathLength; i++) {
-            // Print route
-            printf("%d ", originalPath[i]);
-        }
-        printf("\nPath length : %d\n", pathLength);
-        PrintMapWPath(map, mapSize, originalPath, pathLength);
-    }
-    else {
-        printf("No path found\n");
-        PrintMap(map, mapSize);
-    }
-    printf("\n\n");*/
 
     printf("Chebyshev Heuristic");
     int *originalPath = RunAstarPathFindingChebyshev(map, mapSize, startIdx, goalIdx, &pathLength);
@@ -94,7 +57,8 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
     }
     printf("\n\n");
 
-
+    time = CalculatePathTime(map, originalPath, pathLength);
+    printf("Path time in minutes : %d\n", time);
     free(originalPath);
 
 
@@ -227,6 +191,9 @@ void Navigate(int *map, const int mapSize, const Destination destination) {
     }
 
     //free memory
+    time = CalculatePathTime(map, fullPath, fullPathLength);
+    printf("New path time in minutes : %d\n", time);
+
     free(fullPath);
     free(numberStops);
 }

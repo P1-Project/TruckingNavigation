@@ -16,11 +16,11 @@ typedef struct {
     int size;
     int capacity;
 } MinHeap;
-void heapSwap(HeapNode *a, HeapNode *b);
-void heapPush(MinHeap *h, int node, int fScore);
-int heapPop(MinHeap *h);
-bool heapEmpty(MinHeap *h);
-int* reconstruct(const int *cameFrom, int current, int *outLength);
+void HeapSwap(HeapNode *a, HeapNode *b);
+void HeapPush(MinHeap *h, int node, int fScore);
+int HeapPop(MinHeap *h);
+bool HeapEmpty(MinHeap *h);
+int* Reconstruct(const int *cameFrom, int current, int *outLength);
 
 
 int HeuristicManhattan(int a, int b, int mapSize);

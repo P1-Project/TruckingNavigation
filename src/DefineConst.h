@@ -18,6 +18,7 @@
 #define ROUTE 6
 #define NORMALROADCOST 40
 #define INTERSTATEROADCOST 24
+#define INF 999999999
 
 //Errorcodes for program
 #define MAPGENERROR 10
@@ -26,6 +27,7 @@
 #define GENSTOPERROR 13
 #define CHECKCOORDINATEERROR 14
 #define BLOCKADEERROR 15
+#define PATHFINDINGERROR 16
 
 #define OUTOFBOUNDS (-1)
 #define NOSPACEAVAILABLE (-2)
