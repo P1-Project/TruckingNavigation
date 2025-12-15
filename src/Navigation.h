@@ -7,5 +7,6 @@
 #include "DefineStruct.h"
 #include <stdlib.h>
 
-void Navigate(int *map, int mapSize, Destination destination);
+int *Navigate(int *map, const int mapSize, const Destination destination,
+    int *fullPathLength, int *numSections, int *stops);
 #endif //TRUCKINGNAVIGATION_NAVIGATION_H
