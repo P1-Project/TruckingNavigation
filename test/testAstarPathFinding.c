@@ -44,7 +44,7 @@ TEST_CASE(TestClearMapManhattan,
         CHECK_EQ_INT(expectedPath[i], path[i]);
     }
     //print map with route for debugging
-    PrintMap(map, mapSize);
+    PrintMap(map, mapSize, path ,outlength);
 )
 
 
@@ -75,5 +75,5 @@ TEST_CASE(TestSnakeMapManhattan,
         CHECK_EQ_INT(expectedPath[i], path[i]);
     }
     //print map with route for debugging
-    PrintMap(map, mapSize);
+    PrintMap(map, mapSize, path ,outlength);
 )
