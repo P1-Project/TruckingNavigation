@@ -1,12 +1,10 @@
-//
-// Created by rasmk on 11-12-2025.
-//
-
 #ifndef TRUCKINGNAVIGATION_NAVIGATION_H
 #define TRUCKINGNAVIGATION_NAVIGATION_H
 #include "DefineStruct.h"
-#include <stdlib.h>
 
-int *Navigate(int *map, const int mapSize, const Destination destination,
+int *Navigate(int *map, int mapSize, Destination destination,
     int *fullPathLength, int *numSections, int *stops);
+int* OriginalPath(int *map, int mapSize, Destination destination,
+    int *outPathLength);
+void NavigateWrapper(int *map, int mapSize, int *path, int pathLength, int *stops, int numOfStops);
 #endif //TRUCKINGNAVIGATION_NAVIGATION_H

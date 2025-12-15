@@ -54,7 +54,7 @@ void PrintMap(int *map, int mapSize, int *path, int pathLength){
     EnableANSI();
     const int total = mapSize * mapSize;
 
-    printf("Map size is: %d\n", mapSize);
+    //printf("Map size is: %d\n", mapSize);
 
     // Column header
     for (int j = -1; j < mapSize; j++) {

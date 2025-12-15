@@ -7,20 +7,10 @@
 #include "DefineConst.h"
 #include "DivideRouteFunc.h"
 #include "MapGenFunc.h"
-/**
- * This function takes the map and calculates the most optimal path from Start to End Goal.
- * The function then splits the path into sections and for each section navigating to a nearby rest stop.
- * @param map The map the program runs on
- * @param mapSize The Size of the map needed
- * @param destination Contains start and end coordinates in a struct for easy handling
- * @param fullPathLength
- * @param numSections
- * @param stops
- */
-int *Navigate(int *map, const int mapSize, const Destination destination,
-    int *fullPathLength, int *numSections, int *stops) {
+
+int* OriginalPath(int *map, const int mapSize, const Destination destination,
+    int *outPathLength){
     int pathLength = 0;
-    int *fullPath = malloc(sizeof(int) * (mapSize * mapSize));
     int time = 0;
 
     // Get start and end points
@@ -33,7 +23,7 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
     int *originalPath = RunAstarPathFindingChebyshev(map, mapSize, startIdx, goalIdx, &pathLength);
     if (originalPath) {
         PrintMap(map, mapSize, originalPath, pathLength);
-        printf("\nPath length : %d\n", pathLength);
+        printf("Path length : %d\n", pathLength);
         for (int i = 0; i < pathLength; i++) {
             // Print route
             printf("%d ", originalPath[i]);
@@ -43,11 +33,39 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
         PrintMap(map, mapSize, originalPath, pathLength);
         printf("No path found\n");
     }
-    printf("\n\n");
+    printf("\n");
 
     time = CalculatePathTime(map, originalPath, pathLength);
     printf("Path time in minutes : %d\n", time);
+    printf("_____________________________________________________________________________________________\n");
+    *outPathLength = pathLength;
+    return originalPath;
+
     free(originalPath);
+}
+
+/**
+ * This function takes the map and calculates the most optimal path from Start to End Goal.
+ * The function then splits the path into sections and for each section navigating to a nearby rest stop.
+ * @param map The map the program runs on
+ * @param mapSize The Size of the map needed
+ * @param destination Contains start and end coordinates in a struct for easy handling
+ * @param fullPathLength length of full path
+ * @param numSections Number of sections aka number of stops needed
+ * @param stops an array of the indexes where a stop is located
+ */
+int *Navigate(int *map, const int mapSize, const Destination destination,
+    int *fullPathLength, int *numSections, int *stops) {
+    int *fullPath = malloc(sizeof(int) * (mapSize * mapSize));
+    int time = 0;
+    int pathLength = 0;
+
+    // Get start and end points
+    int startIdx = CheckCoordinateSet(map, destination.startX, destination.startY, mapSize);
+    int goalIdx = CheckCoordinateSet(map, destination.endX, destination.endY, mapSize);
+    //print map with start and end
+    map[startIdx] = ROUTE;
+    map[goalIdx] = ROUTE;
 /////////////////////////////////
     //variables in use
     int numSearchPoints = 0;
@@ -94,7 +112,11 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
         if (t2 == -1 && t3 == -1) {
             printf("No path found\n");
             free(path);
-            break;
+            *numSections = -1;
+            *stops = -1;
+            *fullPathLength = -1;
+            free(numberStops);
+            return NULL;
         }
         if (desiredType == 0) { //pick type closest
             if (t2 == -1 ) restStopIdx = t3;
@@ -116,11 +138,6 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
         } else { // TYPE2STOP
             restStopIdx = (t2 != -1) ? t2 : t3;
         }
-        if (restStopIdx == -1) {
-            printf("Could not find rest stop of type 3 at target section %d", targetSection);
-            free(path);
-            break;
-        }
         /*
         //debugging print and checks
         int maxNodes = mapSize * mapSize;
@@ -132,7 +149,6 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
         // Recalculate A* to the rest stop
         int *pathToStop = RunAstarPathFindingChebyshev(map, mapSize,
             currentIdx, restStopIdx, &pathLength);
-
         // Append subsection to fullPath
         for (int i = 0; i < pathLength; i++) {
             // avoid duplicate node when paths connect
@@ -148,11 +164,29 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
         free(path);
     }
     //return
-    //full path, FullPathLenght, numberstops, numsections,
+    //full path, FullPathLength, numberStops, numSections,
     *fullPathLength = localFullPathLength;
     *numSections = localNumSections;
     *stops = *numberStops;
+    free(numberStops);
     return fullPath;
-
 }
+
+void NavigateWrapper(int *map, int mapSize, int *path, int pathLength, int *stops, int numOfStops) {
+    //print map with full complete path
+    PrintMap(map, mapSize, path, pathLength);
+    PrintPath(path, pathLength);
+    printf("\n");
+    printf("number of stops : %d\n", numOfStops);
+    for (int i = 0; i < numOfStops; i++) {
+        printf("stop at index : %d of type %d ", stops[i], map[stops[i]]);
+        int tempX, tempY;
+        IdxToCoords(stops[i], mapSize, &tempX, &tempY);
+        printf("coordinates: (%d, %d)\n", tempX, tempY);
+    }
+    const int time = CalculatePathTime(map, path, pathLength);
+    printf("New path time in minutes : %d\n", time);
+}
+
+
 
