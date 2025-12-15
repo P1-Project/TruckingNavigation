@@ -16,29 +16,15 @@
 
 
 int main(void) {
-    //GenMap
-
-    //GetDestination (start, end)
-
-    //GetPreferences
-
-    //Navigate
-
-    //DisplayRoute
-
-    //FilterTruckStops
-
     printf("Hello, World!\n");
-
     //connection testing
-    TestConGenStopsFunc();
-    TestConGetDestinationFunc();
-    TestConCheckCoordinateSetFunc();
-    TestConGenBlockadeFunc();
-
+    //TestConGenStopsFunc();
+    //TestConGetDestinationFunc();
+    //TestConCheckCoordinateSetFunc();
+    //TestConGenBlockadeFunc();
     //TestPathfindingConcetion();
-    TestMapGenConnection();
-    TestAstarPathFindingConnection();
+    //TestMapGenConnection();
+    //TestAstarPathFindingConnection();
 
     int map[MAPSIZE*MAPSIZE];
     Stops restStops[NUMBEROFSTOPS];
@@ -50,7 +36,7 @@ int main(void) {
 
     // Find optimal route between start and end points
     Destination destination;
-    GetDestination(&destination,0,MAPSIZE);
+    GetDestination(&destination,1,MAPSIZE);
 
 
     // Find optimal route between found stops of type 3 and display to user

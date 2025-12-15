@@ -1,20 +1,10 @@
-//
-// Created by rasmk on 19-11-2025.
-//
-
 #include "MapGenFunc.h"
-
-#include <stdbool.h>
-
 #include "GenInterstateFunc.h"
-#include "CheckCoordinateSetFunc.h"
 #include "GenStopsFunc.h"
-#include "ConverterFunc.h"
 #include "AnsiColorCodes.h"
 #include "GenBlockadeFunc.h"
 #include "DefineConst.h"
 #include "DefineStruct.h"
-
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,8 +12,6 @@
 #ifdef _WIN32
 #include <windows.h>
 #endif
-
-
 
 void TestMapGenConnection(void) {
     printf("Testing con from mapGen\n");
@@ -70,9 +58,9 @@ void PrintMap(int *map, int mapSize, int *path, int pathLength){
 
     // Column header
     for (int j = -1; j < mapSize; j++) {
-        if (j == -1)       printf("   |");
-        else if (j <= 9)   printf(" %d ", j);
-        else               printf("%d ", j);
+        if (j == -1) printf("   |");
+        else if (j <= 9) printf(" %d ", j);
+        else printf("%d ", j);
     }
     printf("\n");
 
@@ -105,9 +93,6 @@ void PrintMap(int *map, int mapSize, int *path, int pathLength){
     }
     printf("\n");
 }
-
-
-
 
 void RunMapGen(int *map, int mapSize, Stops *restStops)
 {

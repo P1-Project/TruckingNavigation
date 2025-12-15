@@ -25,7 +25,7 @@ int* reconstruct(const int *cameFrom, int current, int *outLength);
 
 int HeuristicManhattan(int a, int b, int mapSize);
 int HeuristicEuclidean(int a, int b, int mapSize);
-int chebyshevDistance(int a, int b, int mapSize);
+int HeuristicChebyshev(int a, int b, int mapSize);
 
 void TestAstarPathFindingConnection(void);
 

@@ -224,10 +224,10 @@ void GenInterStates(int *map, const int mapSize, Stops *restStops, StopType stop
 
     // 3. Draw highways
     int stopCounter = abs(NUMBEROFSTOPS - NUMBEROFINTERSTATESTOPS);
-    printf("stopCounter value : %d\n", stopCounter);
+    //printf("stopCounter value : %d\n", stopCounter);
     SetInterStateRoad(map, mapSize, interStateRoad1, restStops, stopTypesArray, &stopCounter);
-    printf("stopCounter value : %d\n", stopCounter);
+    //printf("stopCounter value : %d\n", stopCounter);
     SetInterStateRoad(map, mapSize, interStateRoad2, restStops, stopTypesArray, &stopCounter);
-    printf("stopCounter value : %d\n", stopCounter);
+    //printf("stopCounter value : %d\n", stopCounter);
 
 }

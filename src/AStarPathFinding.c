@@ -19,7 +19,7 @@ void TestAstarPathFindingConnection(void) {
 #define INF 999999999
 
 
-int chebyshevDistance(const int a, const int b, const int mapSize) {
+int HeuristicChebyshev(const int a, const int b, const int mapSize) {
     int ax, ay, bx, by;
     IdxToCoords(a, mapSize, &ax, &ay);
     IdxToCoords(b, mapSize, &bx, &by);
@@ -152,7 +152,7 @@ int* RunAstarPathFindingChebyshev(const int *map, const int mapSize, const int p
     }
 
     costSoFar[pointA] = 0; //current score
-    estimatedTotalCost[pointA] = chebyshevDistance(pointA, pointB, mapSize); //Score from current to goal,
+    estimatedTotalCost[pointA] = HeuristicChebyshev(pointA, pointB, mapSize); //Score from current to goal,
 
     MinHeap *openSet = heapCreate(total); //initializes the min heap tree
     heapPush(openSet, pointA, estimatedTotalCost[pointA]); //push the first node, point A with the
@@ -205,7 +205,7 @@ int* RunAstarPathFindingChebyshev(const int *map, const int mapSize, const int p
                 cameFrom[nb] = current; //curent becoms camefrom[nb]
                 costSoFar[nb] = costThroughCurrent; //Setting costSoFar as costThroughCurrent
                 //Estimating cost to goal
-                estimatedTotalCost[nb] = costThroughCurrent + chebyshevDistance(nb, pointB, mapSize);
+                estimatedTotalCost[nb] = costThroughCurrent + HeuristicChebyshev(nb, pointB, mapSize);
 
                 //Adding the node to the min-heap
                 heapPush(openSet, nb, estimatedTotalCost[nb]);
