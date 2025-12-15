@@ -1,13 +1,10 @@
-#include "AStarPathFinding.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <stdbool.h>
-
+#include "AStarPathFinding.h"
 #include "HelperFunc.h"
 #include "DefineConst.h"
-
 
 void TestAstarPathFindingConnection(void) {
     printf("TestAstarPathFindingConnection\n");
@@ -42,7 +39,7 @@ int HeuristicChebyshev(const int a, const int b, const int mapSize) {
     int deltaY = abs(ay - by);
 
     // Chebyshev distance: max of deltaX and deltaY
-    return (deltaX > deltaY) ? deltaX : deltaY;
+    return deltaX > deltaY ? deltaX : deltaY;
 }
 
 
@@ -71,7 +68,7 @@ void HeapSwap(HeapNode *a, HeapNode *b) {
 
 void HeapPush(MinHeap *h, int node, int fScore) {
     int i = h->size++;
-    h->data[i].node = node;
+    h->data[i].nIndex = node;
     h->data[i].fScore = fScore;
 
     while (i > 0) {
@@ -84,7 +81,7 @@ void HeapPush(MinHeap *h, int node, int fScore) {
 
 int HeapPop(MinHeap *h) {
     if (h == NULL || h->size == 0) exit(PATHFINDINGERROR);
-    int result = h->data[0].node;
+    int result = h->data[0].nIndex;
 
     h->size--;
     h->data[0] = h->data[h->size];
@@ -114,7 +111,6 @@ bool HeapEmpty(MinHeap *h) {
 }
 
 // Path reconstruction
-
 int* Reconstruct(const int *cameFrom, int current, int *outLength) {
     int buffer[2000];
     int count = 0;

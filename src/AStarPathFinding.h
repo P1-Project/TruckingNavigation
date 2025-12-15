@@ -7,7 +7,7 @@
 
 // Priority Queue (min-heap)
 typedef struct {
-    int node;
+    int nIndex;
     int fScore;
 } HeapNode;
 
