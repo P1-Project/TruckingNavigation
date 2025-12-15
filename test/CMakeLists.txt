@@ -2,7 +2,7 @@
 add_executable(testTruckingNavigation
         testMain.c
         testCheckCoordinateSetFunc.c
-        testConverterFunc.c
+        testHelperFunc.c
         testDivideRouteFunc.c
         testGenBlockadeFunc.c
         testGenInterstateFunc.c
@@ -24,7 +24,7 @@ target_include_directories(testTruckingNavigation PRIVATE
 # Library for main code
 add_library(trucking_src
         ../src/CheckCoordinateSetFunc.c
-        ../src/ConverterFunc.c
+        ../src/HelperFunc.c
         ../src/DivideRouteFunc.c
         ../src/GenBlockadeFunc.c
         ../src/GenInterstateFunc.c

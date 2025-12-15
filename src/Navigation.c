@@ -9,7 +9,7 @@
 
 #include "AStarPathFinding.h"
 #include "CheckCoordinateSetFunc.h"
-#include "ConverterFunc.h"
+#include "HelperFunc.h"
 #include "DefineConst.h"
 #include "DivideRouteFunc.h"
 #include "MapGenFunc.h"

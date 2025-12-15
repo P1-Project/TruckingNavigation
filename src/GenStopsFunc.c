@@ -4,7 +4,7 @@
 #include <time.h>
 
 #include "GenStopsFunc.h"
-#include "ConverterFunc.h"
+#include "HelperFunc.h"
 #include "GetDestinationFunc.h"
 #include "MapGenFunc.h"
 #include "DefineConst.h"

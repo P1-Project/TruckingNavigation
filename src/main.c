@@ -2,7 +2,7 @@
 
 #include "AStarPathFinding.h"
 #include "CheckCoordinateSetFunc.h"
-#include "ConverterFunc.h"
+#include "HelperFunc.h"
 #include "MapGenFunc.h"
 #include "GenStopsFunc.h"
 #include "GenBlockadeFunc.h"

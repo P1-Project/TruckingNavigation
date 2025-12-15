@@ -1,7 +1,7 @@
 # --- Libraries -------------------------------------------------------
 
 add_library(MapGenFunc MapGenFunc.c)
-add_library(ConverterFunc ConverterFunc.c)
+add_library(ConverterFunc HelperFunc.c)
 add_library(GenBlockadeFunc GenBlockadeFunc.c)
 add_library(GenInterstateFunc GenInterstateFunc.c)
 add_library(GetDestinationFunc GetDestinationFunc.c)

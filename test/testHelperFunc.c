@@ -2,7 +2,7 @@
 
 #include "../src/DefineConst.h"
 #include "mtest.h"
-#include "../src/ConverterFunc.h"
+#include "../src/HelperFunc.h"
 
 TEST_CASE(testXYToIdx,
     /* Arrange */

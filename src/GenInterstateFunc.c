@@ -3,7 +3,7 @@
 //
 
 #include "GenInterstateFunc.h"
-#include "ConverterFunc.h"
+#include "HelperFunc.h"
 #include "DefineStruct.h"
 #include "DefineConst.h"
 
@@ -160,10 +160,9 @@ void SetInterstateRestStops(int *map, int mapSize,
  * @param map Takes a blank map filled with 0's and "returns" an updated version with interstate going across
  * @param mapSize mapSize
  * @param interStateRoad Struct type of InterStateRoad, containing the start x,y and end x,y
- * @param restStops
- * @param stopTypesArray
- * @param stopCounter
- *
+ * @param restStops restStop Struct for storage of rest stops
+ * @param stopTypesArray Rest stops types, of the 3 types
+ * @param stopCounter a counter to keep track of the amount of stops in the array of stops
  */
 void SetInterStateRoad(int *map, int mapSize,
     InterStateRoad interStateRoad,
@@ -181,7 +180,13 @@ void SetInterStateRoad(int *map, int mapSize,
     free(path);
 }
 
-
+/**
+ *
+ * @param map Map
+ * @param mapSize Mapsize
+ * @param restStops Array with rest stops
+ * @param stopTypesArray types of stops
+ */
 void GenInterStates(int *map, const int mapSize, Stops *restStops, StopType stopTypesArray[3]) {
 
     if (!map || !restStops || !stopTypesArray) {exit(GENSTOPERROR);}

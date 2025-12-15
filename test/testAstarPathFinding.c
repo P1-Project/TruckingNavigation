@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "ConverterFunc.h"
+#include "HelperFunc.h"
 #include "DefineConst.h"
 #include "MapGenFunc.h"
 #include "mtest.h"

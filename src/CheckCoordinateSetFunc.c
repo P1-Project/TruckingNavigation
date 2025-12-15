@@ -4,13 +4,11 @@
 
 #include "CheckCoordinateSetFunc.h"
 #include "DefineConst.h"
-#include "ConverterFunc.h"
+#include "HelperFunc.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#define OUTOFBOUNDS (-1)
-#define NOSPACEAVAILABLE (-2)
 
 
 void TestConCheckCoordinateSetFunc() {
