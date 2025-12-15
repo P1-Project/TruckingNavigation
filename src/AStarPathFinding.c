@@ -151,30 +151,23 @@ int* RunAstarPathFindingChebyshev(const int *map, const int mapSize, const int p
     HeapPush(openSet, pointA, estimatedTotalCost[pointA]); //push the first node, point A with the
 
     while (!HeapEmpty(openSet)) {
-
         int current = HeapPop(openSet);
-
         //checks if current == goal of pointB if true then free memory and return the path
         if (current == pointB) {
-            //printMinHeapASCII(openSet);
             int *path = Reconstruct(cameFrom, current, outLength);
             free(cameFrom); free(costSoFar); free(estimatedTotalCost);
             free(openSet->data); free(openSet);
             return path; //Returns path if goal is reached
         }
-
         int cx, cy;
         IdxToCoords(current, mapSize, &cx, &cy);
-
         int neighbors[8];
         int ncount = 0;
-
         //Getting N,S,E,W neighbors to array
         if (cx > 0) neighbors[ncount++] = XYToIdx(cx-1, cy, mapSize);
         if (cx < mapSize-1) neighbors[ncount++] = XYToIdx(cx+1, cy, mapSize);
         if (cy > 0) neighbors[ncount++] = XYToIdx(cx, cy-1, mapSize);
         if (cy < mapSize-1) neighbors[ncount++] = XYToIdx(cx, cy+1, mapSize);
-
         //Getting NE, NW, SE, SW to neighbors array
         if (cx > 0 && cy > 0)
             neighbors[ncount++] = XYToIdx(cx-1, cy-1, mapSize);
@@ -184,7 +177,6 @@ int* RunAstarPathFindingChebyshev(const int *map, const int mapSize, const int p
             neighbors[ncount++] = XYToIdx(cx-1, cy+1, mapSize);
         if (cx < mapSize-1 && cy < mapSize-1)
             neighbors[ncount++] = XYToIdx(cx+1, cy+1, mapSize);
-
         //loops through the neighbors
         for (int i = 0; i < ncount; i++) {
             //sets nb as the array value at that index
@@ -206,9 +198,7 @@ int* RunAstarPathFindingChebyshev(const int *map, const int mapSize, const int p
             }
         }
     }
-
-    // no path found
-    *outLength = 0;
+    *outLength = 0; // no path found
     free(cameFrom); free(costSoFar); free(estimatedTotalCost);
     free(openSet->data); free(openSet);
     return NULL; //returns NULL if no path found
