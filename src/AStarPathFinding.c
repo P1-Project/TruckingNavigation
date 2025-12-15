@@ -123,9 +123,9 @@ int* Reconstruct(const int *cameFrom, int current, int *outLength) {
 
     // reverse the buffer
     int *path = malloc(sizeof(int) * count);
-    for (int i = 0; i < count; i++)
+    for (int i = 0; i < count; i++) {
         path[i] = buffer[count - 1 - i];
-
+    }
     *outLength = count;
     return path;
 }
