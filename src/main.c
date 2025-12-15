@@ -26,12 +26,12 @@ int main(void) {
     int map[MAPSIZE*MAPSIZE];
     Stops restStops[NUMBEROFSTOPS];
 
-    //runMapGen()
-    RunMapGen(map, MAPSIZE, restStops);
-
     // Find optimal route between start and end points
     Destination destination;
-    GetDestination(&destination,1,MAPSIZE);
+    GetDestination(&destination,0,MAPSIZE);
+
+    //runMapGen()
+    RunMapGen(map, MAPSIZE, restStops);
 
     // Find optimal route between found stops of type 3 and display to user
     Navigate(map, MAPSIZE, destination);
