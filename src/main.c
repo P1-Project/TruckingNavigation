@@ -18,13 +18,10 @@
 int main(void) {
     printf("Hello, World!\n");
     //connection testing
-    //TestConGenStopsFunc();
-    //TestConGetDestinationFunc();
-    //TestConCheckCoordinateSetFunc();
-    //TestConGenBlockadeFunc();
-    //TestPathfindingConcetion();
-    //TestMapGenConnection();
-    //TestAstarPathFindingConnection();
+    /*
+    TestConGenStopsFunc(); TestConGetDestinationFunc(); TestConCheckCoordinateSetFunc(); TestConGenBlockadeFunc();
+    TestMapGenConnection(); TestAstarPathFindingConnection();
+    */
 
     int map[MAPSIZE*MAPSIZE];
     Stops restStops[NUMBEROFSTOPS];
@@ -32,17 +29,11 @@ int main(void) {
     //runMapGen()
     RunMapGen(map, MAPSIZE, restStops);
 
-    //PrintMap(map, MAPSIZE);
-
     // Find optimal route between start and end points
     Destination destination;
     GetDestination(&destination,1,MAPSIZE);
 
-
     // Find optimal route between found stops of type 3 and display to user
     Navigate(map, MAPSIZE, destination);
-
-
-
-    return 0;
+    return 0; //End program
 }
