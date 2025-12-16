@@ -116,9 +116,8 @@ TEST_CASE(TestSpotOccupied,
     /* Arrange */
     int miniMap[4] = {
         NORMALROAD,NORMALROAD,
-        NORMALROAD,NORMALROAD
+        BLOCKADE,NORMALROAD
     };
-    miniMap[2] = BLOCKADE;
 
     int index1 = 2;
     int index2 = 1;
