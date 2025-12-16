@@ -53,11 +53,6 @@ int TestSnakeMapManhattan(void);
 
 // Test GetDestination
 int IsDestinationInBound (void);
-
-TEST_CASE(TestConnection,
-    /* Arrange */
-    int i = 1;
-    int j = 1;
 int TestClearMapChebyshev(void);
 int TestSnakeMapChebyshev(void);
 int TestNavigationBiggerMap(void);
