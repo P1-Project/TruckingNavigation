@@ -192,9 +192,51 @@ void NavigateWrapper(int *map, int mapSize, int *path, int pathLength, int *stop
         IdxToCoords(stops[i], mapSize, &tempX, &tempY);
         printf("coordinates: (%d, %d)\n", tempX, tempY);
     }
+
     int time = CalculatePathTime(map, path, pathLength);
+
     printf("New path time in minutes : %d\n", time);
+    printf("Section based time\n");
+    int tempIdx[numOfStops];
+    int j = 0;
+    int i = 0;
+    for (i, j; i < pathLength; i++) {
+        if (path[i] == stops[j]) {
+            tempIdx[j] = i;
+            printf("%d | %d\n", tempIdx[j], path[tempIdx[j]]);
+            j++;
+        }
+    }
+    printf("Section based time\n");
+
+    int sectionStart = 0;
+    int *newSection = malloc(sizeof(int) * pathLength);
+
+    for (int s = 0; s < numOfStops; s++) {
+        int sectionEnd = tempIdx[s];
+        int sectionLength = 0;
+
+        for (i = sectionStart; i <= sectionEnd; i++) {
+            newSection[sectionLength++] = path[i];
+        }
+
+        time = CalculatePathTime(map, newSection, sectionLength);
+        printf("Section %d time (min): %d\n", s + 1, time);
+
+        sectionStart = sectionEnd;
+    }
+
+    /* -------------------------------------------------- */
+    /* final section after last stop                      */
+    if (sectionStart < pathLength - 1) {
+        int sectionLength = 0;
+        for (i = sectionStart; i < pathLength; i++) {
+            newSection[sectionLength++] = path[i];
+        }
+
+        time = CalculatePathTime(map, newSection, sectionLength);
+        printf("Final section time (min): %d\n", time);
+    }
+
+    free(newSection);
 }
-
-
-

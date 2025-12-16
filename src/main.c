@@ -15,7 +15,6 @@ int main(void) {
     TestConGenStopsFunc(); TestConGetDestinationFunc(); TestConCheckCoordinateSetFunc(); TestConGenBlockadeFunc();
     TestMapGenConnection(); TestAstarPathFindingConnection();
     */
-
     int map[MAPSIZE*MAPSIZE];
     Stops restStops[NUMBEROFSTOPS];
     srand(time(NULL)); // NOLINT(*-msc51-cpp)
