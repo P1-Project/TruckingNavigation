@@ -131,7 +131,7 @@ int* Reconstruct(const int *cameFrom, int start, int goal, int *outLength) {
 }
 
 // A* main algorithm
-int* RunAstarPathFindingChebyshev(const int *map, const int mapSize, const int pointA, const int pointB, int *outLength){
+int* RunAstarPathFinding(const int *map, const int mapSize, const int pointA, const int pointB, int *outLength){
     const int total = mapSize * mapSize;
 
     int *cameFrom = malloc(sizeof(int) * total);
@@ -147,7 +147,7 @@ int* RunAstarPathFindingChebyshev(const int *map, const int mapSize, const int p
     cameFrom[startIndex] = startIndex;
     int goalIndex = pointB;
     costSoFar[pointA] = 0; //current score
-    estimatedTotalCost[pointA] = HeuristicChebyshev(pointA, pointB, mapSize); //Score from current to goal,
+    estimatedTotalCost[pointA] = HeuristicManhattan(pointA, pointB, mapSize); //Score from current to goal,
 
     MinHeap *openSet = HeapCreate(total); //initializes the min heap tree
     HeapPush(openSet, pointA, estimatedTotalCost[pointA]); //push the first node, point A with the
@@ -193,7 +193,7 @@ int* RunAstarPathFindingChebyshev(const int *map, const int mapSize, const int p
                 cameFrom[nb] = current; //curent becoms camefrom[nb]
                 costSoFar[nb] = costThroughCurrent; //Setting costSoFar as costThroughCurrent
                 //Estimating cost to goal
-                estimatedTotalCost[nb] = costThroughCurrent + HeuristicChebyshev(nb, pointB, mapSize);
+                estimatedTotalCost[nb] = costThroughCurrent + HeuristicManhattan(nb, pointB, mapSize);
 
                 //Adding the node to the min-heap
                 HeapPush(openSet, nb, estimatedTotalCost[nb]);

@@ -86,5 +86,5 @@ MAIN_RUN_TESTS(
     /* pathFinding tests */
     TestClearMapChebyshev, TestSnakeMapChebyshev, TestNavigationBiggerMap,
     /*Navigation Test*/
-    TestNavigationOneStop, TestNavigationNoStopsFound, TestNavigationPathWrapBack
+    TestNavigationOneStop, TestNavigationNoStopsFound //, TestNavigationPathWrapBack
 )

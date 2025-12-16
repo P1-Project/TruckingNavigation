@@ -20,7 +20,7 @@ int* OriginalPath(int *map, const int mapSize, const Destination destination,
     //map[startIdx] = ROUTE;
     //map[goalIdx] = ROUTE;
     printf("Chebyshev Heuristic\n");
-    int *originalPath = RunAstarPathFindingChebyshev(map, mapSize, startIdx, goalIdx, &pathLength);
+    int *originalPath = RunAstarPathFinding(map, mapSize, startIdx, goalIdx, &pathLength);
     if (originalPath) {
         PrintMap(map, mapSize, originalPath, pathLength);
         printf("Path length : %d\n", pathLength);
@@ -74,7 +74,7 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
 
     while (currentIdx != goalIdx) {
         //First Run should equal the original path,
-        int *path = RunAstarPathFindingChebyshev(map, mapSize, currentIdx, goalIdx, &pathLength);
+        int *path = RunAstarPathFinding(map, mapSize, currentIdx, goalIdx, &pathLength);
         if (!path || pathLength == 0) break;
 
         numSearchPoints = 0;
@@ -85,8 +85,15 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
         // Time spent driving aka section size = 13 tiles before first rest stop
         //if the path is too short the program returns the full path from start to end
         if (numSearchPoints == 0) {
-            for (int i = 0; i < pathLength; i++)
-                fullPath[localFullPathLength++] = path[i];
+            for (int i = 0; i < pathLength; i++) {
+                int start = 0;
+                if (localFullPathLength > 0 && fullPath[localFullPathLength-1] == path[0]) {
+                    start = 1; // skip the first node of pathToStop
+                }
+                for (int i = start; i < pathLength; i++) {
+                    fullPath[localFullPathLength++] = path[i];
+                }
+            }
             free(path);
             break;
         }
@@ -117,11 +124,11 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
             if (t2 == -1 ) restStopIdx = t3;
             else if (t3 == -1 ) restStopIdx = t2;
             else {
-                int distance2 = HeuristicChebyshev(targetSection, t2 , mapSize);
-                int distance3 = HeuristicChebyshev(targetSection, t3 , mapSize);
+                int distance2 = HeuristicManhattan(targetSection, t2 , mapSize);
+                int distance3 = HeuristicManhattan(targetSection, t3 , mapSize);
                 if (distance2 == distance3) {
-                    int goalDistance2 = HeuristicChebyshev(t2, goalIdx, mapSize);
-                    int goalDistance3 = HeuristicChebyshev(t3, goalIdx, mapSize);
+                    int goalDistance2 = HeuristicManhattan(t2, goalIdx, mapSize);
+                    int goalDistance3 = HeuristicManhattan(t3, goalIdx, mapSize);
                     restStopIdx = (goalDistance2 < goalDistance3) ? t2 : t3;
                 }
                 else {
@@ -135,7 +142,7 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
         }
         //Divide path into sections (this fills searchPointsType3)
         // Recalculate A* to the rest stop
-        int *pathToStop = RunAstarPathFindingChebyshev(map, mapSize,
+        int *pathToStop = RunAstarPathFinding(map, mapSize,
             currentIdx, restStopIdx, &pathLength);
         // Append subsection to fullPath
         if (!pathToStop || pathLength <= 1) {
@@ -143,7 +150,7 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
             break;
         }
         int start = 0;
-        if (localFullPathLength > 0 && fullPath[localFullPathLength - 1] == pathToStop[0]) {
+        if (localFullPathLength > 0 && fullPath[localFullPathLength-1] == pathToStop[0]) {
             start = 1; // skip the first node of pathToStop
         }
         for (int i = start; i < pathLength; i++) {
@@ -203,7 +210,7 @@ void NavigateWrapper(int *map, int mapSize, int *path, int pathLength, int *stop
         int sectionEnd = tempIdx[s];
         int sectionLength = 0;
 
-        for (i = sectionStart; i <= sectionEnd; i++) {
+        for (i = sectionStart; i < sectionEnd; i++) {
             newSection[sectionLength++] = path[i];
         }
 

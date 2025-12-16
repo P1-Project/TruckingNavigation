@@ -117,35 +117,27 @@ TEST_CASE(TestDefineInterstateNSTwoTiles,
     /* Arrange */
     const int mapSize = 5;
     InterStateRoad interStateRoad;
-    interStateRoad.startX = 1;
-    interStateRoad.startY = 0;
-    interStateRoad.endX = 3;
-    interStateRoad.endY = mapSize-1;
-    int pathLength = 0;
-    int *path = malloc(sizeof(int) * mapSize);
+    interStateRoad.startX = 1; interStateRoad.startY = 0;
+    interStateRoad.endX = 3; interStateRoad.endY = mapSize-1;
+    int pathLength = 0; int *path = malloc(sizeof(int) * mapSize);
     int map[25] = {
         0, 0, 0, 0, 0,
         0, 0, 0, 0, 0,
         0, 0, 0, 0, 0,
         0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0
-    };
+        0, 0, 0, 0, 0};
     int expetedMap[25] = {
         0, 1, 0, 0, 0,
         0, 1, 0, 0, 0,
         0, 0, 1, 0, 0,
         0, 0, 1, 0, 0,
-        0, 0, 0, 1, 0
-    };
+        0, 0, 0, 1, 0};
     /* Act */
     path = DefineInterstatePath(map, mapSize, interStateRoad, &pathLength);
-
     /* Assert */
     for (int i = 0; i < pathLength; i++) {
         printf("%d, %d", map[path[i]], expetedMap[path[i]]);
-        printf("%d", path[i]);
-        printf("\n");
-
+        printf("%d\n", path[i]);
         CHECK_EQ_INT(map[path[i]],expetedMap[path[i]]);
     }
     free(path);

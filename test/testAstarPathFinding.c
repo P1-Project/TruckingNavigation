@@ -30,11 +30,11 @@ TEST_CASE(TestClearMapChebyshev,
     int startIdx = XYToIdx(0, 0, mapSize);
     int goalIdx = XYToIdx(0, mapSize-1, mapSize);
 
-    int expectedPath[] = {0, 6, 12, 16, 20};
+    int expectedPath[] = {0, 5, 10, 15, 20};
     int len = sizeof(expectedPath) / sizeof(expectedPath[0]);
     /* Act */
     int outlength = 0;
-    int *path = RunAstarPathFindingChebyshev(map, mapSize, startIdx, goalIdx,&outlength);
+    int *path = RunAstarPathFinding(map, mapSize, startIdx, goalIdx,&outlength);
 
     /* Assert */
 
@@ -65,7 +65,7 @@ TEST_CASE(TestSnakeMapChebyshev,
     int expectedPath[] = {0, 1, 2, 3, 9, 13, 12, 11, 15, 21, 22, 23, 24};
     /* Act */
     int outlength = 0;
-    int *path = RunAstarPathFindingChebyshev(map, mapSize, startIdx, goalIdx,&outlength);
+    int *path = RunAstarPathFinding(map, mapSize, startIdx, goalIdx,&outlength);
 
     /* Assert */
 
@@ -102,7 +102,7 @@ TEST_CASE(TestNavigationBiggerMap,
     int expectedPath[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 19, 28, 27, 26, 25, 24, 23, 22, 21, 30, 41, 42, 43, 44, 45, 46,
         47, 48, 59, 68, 67, 66, 65, 64, 63, 62, 61, 70, 80, 91, 92, 93, 94, 95, 96, 97, 98, 99};
     /* Act */
-    int *path = RunAstarPathFindingChebyshev(map, mapSize, startIdx, goalIdx, &outlength);
+    int *path = RunAstarPathFinding(map, mapSize, startIdx, goalIdx, &outlength);
     /* Assert */
     for (int i = 0; i < outlength; i++) {
         printf(" %d,", path[i]);
