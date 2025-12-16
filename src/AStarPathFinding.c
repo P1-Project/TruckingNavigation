@@ -44,10 +44,15 @@ int HeuristicChebyshev(const int a, const int b, const int mapSize) {
 
 
 // Movement cost
-int MovementCost(int cellType) {
-    if (cellType == BLOCKADE)
-        return INF;  // not passable
-    if (cellType == INTERSTATEROAD || cellType == INTERSTATESTOP) return INTERSTATEROADCOST;
+int MovementCost(int nextCellType, int currentCellType) {
+    if (nextCellType == BLOCKADE) return INF;  // not passable
+    if (currentCellType == INTERSTATEROAD || currentCellType == INTERSTATESTOP &&
+        nextCellType == INTERSTATESTOP || nextCellType == INTERSTATESTOP) {
+        return INTERSTATEROADCOST;
+    }
+    if (currentCellType == NORMALROAD && (nextCellType == INTERSTATEROAD) ){
+        return INTERSTATEROADCOST;
+    }
     return NORMALROADCOST;
 }
 
@@ -184,17 +189,18 @@ int* RunAstarPathFinding(const int *map, const int mapSize, const int pointA, co
             //sets nb as the array value at that index
             int nb = neighbors[i];
             //cost is calculated
-            int cost = MovementCost(map[nb]); //normal road is more than interstate
+            int cost = MovementCost(map[nb], map[current]); //normal road is more than interstate
             if (cost == INF) continue; // blocked road
+            /*if (i > 3) { //cost times 1.5 for diagonal movement
+                cost = floor(cost * 1.5);
+            }*/
             //adding cost of the path to the node plus the next cost
             int costThroughCurrent = costSoFar[current] + cost;
-
             if (costThroughCurrent < costSoFar[nb]) {
                 cameFrom[nb] = current; //curent becoms camefrom[nb]
                 costSoFar[nb] = costThroughCurrent; //Setting costSoFar as costThroughCurrent
                 //Estimating cost to goal
                 estimatedTotalCost[nb] = costThroughCurrent + HeuristicManhattan(nb, pointB, mapSize);
-
                 //Adding the node to the min-heap
                 HeapPush(openSet, nb, estimatedTotalCost[nb]);
             }

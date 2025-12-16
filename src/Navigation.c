@@ -14,8 +14,8 @@ int* OriginalPath(int *map, const int mapSize, const Destination destination,
     int time = 0;
 
     // Get start and end points
-    int startIdx = CheckCoordinateSet(map, destination.startX, destination.startY, mapSize);
-    int goalIdx = CheckCoordinateSet(map, destination.endX, destination.endY, mapSize);
+    const int startIdx = CheckCoordinateSet(map, destination.startX, destination.startY, mapSize);
+    const int goalIdx = CheckCoordinateSet(map, destination.endX, destination.endY, mapSize);
     //print map with start and end
     //map[startIdx] = ROUTE;
     //map[goalIdx] = ROUTE;
@@ -57,8 +57,8 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
     int *fullPath = malloc(sizeof(int) * (mapSize * mapSize));
     int pathLength = 0;
     // Get start and end points
-    int startIdx = CheckCoordinateSet(map, destination.startX, destination.startY, mapSize);
-    int goalIdx = CheckCoordinateSet(map, destination.endX, destination.endY, mapSize);
+    const int startIdx = CheckCoordinateSet(map, destination.startX, destination.startY, mapSize);
+    const int goalIdx = CheckCoordinateSet(map, destination.endX, destination.endY, mapSize);
 /////////////////////////////////
     //variables in use
     int numSearchPoints = 0;
@@ -90,7 +90,7 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
                 if (localFullPathLength > 0 && fullPath[localFullPathLength-1] == path[0]) {
                     start = 1; // skip the first node of pathToStop
                 }
-                for (int i = start; i < pathLength; i++) {
+                for (i = start; i <= pathLength-1; i++) {
                     fullPath[localFullPathLength++] = path[i];
                 }
             }
@@ -145,16 +145,11 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
         int *pathToStop = RunAstarPathFinding(map, mapSize,
             currentIdx, restStopIdx, &pathLength);
         // Append subsection to fullPath
-        if (!pathToStop || pathLength <= 1) {
-            free(path);
-            break;
-        }
-        int start = 0;
-        if (localFullPathLength > 0 && fullPath[localFullPathLength-1] == pathToStop[0]) {
-            start = 1; // skip the first node of pathToStop
-        }
-        for (int i = start; i < pathLength; i++) {
-            fullPath[localFullPathLength++] = pathToStop[i];
+        for (int i = 0; i < pathLength; i++) {
+            // avoid duplicate node when paths connect
+            if (localFullPathLength == 0 || fullPath[localFullPathLength - 1] != pathToStop[i]) {
+                fullPath[localFullPathLength++] = pathToStop[i];
+            }
         }
         stops[localStopCount++] = restStopIdx;
 
@@ -187,8 +182,7 @@ void NavigateWrapper(int *map, int mapSize, int *path, int pathLength, int *stop
         printf("Coordinates: (%d, %d)\n", tempX, tempY);
     }
 
-    int time = CalculatePathTime(map, path, pathLength);
-
+    int time;
     //printf("New path time in minutes : %d\n", time);
     //printf("Section based time\n");
     int tempIdx[numOfStops];
@@ -219,15 +213,12 @@ void NavigateWrapper(int *map, int mapSize, int *path, int pathLength, int *stop
 
         sectionStart = sectionEnd;
     }
-
-    /* -------------------------------------------------- */
     /* final section after last stop                      */
     if (sectionStart < pathLength - 1) {
         int sectionLength = 0;
         for (i = sectionStart; i < pathLength; i++) {
             newSection[sectionLength++] = path[i];
         }
-
         time = CalculatePathTime(map, newSection, sectionLength);
         printf("Final section time: %d minutes\n", time);
     }

@@ -16,7 +16,7 @@ TEST_CASE(format8,
 
 )
 
-TEST_CASE(TestClearMapChebyshev,
+TEST_CASE(TestClearMap,
     /* Arrange */
     int mapSize = 5;
     int map[] = {
@@ -40,15 +40,15 @@ TEST_CASE(TestClearMapChebyshev,
 
     for (int i = 0; i < outlength; i++) {
         printf("%d ", path[i]);
-        map[path[i]] = ROUTE;
         CHECK_EQ_INT(expectedPath[i], path[i]);
     }
+    printf("\n");
     //print map with route for debugging
     PrintMap(map, mapSize, path ,outlength);
 )
 
 
-TEST_CASE(TestSnakeMapChebyshev,
+TEST_CASE(TestSnakeMap,
     /* Arrange */
     int mapSize = 5;
     int map[] = {
@@ -61,17 +61,12 @@ TEST_CASE(TestSnakeMapChebyshev,
     };
     int startIdx = XYToIdx(0, 0, mapSize);
     int goalIdx = XYToIdx(mapSize-1, mapSize-1, mapSize);
-
     int expectedPath[] = {0, 1, 2, 3, 9, 13, 12, 11, 15, 21, 22, 23, 24};
     /* Act */
     int outlength = 0;
     int *path = RunAstarPathFinding(map, mapSize, startIdx, goalIdx,&outlength);
-
     /* Assert */
-
     for (int i = 0; i < outlength; i++) {
-        printf("%d ", path[i]);
-        map[path[i]] = ROUTE;
         CHECK_EQ_INT(expectedPath[i], path[i]);
     }
     //print map with route for debugging
@@ -109,7 +104,7 @@ TEST_CASE(TestNavigationBiggerMap,
         map[path[i]] = ROUTE;
         CHECK_EQ_INT(expectedPath[i], path[i]);
     }
-    printf("\n");
+
     //print map with route for debugging
     PrintMap(map, mapSize, path ,outlength);
 )
