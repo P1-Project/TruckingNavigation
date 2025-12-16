@@ -170,7 +170,7 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
 void NavigateWrapper(int *map, int mapSize, int *path, int pathLength, int *stops, const int numOfStops) {
     //print map with full complete path
     PrintMap(map, mapSize, path, pathLength);
-    PrintPath(mapSize, path, pathLength);
+    PrintPath(mapSize, path, pathLength, stops);
     printf("\n");
     printf("Number of stops: %d\n", numOfStops);
     for (int i = 0; i < numOfStops; i++) {

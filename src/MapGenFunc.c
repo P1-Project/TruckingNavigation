@@ -44,17 +44,28 @@ int IsOnPath(const int i, const int *path, const int pathLength) {
     return 0;
 }
 
-void PrintPath(int mapSize, int *path, int pathLength) {
-    int x, y;
+void PrintPath(int mapSize, int *path, int pathLength, int *stops) {
+    int x, y, counter = 0;
     printf("Path length: %d\n", pathLength);
     printf("Path:\n");
     for (int i = 0; i <pathLength; i++) {
         IdxToCoords(path[i], mapSize, &x, &y);
+        const char *color;
 
-        printf("(%s%d,%s%d)%s",
-            x <= 9 ? "0" : "", x,
-            y <= 9 ? "0" : "", y,
-            (i == pathLength - 1) ? "" : " -> ");
+        if (stops[counter] == path[i]) {
+            // print color
+            color = RED;
+            counter++;
+        } else {
+            // print normal
+            color = WHT;
+        }
+
+        printf("%s (%s%d,%s%d)%s%s", color,
+        x <= 9 ? "0" : "", x,
+        y <= 9 ? "0" : "", y,
+        WHT,
+        (i == pathLength - 1) ? "" : " -> ");
 
         if ((i+1) % 5 == 0) {
             printf("\n");
