@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+
+#include "HelperFunc.h"
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -42,13 +44,25 @@ int IsOnPath(const int i, const int *path, const int pathLength) {
     return 0;
 }
 
-void PrintPath(int *path, int pathLength) {
-    printf("Path length : %d\n", pathLength);
+void PrintPath(int mapSize, int *path, int pathLength) {
+    int x, y;
+    printf("Path length: %d\n", pathLength);
+    printf("Path:\n");
     for (int i = 0; i <pathLength; i++) {
-        printf("%d ", path[i]);
+        IdxToCoords(path[i], mapSize, &x, &y);
+
+        printf("(%s%d,%s%d)%s",
+            x <= 9 ? "0" : "", x,
+            y <= 9 ? "0" : "", y,
+            (i == pathLength - 1) ? "" : " -> ");
+
+        if ((i+1) % 5 == 0) {
+            printf("\n");
+        }
     }
     printf("\n");
 }
+
 //in this case mapSize can be unsigned since it cant be compared to minus 1 in while loop
 void PrintMap(int *map, int mapSize, int *path, int pathLength){
     EnableANSI();

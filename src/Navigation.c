@@ -170,14 +170,14 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
 void NavigateWrapper(int *map, int mapSize, int *path, int pathLength, int *stops, const int numOfStops) {
     //print map with full complete path
     PrintMap(map, mapSize, path, pathLength);
-    PrintPath(path, pathLength);
+    PrintPath(mapSize, path, pathLength);
     printf("\n");
-    printf("number of stops : %d\n", numOfStops);
+    printf("Number of stops: %d\n", numOfStops);
     for (int i = 0; i < numOfStops; i++) {
-        printf("stop at index : %d of type %d ", stops[i], map[stops[i]]);
+        printf("Stop at index %d of type %d. ", stops[i], map[stops[i]]);
         int tempX, tempY;
         IdxToCoords(stops[i], mapSize, &tempX, &tempY);
-        printf("coordinates: (%d, %d)\n", tempX, tempY);
+        printf("Coordinates: (%d, %d)\n", tempX, tempY);
     }
 
     int time = CalculatePathTime(map, path, pathLength);
@@ -194,7 +194,7 @@ void NavigateWrapper(int *map, int mapSize, int *path, int pathLength, int *stop
             j++;
         }
     }
-    printf("Section based time\n");
+    printf("\nSection based time\n");
 
     int sectionStart = 0;
     int *newSection = malloc(sizeof(int) * pathLength);
@@ -208,7 +208,7 @@ void NavigateWrapper(int *map, int mapSize, int *path, int pathLength, int *stop
         }
 
         time = CalculatePathTime(map, newSection, sectionLength);
-        printf("Section %d time (min): %d\n", s + 1, time);
+        printf("Section %d time: %d minutes\n", s + 1, time);
 
         sectionStart = sectionEnd;
     }
@@ -222,7 +222,7 @@ void NavigateWrapper(int *map, int mapSize, int *path, int pathLength, int *stop
         }
 
         time = CalculatePathTime(map, newSection, sectionLength);
-        printf("Final section time (min): %d\n", time);
+        printf("Final section time: %d minutes\n", time);
     }
 
     free(newSection);
