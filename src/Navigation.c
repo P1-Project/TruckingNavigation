@@ -59,11 +59,6 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
     // Get start and end points
     int startIdx = CheckCoordinateSet(map, destination.startX, destination.startY, mapSize);
     int goalIdx = CheckCoordinateSet(map, destination.endX, destination.endY, mapSize);
-    //print map with start and end
-    printf("Start at : %d\n", startIdx);
-    printf("Goal at : %d\n", goalIdx);
-    //map[startIdx] = ROUTE;
-    //map[goalIdx] = ROUTE;
 /////////////////////////////////
     //variables in use
     int numSearchPoints = 0;
@@ -87,7 +82,6 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
                     searchPoints,
                     &numSearchPoints,
                     DRIVINGTIMEMAX);
-        printf("numSearchPoints = %d\n", numSearchPoints);
         // Time spent driving aka section size = 13 tiles before first rest stop
         //if the path is too short the program returns the full path from start to end
         if (numSearchPoints == 0) {
@@ -103,7 +97,6 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
         }
         else {//numSections % 2 == 0 chose type 3 otherwise type 2
             desiredType = (localStopCount % 2 != 0) ? TYPE3STOP : TYPE2STOP;
-            printf("Local Stop count : %d\n", localStopCount);
         }
         //Find the nearest TYPE3STOP to the next section break
         int targetSection = searchPoints[0]; // next section point
@@ -149,19 +142,13 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
             free(path);
             break;
         }
-
         int start = 0;
         if (localFullPathLength > 0 && fullPath[localFullPathLength - 1] == pathToStop[0]) {
             start = 1; // skip the first node of pathToStop
         }
-
         for (int i = start; i < pathLength; i++) {
             fullPath[localFullPathLength++] = pathToStop[i];
         }
-
-
-
-        printf("Rest Stop Index : %d\n", restStopIdx);
         stops[localStopCount++] = restStopIdx;
 
         // Update current position to rest stop
