@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include "mtest.h"
 
-int TestConnectionGenStops(void);
-
 // GenStopsFunc Tests
 int TestSpotOccupied(void);
 int TestInitializeTypes(void);
@@ -49,26 +47,17 @@ int testDivideRouteFunc1(void);
 int testDivideRouteFunc2(void);
 int testDivideRouteFunc3(void);
 
-
 //Test AstarPathFinding
-int TestClearMap(void);
-int TestSnakeMap(void);
+int TestClearMapChebyshev(void);
+int TestSnakeMapChebyshev(void);
+int TestNavigationBiggerMap(void);
 
-TEST_CASE(TestConnection,
-    /* Arrange */
-    int i = 1;
-    int j = 1;
-
-    /* Act */
-    int k = i + j;
-
-    /* Assert */
-    CHECK_EQ_INT(k,2);
-)
-
+//Test Navigation
+int TestNavigationOneStop(void);
+int TestNavigationNoStopsFound(void);
+int TestNavigationPathWrapBack(void);
 
 MAIN_RUN_TESTS(
-    TestConnection, TestConnectionGenStops,
     /* CheckCoordinateSetFunc tests */
     Idx63, Idx0, Idx3, Idx7, Idx56, Idx24, Idx36, Idx70, IdxNOSPACE,IdxEDGE, IdxGO,
     /* ConverterFunc tests */
@@ -89,6 +78,7 @@ MAIN_RUN_TESTS(
     /* MapGenFunc tests */
     TestInitMap,
     /* pathFinding tests */
-    TestClearMap, TestSnakeMap
-    )
-
+    TestClearMapChebyshev, TestSnakeMapChebyshev, TestNavigationBiggerMap,
+    /*Navigation Test*/
+    TestNavigationOneStop, TestNavigationNoStopsFound, TestNavigationPathWrapBack
+)

@@ -1,69 +1,44 @@
 #include <stdio.h>
 
-#include "AStarPathFinding.h"
-#include "CheckCoordinateSetFunc.h"
-#include "ConverterFunc.h"
+#include "HelperFunc.h"
 #include "MapGenFunc.h"
-#include "GenStopsFunc.h"
-#include "GenBlockadeFunc.h"
 #include "GetDestinationFunc.h"
-#include "GenInterstateFunc.h"
-#include "GenStopsFunc.h"
 #include "DefineConst.h"
 #include "DefineStruct.h"
-#include "DivideRouteFunc.h"
 #include "Navigation.h"
 
 
 int main(void) {
-    //GenMap
-
-    //GetDestination (start, end)
-
-    //GetPreferences
-
-    //Navigate
-
-    //DisplayRoute
-
-    //FilterTruckStops
-
     printf("Hello, World!\n");
-
     //connection testing
-    TestConGenStopsFunc();
-    TestConGetDestinationFunc();
-    TestConCheckCoordinateSetFunc();
-    TestConGenBlockadeFunc();
-
-    //TestPathfindingConcetion();
-    TestMapGenConnection();
-    TestAstarPathFindingConnection();
-
+    /*
+    TestConGenStopsFunc(); TestConGetDestinationFunc(); TestConCheckCoordinateSetFunc(); TestConGenBlockadeFunc();
+    TestMapGenConnection(); TestAstarPathFindingConnection();
+    */
     int map[MAPSIZE*MAPSIZE];
     Stops restStops[NUMBEROFSTOPS];
-
-    //runMapGen()
-    runMapGen(map, MAPSIZE, restStops);
-
-    //PrintMap(map, MAPSIZE);
-
+    srand(time(NULL)); // NOLINT(*-msc51-cpp)
     // Find optimal route between start and end points
     Destination destination;
     GetDestination(&destination,0,MAPSIZE);
 
+    //runMapGen()
+    RunMapGen(map, MAPSIZE, restStops);
 
-    // Find optimal route between found stops of type 3
-    Navigate(map, MAPSIZE, destination);
+    int originalPathLength = 0;
+    int *originalPath = OriginalPath(map, MAPSIZE, destination, &originalPathLength);
+    free(originalPath);
+    // Find optimal route between found stops of type 2+3 and display to user
+    int pathLength = 0;
+    int numSections = 0;
+    int *stops = malloc(sizeof(int) * MAPSIZE * MAPSIZE);
+    int *path = Navigate(map, MAPSIZE, destination, &pathLength, &numSections, stops);
+
+    //call NavigateWrapper for printing of map with stops
+    NavigateWrapper(map , MAPSIZE, path, pathLength, stops, numSections);
 
 
-    // Divide route with ~2.5 hour intervals (150 minutes)
-
-    //Navigate to destination
-
-    // LookForNeighbor(type 2) at found points
-
-    // Find optimal route between found stops of type 2, 3 and start and end points
-
-    return 0;
+    free(stops);
+    free(path);
+    return 0; //End program
 }

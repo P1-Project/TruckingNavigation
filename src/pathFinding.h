@@ -1,8 +1,0 @@
-//
-// Created by rasmk on 19-11-2025.
-//
-
-#ifndef TRUCKINGNAVIGATION_PATHFINDING_H
-#define TRUCKINGNAVIGATION_PATHFINDING_H
-void TestPathfindingConcetion();
-#endif //TRUCKINGNAVIGATION_PATHFINDING_H
