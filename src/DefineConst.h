@@ -1,11 +1,7 @@
-//
-// Created by rasmk on 28-11-2025.
-//
-
 #ifndef TRUCKINGNAVIGATION_DEFINESCONST_H
 #define TRUCKINGNAVIGATION_DEFINESCONST_H
 //DEFINES OF CONSTANTS
-#define DRIVINGTIMEMAX 340 //Minuts result in 13 tiels
+#define DRIVINGTIMEMAX 220 //Minuts result in 13 tiels
 #define DRIVINGSPEED 100 //KM per hour
 #define MAPSIZE 30
 #define NUMBEROFSTOPS 182
@@ -22,6 +18,7 @@
 #define ROUTE 6
 #define NORMALROADCOST 40
 #define INTERSTATEROADCOST 24
+#define INF 999999999
 
 //Errorcodes for program
 #define MAPGENERROR 10
@@ -30,10 +27,8 @@
 #define GENSTOPERROR 13
 #define CHECKCOORDINATEERROR 14
 #define BLOCKADEERROR 15
+#define PATHFINDINGERROR 16
 
 #define OUTOFBOUNDS (-1)
 #define NOSPACEAVAILABLE (-2)
-
-
-
 #endif //TRUCKINGNAVIGATION_DEFINESCONST_H

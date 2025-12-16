@@ -1,39 +1,24 @@
 #include <stdio.h>
-
-#include "AStarPathFinding.h"
-#include "CheckCoordinateSetFunc.h"
-#include "HelperFunc.h"
 #include "MapGenFunc.h"
-#include "GenStopsFunc.h"
-#include "GenBlockadeFunc.h"
 #include "GetDestinationFunc.h"
-#include "GenInterstateFunc.h"
-#include "GenStopsFunc.h"
 #include "DefineConst.h"
 #include "DefineStruct.h"
-#include "DivideRouteFunc.h"
 #include "Navigation.h"
-
 
 int main(void) {
     printf("Hello, World!\n");
-    //connection testing
-    /*
-    TestConGenStopsFunc(); TestConGetDestinationFunc(); TestConCheckCoordinateSetFunc(); TestConGenBlockadeFunc();
-    TestMapGenConnection(); TestAstarPathFindingConnection();
-    */
-
     int map[MAPSIZE*MAPSIZE];
     Stops restStops[NUMBEROFSTOPS];
-
-    //runMapGen()
-    RunMapGen(map, MAPSIZE, restStops);
-
+    srand(time(NULL));
     // Find optimal route between start and end points
     Destination destination;
-    GetDestination(&destination,1,MAPSIZE);
-
-    // Find optimal route between found stops of type 3 and display to user
-    Navigate(map, MAPSIZE, destination);
-    return 0; //End program
+    GetDestination(&destination,0,MAPSIZE);
+    //runMapGen()
+    RunMapGen(map, MAPSIZE, restStops);
+    int pathLength = 0, numSections = 0;
+    int *stops = malloc(sizeof(int) * MAPSIZE * MAPSIZE);
+    int *path = Navigate(map, MAPSIZE, destination, &pathLength, &numSections, stops);
+    //call NavigateWrapper for printing of map with stops
+    NavigateWrapper(map , MAPSIZE, path, pathLength, stops, numSections);
+    free(stops); free(path);
 }

@@ -10,7 +10,7 @@
 
 
 int *DefineInterstatePath(int *map, int mapSize,
-    InterStateRoad interStateRoad, int *outPathLength);
+    InterStateRoad interstateRoad, int *outPathLength);
 void SetInterStateRoad(int *map, int mapSize,
      InterStateRoad interStateRoad,
     Stops *restStops,

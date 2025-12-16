@@ -33,7 +33,7 @@ void EnableANSI() {
 #else
         // macOS and Linux already support ANSI natively
 #endif
-    }
+}
 
 int IsOnPath(const int i, const int *path, const int pathLength) {
     for (int p = 0; p < pathLength; p++) {
@@ -54,7 +54,7 @@ void PrintMap(int *map, int mapSize, int *path, int pathLength){
     EnableANSI();
     const int total = mapSize * mapSize;
 
-    printf("Map size is: %d\n", mapSize);
+    //printf("Map size is: %d\n", mapSize);
 
     // Column header
     for (int j = -1; j < mapSize; j++) {
@@ -103,12 +103,15 @@ void RunMapGen(int *map, int mapSize, Stops *restStops)
     GenClusterBlockadeFunc(map,mapSize,NUMBEROFBLOCKADES/5,1); //gen cluster blockades for the map
     GenBlockadeFunc(map,mapSize,NUMBEROFBLOCKADES); //gen blockades for the map
 
+    //Initializes the array of StopTypes
     StopType stopTypesArray[3];
+    //assigns the indexes values
     InitializeTypes(stopTypesArray);
-    GenInterStates(map, mapSize, restStops, stopTypesArray); //defines and sets the interstates
-
-    //initialized rest stops and locates them on the map
+    //initializes the stops array
     InitializeStopsType(restStops, stopTypesArray);
+    //defines and sets the interstates
+    GenInterStates(map, mapSize, restStops, stopTypesArray);
+    //initialized rest stops and locates them on the map
     InitializeStopsLocation(map, restStops);
     //Returns the map through its memory address as a pointer.
 }

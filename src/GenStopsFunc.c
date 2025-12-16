@@ -62,9 +62,9 @@ void InitializeStopsLocation(int *map, Stops restStops[]) {
         do {
             randomIdx = rand() % (MAPSIZE*MAPSIZE); // Get a random index
             attempts++;
-            if(attempts > (MAPSIZE*MAPSIZE)) {
-                printf("Could not place stop after %d attempts!\n", (MAPSIZE*MAPSIZE));
-                break;
+            if(attempts > (MAPSIZE * 10)) {
+                printf("Could not place stop after %d attempts!\n", (MAPSIZE * 10));
+                exit(EXIT_FAILURE);
             }
 
             // If the chosen spot is occupied or there is another stop close by, try again.

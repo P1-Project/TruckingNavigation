@@ -10,6 +10,7 @@ add_executable(testTruckingNavigation
         testGetDestinationFunc.c
         testMapGenFunc.c
         testAstarPathFinding.c
+        testNavigation.c
 )
 
 # Give testTruckingNavigation access to local headers and src headers
@@ -32,6 +33,7 @@ add_library(trucking_src
         ../src/GetDestinationFunc.c
         ../src/MapGenFunc.c
         ../src/AStarPathFinding.c
+        ../src/Navigation.c
 )
 
 # Include directories for trucking_src headers

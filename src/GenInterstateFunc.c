@@ -24,7 +24,7 @@ void printInterStateRoad(const InterStateRoad interStateRoad) {
 
 
 /**
- *
+ * Ensures that value is between min and max, if outside set as min or max
  * @param v input value
  * @param min min value always equal to 0
  * @param max Max value
@@ -38,72 +38,61 @@ static int clamp(const int v, const int min, const int max) {
 
 
 /**
- *
+ *The function takes the map, mapsize and the structure interstateRoad and outputs a path length
  * @param map int array of the map
  * @param mapSize The size of the map width
- * @param interStateRoad Struct type of InterStateRoad, containing the start x,y and end x,y
+ * @param interstateRoad Struct type of InterStateRoad, containing the start x,y and end x,y
  * @param outPathLength the amount of indexes in path
  * @return Returns a pointer of indexes from the map.
  */
-int *DefineInterstatePath(int *map, int mapSize, InterStateRoad interStateRoad, int *outPathLength) {
+int *DefineInterstatePath(int *map, int mapSize, InterStateRoad interstateRoad, int *outPathLength) {
     //calculate distance absolute distance from startX to endX
-    int absDx = abs( interStateRoad.startX - interStateRoad.endX);
+    int absDx = abs( interstateRoad.startX - interstateRoad.endX);
     //calculate distance absolute distance from startY to endY
-    int absDy = abs(interStateRoad.startY - interStateRoad.endY);
+    int absDy = abs(interstateRoad.startY - interstateRoad.endY);
+    //these intgers below are assigned as a one line if-statement with return either 1, or -1
+    int stepX = (interstateRoad.endX > interstateRoad.startX) ? 1 : -1;
 
-    //these intgers below are assigned as a one line if-statement with return either 1, 0 or -1
-    int stepX = (interStateRoad.endX > interStateRoad.startX) ? 1 :
-            (interStateRoad.endX < interStateRoad.startX) ? -1 : 0;
+    int stepY = (interstateRoad.endY > interstateRoad.startY) ? 1 : -1;
 
-    int stepY = (interStateRoad.endY > interStateRoad.startY) ? 1 :
-                (interStateRoad.endY < interStateRoad.startY) ? -1 : 0;
-
-
-    int x = interStateRoad.startX;
-    int y = interStateRoad.startY;
-    int D; //decision var
+    int x = interstateRoad.startX;
+    int y = interstateRoad.startY;
+    int decision; //decision var
     int pathLength = 0;
     int tempIndex;
     int *path = malloc(sizeof(int) * mapSize * mapSize);
-
-    //printf("tempIndex = %d\n", tempIndex);
-    //map[tempIndex-1] = INTERSTATEROAD;
-    //printf("map[tempIndex] = %d\n", map[tempIndex]);
-
     //if the interstate is going North to South or East to West, do this else do North to South,
     if (absDx >= absDy) { //East To west
-        D = 2 * absDy - absDx;
+        decision = 2 * absDy - absDx;
         for (int i = 0; i <= absDx; i++) {
             tempIndex = XYToIdx(x, y, mapSize);
             map[tempIndex] = INTERSTATEROAD; //sets mapIdx as highway
             pathLength++;
             path[i] = tempIndex;
-
-            if (D > 0) {
+            if (decision > 0) {
                 y += stepY; //adds or subtracts depending on the absDy above
-                D -= 2*absDx;
+                decision -= 2*absDx;
             }
             x += stepX; //adds or subtracts depending on the absDx above
-            D += 2*absDy;
+            decision += 2*absDy;
         }
     }
     else { //North To South
-        D = 2 * absDx - absDy;
+        decision = 2 * absDx - absDy;
         for (int i = 0; i <= absDy; i++) {
             tempIndex = XYToIdx(x, y, mapSize);
             map[tempIndex] = INTERSTATEROAD; //sets mapIdx as highway
             pathLength++;
             path[i] = tempIndex;
-            if (D > 0) {
+            if (decision > 0) {
                 x += stepX;
-                D -= 2 * absDy;
+                decision -= 2 * absDy;
             }
             y += stepY;
-            D += 2 * absDx;
+            decision += 2 * absDx;
         }
     }
     *outPathLength = pathLength;
-
     return path;
 }
 
@@ -181,7 +170,7 @@ void SetInterStateRoad(int *map, int mapSize,
 }
 
 /**
- *
+ * Generate interstat road main run function
  * @param map Map
  * @param mapSize Mapsize
  * @param restStops Array with rest stops
