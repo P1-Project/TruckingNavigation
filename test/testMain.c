@@ -54,6 +54,9 @@ int testDivideRouteFunc3(void);
 int TestClearMapManhattan(void);
 int TestSnakeMapManhattan(void);
 
+// Test GetDestination
+int IsDestinationInBound (void);
+
 TEST_CASE(TestConnection,
     /* Arrange */
     int i = 1;
@@ -86,6 +89,7 @@ MAIN_RUN_TESTS(
     TestInitializeTypes, TestInitializeStopsType,
     TestInitializeStopsLocation, TestSpotOccupied, TestGenStops,
     /* GetDestinationFunc tests */
+    IsDestinationInBound,
     /* MapGenFunc tests */
     TestInitMap,
     /* pathFinding tests */
