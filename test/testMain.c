@@ -55,7 +55,7 @@ int TestNavigationBiggerMap(void);
 //Test Navigation
 int TestNavigationOneStop(void);
 int TestNavigationNoStopsFound(void);
-int TestNavigationNoReststopInReach(void);
+int TestNavigationPathWrapBack(void);
 
 MAIN_RUN_TESTS(
     /* CheckCoordinateSetFunc tests */
@@ -80,5 +80,5 @@ MAIN_RUN_TESTS(
     /* pathFinding tests */
     TestClearMapChebyshev, TestSnakeMapChebyshev, TestNavigationBiggerMap,
     /*Navigation Test*/
-    TestNavigationOneStop, TestNavigationNoStopsFound, TestNavigationNoReststopInReach
+    TestNavigationOneStop, TestNavigationNoStopsFound, TestNavigationPathWrapBack
 )

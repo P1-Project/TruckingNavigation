@@ -20,7 +20,7 @@ void HeapSwap(HeapNode *a, HeapNode *b);
 void HeapPush(MinHeap *h, int node, int fScore);
 int HeapPop(MinHeap *h);
 bool HeapEmpty(MinHeap *h);
-int* Reconstruct(const int *cameFrom, int current, int *outLength);
+int* Reconstruct(const int *cameFrom, int start, int current, int *outLength);
 
 
 int HeuristicManhattan(int a, int b, int mapSize);

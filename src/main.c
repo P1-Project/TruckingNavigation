@@ -28,19 +28,18 @@ int main(void) {
 
     int originalPathLength = 0;
     int *originalPath = OriginalPath(map, MAPSIZE, destination, &originalPathLength);
-
+    free(originalPath);
     // Find optimal route between found stops of type 2+3 and display to user
     int pathLength = 0;
     int numSections = 0;
-    int *stops = malloc(sizeof(int) * MAPSIZE);
+    int *stops = malloc(sizeof(int) * MAPSIZE * MAPSIZE);
     int *path = Navigate(map, MAPSIZE, destination, &pathLength, &numSections, stops);
 
     //call NavigateWrapper for printing of map with stops
     NavigateWrapper(map , MAPSIZE, path, pathLength, stops, numSections);
 
 
-    free(originalPath);
-    free(path);
     free(stops);
+    free(path);
     return 0; //End program
 }

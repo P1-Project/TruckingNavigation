@@ -17,8 +17,8 @@ int* OriginalPath(int *map, const int mapSize, const Destination destination,
     int startIdx = CheckCoordinateSet(map, destination.startX, destination.startY, mapSize);
     int goalIdx = CheckCoordinateSet(map, destination.endX, destination.endY, mapSize);
     //print map with start and end
-    map[startIdx] = ROUTE;
-    map[goalIdx] = ROUTE;
+    //map[startIdx] = ROUTE;
+    //map[goalIdx] = ROUTE;
     printf("Chebyshev Heuristic\n");
     int *originalPath = RunAstarPathFindingChebyshev(map, mapSize, startIdx, goalIdx, &pathLength);
     if (originalPath) {
@@ -40,8 +40,6 @@ int* OriginalPath(int *map, const int mapSize, const Destination destination,
     printf("_____________________________________________________________________________________________\n");
     *outPathLength = pathLength;
     return originalPath;
-
-    free(originalPath);
 }
 
 /**
@@ -57,38 +55,39 @@ int* OriginalPath(int *map, const int mapSize, const Destination destination,
 int *Navigate(int *map, const int mapSize, const Destination destination,
     int *fullPathLength, int *numSections, int *stops) {
     int *fullPath = malloc(sizeof(int) * (mapSize * mapSize));
-    int time = 0;
     int pathLength = 0;
-
     // Get start and end points
     int startIdx = CheckCoordinateSet(map, destination.startX, destination.startY, mapSize);
     int goalIdx = CheckCoordinateSet(map, destination.endX, destination.endY, mapSize);
     //print map with start and end
-    map[startIdx] = ROUTE;
-    map[goalIdx] = ROUTE;
+    printf("Start at : %d\n", startIdx);
+    printf("Goal at : %d\n", goalIdx);
+    //map[startIdx] = ROUTE;
+    //map[goalIdx] = ROUTE;
 /////////////////////////////////
     //variables in use
     int numSearchPoints = 0;
     int currentIdx = startIdx;
     int localFullPathLength = 0;
     int localNumSections = 0;
+    int localStopCount = 0;
     int restStopIdx = 0;
     const int baseSearchRadius = 5;
     int desiredType;
-    int *numberStops = malloc(sizeof(int) * (mapSize));
-    int *searchPoints = malloc(sizeof(int)* (mapSize));
+    int *numberStops = malloc(sizeof(int) * (mapSize * mapSize));
+    int *searchPoints = malloc(sizeof(int)* (mapSize * mapSize));
 
     while (currentIdx != goalIdx) {
         //First Run should equal the original path,
         int *path = RunAstarPathFindingChebyshev(map, mapSize, currentIdx, goalIdx, &pathLength);
-        if (!path || pathLength <= 1) break;
+        if (!path || pathLength == 0) break;
 
         numSearchPoints = 0;
         DivideRoute(map, path, pathLength,
                     searchPoints,
                     &numSearchPoints,
                     DRIVINGTIMEMAX);
-        //printf("numSearchPoints = %d\n", numSearchPoints);
+        printf("numSearchPoints = %d\n", numSearchPoints);
         // Time spent driving aka section size = 13 tiles before first rest stop
         //if the path is too short the program returns the full path from start to end
         if (numSearchPoints == 0) {
@@ -98,11 +97,13 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
             break;
         }
         //The route must be divided for the driver to follow regulations
-        if (localNumSections == 0) {
+        if (localNumSections++ == 0) {
             desiredType = 0; //Stop type can be both.
+
         }
         else {//numSections % 2 == 0 chose type 3 otherwise type 2
-            desiredType = (localNumSections % 2 != 0) ? TYPE3STOP : TYPE2STOP;
+            desiredType = (localStopCount % 2 != 0) ? TYPE3STOP : TYPE2STOP;
+            printf("Local Stop count : %d\n", localStopCount);
         }
         //Find the nearest TYPE3STOP to the next section break
         int targetSection = searchPoints[0]; // next section point
@@ -116,6 +117,7 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
             *stops = -1;
             *fullPathLength = -1;
             free(numberStops);
+            free(searchPoints);
             return NULL;
         }
         if (desiredType == 0) { //pick type closest
@@ -138,25 +140,30 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
         } else { // TYPE2STOP
             restStopIdx = (t2 != -1) ? t2 : t3;
         }
-        /*
-        //debugging print and checks
-        int maxNodes = mapSize * mapSize;
-        if (currentIdx < 0 || currentIdx >= maxNodes) { fprintf(stderr,"BAD current=%d\n", currentIdx); abort(); }
-        if (targetSection < 0 || targetSection >= maxNodes) { fprintf(stderr,"BAD targetSection=%d\n", targetSection); abort(); }
-        if (t2 < -1 || t2 >= maxNodes || t3 < -1 || t3 >= maxNodes) { fprintf(stderr,"BAD neighbor t2=%d t3=%d\n", t2, t3); abort(); }
-        */
         //Divide path into sections (this fills searchPointsType3)
         // Recalculate A* to the rest stop
         int *pathToStop = RunAstarPathFindingChebyshev(map, mapSize,
             currentIdx, restStopIdx, &pathLength);
         // Append subsection to fullPath
-        for (int i = 0; i < pathLength; i++) {
-            // avoid duplicate node when paths connect
-            if (localFullPathLength == 0 || fullPath[localFullPathLength - 1] != pathToStop[i]) {
-                fullPath[localFullPathLength++] = pathToStop[i];
-            }
+        if (!pathToStop || pathLength <= 1) {
+            free(path);
+            break;
         }
-        numberStops[localNumSections++] = restStopIdx;
+
+        int start = 0;
+        if (localFullPathLength > 0 && fullPath[localFullPathLength - 1] == pathToStop[0]) {
+            start = 1; // skip the first node of pathToStop
+        }
+
+        for (int i = start; i < pathLength; i++) {
+            fullPath[localFullPathLength++] = pathToStop[i];
+        }
+
+
+
+        printf("Rest Stop Index : %d\n", restStopIdx);
+        stops[localStopCount++] = restStopIdx;
+
         // Update current position to rest stop
         currentIdx = restStopIdx;
         // Loop continues and A* now runs from rest stop to goal
@@ -166,13 +173,14 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
     //return
     //full path, FullPathLength, numberStops, numSections,
     *fullPathLength = localFullPathLength;
-    *numSections = localNumSections;
-    *stops = *numberStops;
+    *numSections = localStopCount;
+    //*stops = numberStops;
     free(numberStops);
+    free(searchPoints);
     return fullPath;
 }
 
-void NavigateWrapper(int *map, int mapSize, int *path, int pathLength, int *stops, int numOfStops) {
+void NavigateWrapper(int *map, int mapSize, int *path, int pathLength, int *stops, const int numOfStops) {
     //print map with full complete path
     PrintMap(map, mapSize, path, pathLength);
     PrintPath(path, pathLength);
@@ -184,7 +192,7 @@ void NavigateWrapper(int *map, int mapSize, int *path, int pathLength, int *stop
         IdxToCoords(stops[i], mapSize, &tempX, &tempY);
         printf("coordinates: (%d, %d)\n", tempX, tempY);
     }
-    const int time = CalculatePathTime(map, path, pathLength);
+    int time = CalculatePathTime(map, path, pathLength);
     printf("New path time in minutes : %d\n", time);
 }
 
