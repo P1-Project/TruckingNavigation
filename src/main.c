@@ -25,10 +25,10 @@ int main(void) {
     //runMapGen()
     RunMapGen(map, MAPSIZE, restStops);
 
-    int originalPathLength = 0;
+    /*int originalPathLength = 0;
     int *originalPath = OriginalPath(map, MAPSIZE, destination, &originalPathLength);
-    free(originalPath);
-    // Find optimal route between found stops of type 2+3 and display to user
+    free(originalPath);*/
+
     int pathLength = 0;
     int numSections = 0;
     int *stops = malloc(sizeof(int) * MAPSIZE * MAPSIZE);
