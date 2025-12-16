@@ -12,12 +12,9 @@ TEST_CASE(IdxGO,
                  5,5,5,5,5,5,5,5,
                  5,5,5,5,5,5,5,5,
                  5,5,5,5,5,5,0,5};
-
     int mapSize = 8;
-
     /* Act */
     int result = CheckCoordinateSet(Map, 3, 2, mapSize);
-
     /* Assert */
     CHECK_EQ_INT(result, 19);
 )
@@ -32,12 +29,9 @@ TEST_CASE(IdxEDGE,
                  5,5,5,5,5,5,5,5,
                  5,5,5,5,5,5,5,5,
                  5,5,5,5,5,5,0,5};
-
     int mapSize = 8;
-
     /* Act */
     int result = CheckCoordinateSet(Map, 2, 2, mapSize);
-
     /* Assert */
     CHECK_EQ_INT(result, 62);
 )
@@ -52,12 +46,9 @@ TEST_CASE(Idx63,
                  0,0,0,5,5,5,0,0,
                  0,0,0,0,0,0,0,5,
                  5,0,0,0,0,0,5,5};
-
     int mapSize = 8;
-
     /* Act */
     int result = CheckCoordinateSet(Map, 7, 7, mapSize);
-
     /* Assert */
     CHECK_EQ_INT(result, 54);
 )
@@ -72,12 +63,9 @@ TEST_CASE(Idx0,
                  0,0,0,5,5,5,0,0,
                  0,0,0,0,0,0,0,5,
                  5,0,0,0,0,0,5,5};
-
     int mapSize = 8;
-
     /* Act */
     int result = CheckCoordinateSet(Map, 0, 0, mapSize);
-
     /* Assert */
     CHECK_EQ_INT(result, 8);
 )
@@ -92,12 +80,9 @@ TEST_CASE(Idx3,
                  0,0,0,5,5,5,0,0,
                  0,0,0,0,0,0,0,5,
                  5,0,0,0,0,0,5,5};
-
     int mapSize = 8;
-
     /* Act */
     int result = CheckCoordinateSet(Map, 3, 0, mapSize);
-
     /* Assert */
     CHECK_EQ_INT(result, 1);
 )
@@ -112,12 +97,9 @@ TEST_CASE(Idx7,
                  0,0,0,5,5,5,0,0,
                  0,0,0,0,0,0,0,5,
                  5,0,0,0,0,0,5,5};
-
     int mapSize = 8;
-
     /* Act */
     int result = CheckCoordinateSet(Map, 7, 0, mapSize);
-
     /* Assert */
     CHECK_EQ_INT(result, 6);
 )
@@ -132,12 +114,9 @@ TEST_CASE(Idx56,
                  0,0,0,5,5,5,0,0,
                  0,0,0,0,0,0,0,5,
                  5,0,0,0,0,0,5,5};
-
     int mapSize = 8;
-
     /* Act */
     int result = CheckCoordinateSet(Map, 0, 7, mapSize);
-
     /* Assert */
     CHECK_EQ_INT(result, 48);
 )
@@ -152,12 +131,9 @@ TEST_CASE(Idx24,
                  0,0,0,5,5,5,0,0,
                  0,0,0,0,0,0,0,5,
                  5,0,0,0,0,0,5,5};
-
     int mapSize = 8;
-
     /* Act */
     int result = CheckCoordinateSet(Map, 0, 3, mapSize);
-
     /* Assert */
     CHECK_EQ_INT(result, 16);
 )
@@ -172,12 +148,9 @@ TEST_CASE(Idx36,
                  0,0,0,5,5,5,0,0,
                  0,0,0,0,0,0,0,5,
                  5,0,0,0,0,0,5,5};
-
     int mapSize = 8;
-
     /* Act */
     int result = CheckCoordinateSet(Map, 4, 4, mapSize);
-
     /* Assert */
     CHECK_EQ_INT(result, 29);
 )
@@ -194,10 +167,8 @@ TEST_CASE(Idx70,
                  5,0,0,0,0,0,5,5};
 
     int mapSize = 8;
-
     /* Act */
     int result = CheckCoordinateSet(Map, 6, 8, mapSize);
-
     /* Assert */
     CHECK_EQ_INT(result, -1);
 )
@@ -212,13 +183,9 @@ TEST_CASE(IdxNOSPACE,
                  5,5,5,5,5,5,5,5,
                  5,5,5,5,5,5,5,5,
                  5,5,5,5,5,5,5,5};
-
     int mapSize = 8;
-
     /* Act */
     int result = CheckCoordinateSet(Map, 4, 4, mapSize);
-
     /* Assert */
     CHECK_EQ_INT(result, -2);
 )
-

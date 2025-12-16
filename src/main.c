@@ -1,44 +1,24 @@
 #include <stdio.h>
-
-#include "HelperFunc.h"
 #include "MapGenFunc.h"
 #include "GetDestinationFunc.h"
 #include "DefineConst.h"
 #include "DefineStruct.h"
 #include "Navigation.h"
 
-
 int main(void) {
     printf("Hello, World!\n");
-    //connection testing
-    /*
-    TestConGenStopsFunc(); TestConGetDestinationFunc(); TestConCheckCoordinateSetFunc(); TestConGenBlockadeFunc();
-    TestMapGenConnection(); TestAstarPathFindingConnection();
-    */
     int map[MAPSIZE*MAPSIZE];
     Stops restStops[NUMBEROFSTOPS];
-    srand(time(NULL)); // NOLINT(*-msc51-cpp)
+    srand(time(NULL));
     // Find optimal route between start and end points
     Destination destination;
     GetDestination(&destination,0,MAPSIZE);
-
     //runMapGen()
     RunMapGen(map, MAPSIZE, restStops);
-
-    int originalPathLength = 0;
-    int *originalPath = OriginalPath(map, MAPSIZE, destination, &originalPathLength);
-    free(originalPath);
-    // Find optimal route between found stops of type 2+3 and display to user
-    int pathLength = 0;
-    int numSections = 0;
+    int pathLength = 0, numSections = 0;
     int *stops = malloc(sizeof(int) * MAPSIZE * MAPSIZE);
     int *path = Navigate(map, MAPSIZE, destination, &pathLength, &numSections, stops);
-
     //call NavigateWrapper for printing of map with stops
     NavigateWrapper(map , MAPSIZE, path, pathLength, stops, numSections);
-
-
-    free(stops);
-    free(path);
-    return 0; //End program
+    free(stops); free(path);
 }

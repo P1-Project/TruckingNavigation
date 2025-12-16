@@ -195,15 +195,15 @@ void NavigateWrapper(int *map, int mapSize, int *path, int pathLength, int *stop
 
     int time = CalculatePathTime(map, path, pathLength);
 
-    printf("New path time in minutes : %d\n", time);
-    printf("Section based time\n");
+    //printf("New path time in minutes : %d\n", time);
+    //printf("Section based time\n");
     int tempIdx[numOfStops];
     int j = 0;
     int i = 0;
     for (i, j; i < pathLength; i++) {
         if (path[i] == stops[j]) {
             tempIdx[j] = i;
-            printf("%d | %d\n", tempIdx[j], path[tempIdx[j]]);
+            //printf("%d | %d\n", tempIdx[j], path[tempIdx[j]]);
             j++;
         }
     }

@@ -48,6 +48,11 @@ int testDivideRouteFunc2(void);
 int testDivideRouteFunc3(void);
 
 //Test AstarPathFinding
+int TestClearMapManhattan(void);
+int TestSnakeMapManhattan(void);
+
+// Test GetDestination
+int IsDestinationInBound (void);
 int TestClearMapChebyshev(void);
 int TestSnakeMapChebyshev(void);
 int TestNavigationBiggerMap(void);
@@ -75,6 +80,7 @@ MAIN_RUN_TESTS(
     TestInitializeTypes, TestInitializeStopsType,
     TestInitializeStopsLocation, TestSpotOccupied, TestGenStops,
     /* GetDestinationFunc tests */
+    IsDestinationInBound,
     /* MapGenFunc tests */
     TestInitMap,
     /* pathFinding tests */
