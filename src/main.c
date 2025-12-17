@@ -16,7 +16,7 @@ int main(void) {
 
     switch (input) {
         case 'r':
-            printf("Printing random map");
+            printf("Printing random map\n");
             srand(time(NULL)); //used to gen a random seed
             break;
         case 'a': srand(67); printf("Printing map 'a'\n"); break;
