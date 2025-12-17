@@ -46,8 +46,8 @@ int HeuristicChebyshev(const int a, const int b, const int mapSize) {
 // Movement cost
 int MovementCost(int nextCellType, int currentCellType) {
     if (nextCellType == BLOCKADE) return INF;  // not passable
-    if (currentCellType == INTERSTATEROAD || currentCellType == INTERSTATESTOP &&
-        nextCellType == INTERSTATESTOP || nextCellType == INTERSTATESTOP) {
+    if ((currentCellType == INTERSTATEROAD || currentCellType == INTERSTATESTOP) &&
+        (nextCellType == INTERSTATEROAD || nextCellType == INTERSTATESTOP)) {
         return INTERSTATEROADCOST;
     }
     if (currentCellType == NORMALROAD && (nextCellType == INTERSTATEROAD) ){
