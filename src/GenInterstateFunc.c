@@ -110,7 +110,7 @@ int *DefineInterstatePath(int *map, int mapSize, InterStateRoad interstateRoad, 
  * The number of stops and the updated map itself
  */
 void SetInterstateRestStops(int *map, int mapSize,
-    int frequencyOfStops, int *path, int pathLength,
+    int frequencyOfStops, int path[], int pathLength,
     Stops *restStops,
     StopType stopTypesArray[3],
     int *stopCounter
