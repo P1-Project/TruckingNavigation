@@ -121,7 +121,6 @@ void PrintMap(int *map, int mapSize, int *path, int pathLength){
 
 void RunMapGen(int *map, int mapSize, Stops *restStops)
 {
-    srand(time(NULL)); //used to gen a random seed using the time.h library
     InitMap(map, mapSize); //inits the map and sets all values equal 0
     //Gen Blockaed can be swaped around depending on what needs to be generated first,
     //clusters before normal equals more blockades
