@@ -20,7 +20,7 @@ TEST_CASE(IsDestinationInBound,
 
 
     /* Act */
-    GetDestination(&destination, 0, MAPSIZE);
+    GetDestinationRandom(&destination, MAPSIZE);
 
     /* Assert */
     CHECK_LE_INT(destination.startX, MAPSIZE);
