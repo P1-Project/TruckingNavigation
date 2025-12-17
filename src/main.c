@@ -30,7 +30,7 @@ int main(void) {
     srand(time(NULL));
     // Find optimal route between start and end points
     Destination destination;
-    GetDestination(&destination,0,MAPSIZE);
+    runDestination(&destination,0,MAPSIZE);
     //runMapGen()
     RunMapGen(map, MAPSIZE, restStops);
     int pathLength = 0, numSections = 0;

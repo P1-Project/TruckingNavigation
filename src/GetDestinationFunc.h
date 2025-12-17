@@ -10,7 +10,9 @@
 
 #include "DefineStruct.h"
 
-void GetDestination (Destination *destination, int acceptInput, int mapSize);
+void GetDestinationManual(Destination *destination, int mapSize);
+
+void GetDestinationRandom(Destination *destination, int mapSize);
 
 void runDestination();
 
