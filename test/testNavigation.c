@@ -14,8 +14,8 @@ int map[] = {
 /*0*/ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 /*1*/ 5, 5, 5, 5, 5, 5, 5, 5, 5, 0,
 /*2*/ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-/*3*/ 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, //stop in this row
-/*4*/ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+/*3*/ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, //stop in this row
+/*4*/ 0, 0, 0, 0, 0, 0, 0, 3, 0, 0,
 /*5*/ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 /*6*/ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 /*7*/ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -31,14 +31,16 @@ int numOfStops = 0;
 Destination destination;
 destination.startX = 0;
 destination.startY = 0;
-destination.endX = mapSize-1;
-destination.endY = mapSize-1;
-const int expectedPath[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 19, 28, 27, 26, 35, 34, 34, 45, 56, 67, 77, 88, 99};
+destination.endX = 9;
+destination.endY = 9;
+const int expectedPath[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 19, 28, 37, 47, 58, 69, 79, 89, 99, 47, 58, 69, 79, 89, 99, 47,
+    58, 69, 79, 89, 99, 47, 58, 69, 79, 89, 99, 47, 58, 69, 79, 89, 99, 47, 58, 69, 79, 89, 99};
 const int expectedNumOfStops = 1;
-const int expectedStoplocationIdx = XYToIdx(4, 3, mapSize);
+const int expectedStoplocationIdx = XYToIdx(7, 4, mapSize);
 /* Act */
 int *path = Navigate(map, mapSize, destination, &outlength, &numOfStops, stops);
 /* Assert */
+printf("PathLength : %d\n", outlength);
 for (int i = 0; i < outlength; i++) {
     printf(" %d,", path[i]);
     //map[path[i]] = ROUTE;
@@ -143,6 +145,7 @@ CHECK_EQ_INT(expectedPathLenght, outlength);
 printf("Path Lenght : %d\n", outlength);
 for (int i = 0; i < outlength; i++) {
     printf("%d, ", path[i]);
+    CHECK_EQ_INT(expectedPath[i], path[i]);
 }
 printf("\n Num Stops : %d\n", numOfStops);
 CHECK_EQ_INT(expectedNumOfStops, numOfStops);

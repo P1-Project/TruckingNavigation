@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+
+#include "HelperFunc.h"
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -42,13 +44,36 @@ int IsOnPath(const int i, const int *path, const int pathLength) {
     return 0;
 }
 
-void PrintPath(int *path, int pathLength) {
-    printf("Path length : %d\n", pathLength);
+void PrintPath(int mapSize, int *path, int pathLength, int *stops) {
+    int x, y, counter = 0;
+    printf("Path length: %d\n", pathLength);
+    printf("Path:\n");
     for (int i = 0; i <pathLength; i++) {
-        printf("%d ", path[i]);
+        IdxToCoords(path[i], mapSize, &x, &y);
+        const char *color;
+
+        if (stops[counter] == path[i]) {
+            // print color
+            color = RED;
+            counter++;
+        } else {
+            // print normal
+            color = WHT;
+        }
+
+        printf("%s (%s%d,%s%d)%s%s", color,
+        x <= 9 ? "0" : "", x,
+        y <= 9 ? "0" : "", y,
+        WHT,
+        (i == pathLength - 1) ? "" : " -> ");
+
+        if ((i+1) % 5 == 0) {
+            printf("\n");
+        }
     }
     printf("\n");
 }
+
 //in this case mapSize can be unsigned since it cant be compared to minus 1 in while loop
 void PrintMap(int *map, int mapSize, int *path, int pathLength){
     EnableANSI();
@@ -96,7 +121,6 @@ void PrintMap(int *map, int mapSize, int *path, int pathLength){
 
 void RunMapGen(int *map, int mapSize, Stops *restStops)
 {
-    srand(time(NULL)); //used to gen a random seed using the time.h library
     InitMap(map, mapSize); //inits the map and sets all values equal 0
     //Gen Blockaed can be swaped around depending on what needs to be generated first,
     //clusters before normal equals more blockades

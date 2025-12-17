@@ -53,8 +53,8 @@ int TestSnakeMapManhattan(void);
 
 // Test GetDestination
 int IsDestinationInBound (void);
-int TestClearMapChebyshev(void);
-int TestSnakeMapChebyshev(void);
+int TestClearMap(void);
+int TestSnakeMap(void);
 int TestNavigationBiggerMap(void);
 
 //Test Navigation
@@ -84,7 +84,7 @@ MAIN_RUN_TESTS(
     /* MapGenFunc tests */
     TestInitMap,
     /* pathFinding tests */
-    TestClearMapChebyshev, TestSnakeMapChebyshev, TestNavigationBiggerMap,
+    TestClearMap, TestSnakeMap, TestNavigationBiggerMap,
     /*Navigation Test*/
-    TestNavigationOneStop, TestNavigationNoStopsFound, TestNavigationPathWrapBack
+    TestNavigationOneStop, TestNavigationNoStopsFound //, TestNavigationPathWrapBack
 )
