@@ -14,7 +14,7 @@ void GetDestinationManual(Destination *destination, int mapSize);
 
 void GetDestinationRandom(Destination *destination, int mapSize);
 
-void RunDestination(Destination *destination);
+void RunDestination(Destination *destination, int mapSize);
 
 void TestConGetDestinationFunc();
 #endif //TRUCKINGNAVIGATION_GETDESTINATIONFUNC_H

@@ -29,7 +29,7 @@ int main(void) {
     Stops restStops[NUMBEROFSTOPS];
     // Find optimal route between start and end points
     Destination destination;
-    runDestination(&destination,0,MAPSIZE);
+    RunDestination(&destination,MAPSIZE);
     //runMapGen()
     RunMapGen(map, MAPSIZE, restStops);
     int pathLength = 0, numSections = 0;

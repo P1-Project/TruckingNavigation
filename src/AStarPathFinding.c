@@ -50,7 +50,7 @@ int MovementCost(int nextCellType, int currentCellType) {
         (nextCellType == INTERSTATEROAD || nextCellType == INTERSTATESTOP)) {
         return INTERSTATEROADCOST;
     }
-    if (currentCellType == NORMALROAD && (nextCellType == INTERSTATEROAD) ){
+    if (currentCellType == NORMALROAD && (nextCellType == INTERSTATEROAD || nextCellType == INTERSTATESTOP) ){
         return INTERSTATEROADCOST;
     }
     return NORMALROADCOST;
@@ -106,7 +106,6 @@ int HeapPop(MinHeap *h) {
         HeapSwap(&h->data[i], &h->data[smallest]);
         i = smallest;
     }
-
     return result;
 }
 
