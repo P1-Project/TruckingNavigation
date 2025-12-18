@@ -44,7 +44,7 @@ void GetDestinationRandom(Destination *destination, int mapSize) {
 
 // What has to go in the main file
 
-void runDestination(Destination *destination) {
+void RunDestination(Destination *destination) {
     int choice;
 
     // Initialize random
