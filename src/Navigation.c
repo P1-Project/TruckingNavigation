@@ -219,7 +219,7 @@ void NavigateWrapper(int *map, int mapSize, int *path, int pathLength, int *stop
 
         sectionStart = sectionEnd;
     }
-    /* final section after last stop                      */
+    /* final section after last stop */
     if (sectionStart < pathLength - 1) {
         int sectionLength = 0;
         for (i = sectionStart; i < pathLength; i++) {
