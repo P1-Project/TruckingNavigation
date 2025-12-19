@@ -16,7 +16,7 @@ int main(void) {
 
     switch (input) {
         case 'r':
-            printf("Printing random map");
+            printf("Printing random map\n");
             srand(time(NULL)); //used to gen a random seed
             break;
         case 'a': srand(67); printf("Printing map 'a'\n"); break;
@@ -27,10 +27,9 @@ int main(void) {
 
     int map[MAPSIZE*MAPSIZE];
     Stops restStops[NUMBEROFSTOPS];
-    srand(time(NULL));
     // Find optimal route between start and end points
     Destination destination;
-    runDestination(&destination,0,MAPSIZE);
+    RunDestination(&destination,MAPSIZE);
     //runMapGen()
     RunMapGen(map, MAPSIZE, restStops);
     int pathLength = 0, numSections = 0;
