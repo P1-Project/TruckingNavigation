@@ -124,11 +124,11 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
             if (t2 == -1 ) restStopIdx = t3;
             else if (t3 == -1 ) restStopIdx = t2;
             else {
-                int distance2 = HeuristicManhattan(targetSection, t2 , mapSize);
-                int distance3 = HeuristicManhattan(targetSection, t3 , mapSize);
+                int distance2 = HeuristicChebyshev(targetSection, t2 , mapSize);
+                int distance3 = HeuristicChebyshev(targetSection, t3 , mapSize);
                 if (distance2 == distance3) {
-                    int goalDistance2 = HeuristicManhattan(t2, goalIdx, mapSize);
-                    int goalDistance3 = HeuristicManhattan(t3, goalIdx, mapSize);
+                    int goalDistance2 = HeuristicChebyshev(t2, goalIdx, mapSize);
+                    int goalDistance3 = HeuristicChebyshev(t3, goalIdx, mapSize);
                     restStopIdx = (goalDistance2 < goalDistance3) ? t2 : t3;
                 }
                 else {
