@@ -208,6 +208,12 @@ void NavigateWrapper(int *map, int mapSize, int *path, int pathLength, int *stop
         time = CalculatePathTime(map, newSection, sectionLength);
         printf("Section %d time: %d minutes\n", s + 1, time);
 
+        if (time > 270) {
+            printf("    WARNING: This section is above the legal limit of 270 minutes ! This route is illegal\n");
+        } else {
+            printf("\n");
+        }
+
         sectionStart = sectionEnd;
     }
     /* final section after last stop                      */
