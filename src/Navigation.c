@@ -100,7 +100,6 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
         //The route must be divided for the driver to follow regulations
         if (localNumSections++ == 0) {
             desiredType = 0; //Stop type can be both.
-
         }
         else {//numSections % 2 == 0 chose type 3 otherwise type 2
             desiredType = (localStopCount % 2 != 0) ? TYPE3STOP : TYPE2STOP;
@@ -152,7 +151,6 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
             }
         }
         stops[localStopCount++] = restStopIdx;
-
         // Update current position to rest stop
         currentIdx = restStopIdx;
         // Loop continues and A* now runs from rest stop to goal
@@ -181,7 +179,6 @@ void NavigateWrapper(int *map, int mapSize, int *path, int pathLength, int *stop
         IdxToCoords(stops[i], mapSize, &tempX, &tempY);
         printf("Coordinates: (%d, %d)\n", tempX, tempY);
     }
-
     int time;
     //printf("New path time in minutes : %d\n", time);
     //printf("Section based time\n");
