@@ -36,7 +36,7 @@ void InitializeStopsType(Stops restStops[], StopType stopTypesArray[3]) {
     int numberOfType2 = ((int)floor(NUMBEROFSTOPS23*Type2Percentage)); // Calculate number of type 2 rest stops
 
     //printf("Creating %d rest stops of type 2 and %d rest stops of type 3.\n", numberOfType2, NUMBEROFSTOPS23-numberOfType2);
-    for (int i = 0; i < NUMBEROFSTOPS23; i++) { // Assign every rest stop a type up until the total number of type 2 and 3 stops
+    for (int i = 0; i < NUMBEROFSTOPS23; ++i) { // Assign every rest stop a type up until the total number of type 2 and 3 stops
         if (i < numberOfType2) {
             restStops[i].Type = stopTypesArray[1]; // Assign type 2 if i is below number of type 2
         } else {
@@ -44,7 +44,7 @@ void InitializeStopsType(Stops restStops[], StopType stopTypesArray[3]) {
         }
     }
 
-    for (int i = NUMBEROFSTOPS23; i < NUMBEROFSTOPS; i++) { // Assign the rest of the number of stops the type 1
+    for (int i = NUMBEROFSTOPS23; i < NUMBEROFSTOPS; ++i) { // Assign the rest of the number of stops the type 1
         restStops[i].Type = stopTypesArray[0];
     }
 }
