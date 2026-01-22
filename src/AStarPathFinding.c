@@ -5,6 +5,7 @@
 #include "AStarPathFinding.h"
 #include "HelperFunc.h"
 #include "DefineConst.h"
+#define MOVEMENTDIR 4
 
 void TestAstarPathFindingConnection(void) {
     printf("TestAstarPathFindingConnection\n");
@@ -167,22 +168,26 @@ int* RunAstarPathFinding(const int *map, const int mapSize, const int pointA, co
         }
         int cx, cy;
         IdxToCoords(current, mapSize, &cx, &cy);
-        int neighbors[8];
+        int neighbors[MOVEMENTDIR];
         int ncount = 0;
         //Getting N,S,E,W neighbors to array
         if (cx > 0) neighbors[ncount++] = XYToIdx(cx-1, cy, mapSize);
         if (cx < mapSize-1) neighbors[ncount++] = XYToIdx(cx+1, cy, mapSize);
         if (cy > 0) neighbors[ncount++] = XYToIdx(cx, cy-1, mapSize);
         if (cy < mapSize-1) neighbors[ncount++] = XYToIdx(cx, cy+1, mapSize);
-        //Getting NE, NW, SE, SW to neighbors array
-        if (cx > 0 && cy > 0)
-            neighbors[ncount++] = XYToIdx(cx-1, cy-1, mapSize);
-        if (cx < mapSize-1 && cy > 0)
-            neighbors[ncount++] = XYToIdx(cx+1, cy-1, mapSize);
-        if (cx > 0 && cy < mapSize-1)
-            neighbors[ncount++] = XYToIdx(cx-1, cy+1, mapSize);
-        if (cx < mapSize-1 && cy < mapSize-1)
-            neighbors[ncount++] = XYToIdx(cx+1, cy+1, mapSize);
+
+        if (MOVEMENTDIR == 8) {
+            //Getting NE, NW, SE, SW to neighbors array
+            if (cx > 0 && cy > 0)
+                neighbors[ncount++] = XYToIdx(cx-1, cy-1, mapSize);
+            if (cx < mapSize-1 && cy > 0)
+                neighbors[ncount++] = XYToIdx(cx+1, cy-1, mapSize);
+            if (cx > 0 && cy < mapSize-1)
+                neighbors[ncount++] = XYToIdx(cx-1, cy+1, mapSize);
+            if (cx < mapSize-1 && cy < mapSize-1)
+                neighbors[ncount++] = XYToIdx(cx+1, cy+1, mapSize);
+        }
+
         //loops through the neighbors
         for (int i = 0; i < ncount; i++) {
             //sets nb as the array value at that index

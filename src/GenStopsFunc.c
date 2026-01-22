@@ -108,7 +108,7 @@ void GenStop(int *map, Stops restStops[], int i) {
 
 /*
 int main(void) {
-    srand(time(NULL));
+
 
     const unsigned int mapSize = 30;
     int map[mapSize*mapSize];

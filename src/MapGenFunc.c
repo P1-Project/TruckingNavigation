@@ -32,8 +32,6 @@ void EnableANSI() {
         GetConsoleMode(hOut, &mode);
         mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
         SetConsoleMode(hOut, mode);
-#else
-        // macOS and Linux already support ANSI natively
 #endif
 }
 

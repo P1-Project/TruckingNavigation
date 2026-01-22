@@ -187,24 +187,25 @@ void GenInterStates(int *map, const int mapSize, Stops *restStops, StopType stop
     int baseX = mapSize / 2;          // vertical highway near center
     int baseY = mapSize / 2;          // horizontal highway near center
     // Vertical highway
-    interStateRoad1.startX = clamp(baseX + RandomBetween(-wiggle, wiggle), 0, mapSize - 1);
+    interStateRoad1.startX = rand() % (mapSize - 1);
+    //interStateRoad1.startX = baseX + (-wiggle + rand() % (wiggle -(-wiggle)+1));
     interStateRoad1.startY = 0;           // top edge
-    interStateRoad1.endX   = clamp(baseX + RandomBetween(-wiggle, wiggle), 0, mapSize - 1);
+    interStateRoad1.endX   = rand() % (mapSize - 1);
     interStateRoad1.endY   = mapSize - 1; // bottom edge
     // Horizontal highway
     interStateRoad2.startX = 0;           // left edge
-    interStateRoad2.startY = clamp(baseY + RandomBetween(-wiggle, wiggle), 0, mapSize - 1);
+    interStateRoad2.startY = rand() % (mapSize - 1);
     interStateRoad2.endX   = mapSize - 1; // right edge
-    interStateRoad2.endY   = clamp(baseY + RandomBetween(-wiggle, wiggle), 0, mapSize - 1);
+    interStateRoad2.endY   = rand() % (mapSize - 1);
     // 2. Ensure they are not too close to each other
     int minSeparation = mapSize / 4;
     while (abs(interStateRoad1.startX - interStateRoad2.startY) < minSeparation)
     {
-        interStateRoad1.startX = clamp(baseX + RandomBetween(-wiggle, wiggle), 0, mapSize - 1);
-        interStateRoad1.endX   = clamp(baseX + RandomBetween(-wiggle, wiggle), 0, mapSize - 1);
+        interStateRoad1.startX = rand() % (mapSize - 1);
+        interStateRoad1.endX   = rand() % (mapSize - 1);
 
-        interStateRoad2.startY = clamp(baseY + RandomBetween(-wiggle, wiggle), 0, mapSize - 1);
-        interStateRoad2.endY   = clamp(baseY + RandomBetween(-wiggle, wiggle), 0, mapSize - 1);
+        interStateRoad2.startY = rand() % (mapSize - 1);
+        interStateRoad2.endY   = rand() % (mapSize - 1);
     }
     // 3. Draw highways
     int stopCounter = abs(NUMBEROFSTOPS - NUMBEROFINTERSTATESTOPS);
