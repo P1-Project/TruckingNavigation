@@ -17,8 +17,8 @@ void TestConGenBlockadeFunc() {
 
 void GenBlockadeFunc(int *map, const int mapSize, const int numBlockades) {
     for (int i = 0; i < numBlockades; i++) {
-        const int row = rand() % mapSize;
-        const int col = rand() % mapSize;
+        const int row = rand() % mapSize - 1;
+        const int col = rand() % mapSize - 1;
         const int idx = XYToIdx(row, col, mapSize);
         if (map[idx] == BLOCKADE) {
             i--;
@@ -30,8 +30,8 @@ void GenBlockadeFunc(int *map, const int mapSize, const int numBlockades) {
 
 void GenClusterBlockadeFunc(int *map, const int mapSize, const int numClusters, const int clusterSize) {
     for (int c = 0; c < numClusters; c++) {
-        const int centerRow = rand() % mapSize;
-        const int centerCol = rand() % mapSize;
+        const int centerRow = rand() % mapSize - 1;
+        const int centerCol = rand() % mapSize - 1;
 
         for (int dr = -clusterSize; dr <= clusterSize; dr++) {
             for (int dc = -clusterSize; dc <= clusterSize; dc++) {

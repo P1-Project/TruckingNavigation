@@ -23,8 +23,8 @@ void GetDestinationManual(Destination *destination, const int mapSize) {
 
 void GetDestinationRandom(Destination *destination, const int mapSize) {
     // Random starting point
-    destination->startX = rand() % mapSize-1;
-    destination->startY = rand() % mapSize-1;
+    destination->startX = rand() % mapSize - 1;
+    destination->startY = rand() % mapSize - 1;
 
     // Generate end point on the opposite side
     // If start is in left half, put end in right half
