@@ -32,7 +32,7 @@ void GenClusterBlockadeFunc(int *map, const int mapSize, const int numClusters, 
     for (int c = 0; c < numClusters; c++) {
         const int centerRow = rand() % mapSize;
         const int centerCol = rand() % mapSize;
-
+        //Delta Row and delta Colum
         for (int dr = -clusterSize; dr <= clusterSize; dr++) {
             for (int dc = -clusterSize; dc <= clusterSize; dc++) {
                 const int row = centerRow + dr;
