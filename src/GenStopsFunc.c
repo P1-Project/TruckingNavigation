@@ -32,12 +32,14 @@ void InitializeTypes(StopType stopTypesArray[3]) {
  * @param stopTypesArray An array of the 3 stop types
  */
 void InitializeStopsType(Stops restStops[], StopType stopTypesArray[3]) {
+    if (!restStops) exit(GENSTOPERROR);
     double Type2Percentage = 0.86; // Set percentage of type 2 rest stops
     int numberOfType2 = ((int)floor(NUMBEROFSTOPS23*Type2Percentage)); // Calculate number of type 2 rest stops
+    printf("number of type 2 stop: %d\n", numberOfType2);
 
     //printf("Creating %d rest stops of type 2 and %d rest stops of type 3.\n", numberOfType2, NUMBEROFSTOPS23-numberOfType2);
-    for (int i = 0; i < NUMBEROFSTOPS23; ++i) { // Assign every rest stop a type up until the total number of type 2 and 3 stops
-        if (i < numberOfType2) {
+    for (int i = 0; i < NUMBEROFSTOPS23; i++) { // Assign every rest stop a type up until the total number of type 2 and 3 stops
+        if (i <= numberOfType2) {
             restStops[i].Type = stopTypesArray[1]; // Assign type 2 if i is below number of type 2
         } else {
             restStops[i].Type = stopTypesArray[2]; // Assign type 3 if i is above number of type 3
@@ -60,11 +62,11 @@ void InitializeStopsLocation(int *map, Stops restStops[]) {
     for (int i = 0; i < NUMBEROFSTOPS23; ++i) { // Assign a location to every rest stop of type 2 and 3
         int attempts = 0;
         do {
-            randomIdx = rand() % (MAPSIZE*MAPSIZE); // Get a random index
+            randomIdx = rand() % ((MAPSIZE*MAPSIZE)-1); // Get a random index
             attempts++;
             if(attempts > (MAPSIZE * 10)) {
                 printf("Could not place stop after %d attempts!\n", (MAPSIZE * 10));
-                exit(EXIT_FAILURE);
+                exit(GENSTOPERROR);
             }
 
             // If the chosen spot is occupied or there is another stop close by, try again.

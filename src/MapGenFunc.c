@@ -117,7 +117,7 @@ void PrintMap(int *map, int mapSize, int *path, int pathLength){
     printf("\n");
 }
 
-void RunMapGen(int *map, int mapSize, Stops *restStops)
+void RunMapGen(int *map, int mapSize, Stops restStops[])
 {
     InitMap(map, mapSize); //inits the map and sets all values equal 0
     //Gen Blockaed can be swaped around depending on what needs to be generated first,

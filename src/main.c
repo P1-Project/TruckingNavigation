@@ -8,7 +8,6 @@
 
 int main(void) {
     printf("Hello, World!\n");
-
     char input = 'a';
     while (input != 'q') {
         do {
@@ -17,7 +16,6 @@ int main(void) {
             input = (char)tolower(input);
             if (input == 'q') {exit(0);}
         } while (!(input == 'r' || input == 'a' || input == 'b' || input == 'c'));
-
         switch (input) {
             case 'r':
                 printf("Printing random map\n");
@@ -28,14 +26,14 @@ int main(void) {
             case 'c': srand(42); printf("Printing map 'c'\n"); break;
             default: printf ("Map choice error"); exit(EXIT_FAILURE);
         }
-
         int map[MAPSIZE*MAPSIZE];
+        //Stops *restStops = malloc(sizeof(Stops)*NUMBEROFSTOPS23);
         Stops restStops[NUMBEROFSTOPS];
+        //runMapGen()
+        RunMapGen(map, MAPSIZE, restStops);
         // Find optimal route between start and end points
         Destination destination;
         RunDestination(&destination,MAPSIZE);
-        //runMapGen()
-        RunMapGen(map, MAPSIZE, restStops);
         int pathLength = 0, numSections = 0;
         int *stops = malloc(sizeof(int) * MAPSIZE * MAPSIZE);
         int *path = Navigate(map, MAPSIZE, destination, &pathLength, &numSections, stops);

@@ -61,12 +61,8 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
     const int goalIdx = CheckCoordinateSet(map, destination.endX, destination.endY, mapSize);
 /////////////////////////////////
     //variables in use
-    int numSearchPoints = 0;
-    int currentIdx = startIdx;
-    int localFullPathLength = 0;
-    int localNumSections = 0;
-    int localStopCount = 0;
-    int restStopIdx = 0;
+    int numSearchPoints = 0; int currentIdx = startIdx; int localFullPathLength = 0;
+    int localNumSections = 0; int localStopCount = 0; int restStopIdx = 0;
     const int baseSearchRadius = 5;
     int desiredType;
     int *numberStops = malloc(sizeof(int) * (mapSize * mapSize));

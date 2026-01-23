@@ -5,7 +5,7 @@
 #include "AStarPathFinding.h"
 #include "HelperFunc.h"
 #include "DefineConst.h"
-#define MOVEMENTDIR 4
+#define MOVEMENTDIR 8
 
 void TestAstarPathFindingConnection(void) {
     printf("TestAstarPathFindingConnection\n");

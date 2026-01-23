@@ -10,7 +10,7 @@
 
 
 void TestMapGenConnection(void);
-void RunMapGen(int *map, int mapSize, Stops *restStops);
+void RunMapGen(int *map, int mapSize, Stops restStops[]);
 void PrintMap(int *map, int mapSize, int *path, int pathLength);
 int IsOnPath(int i, const int *path, int pathLength);
 void PrintPath(int mapSize, int *path, int pathLength, int *stops);
