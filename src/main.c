@@ -32,6 +32,8 @@ int main(void) {
     RunDestination(&destination,MAPSIZE);
     //runMapGen()
     RunMapGen(map, MAPSIZE, restStops);
+    //PrintMapExPath(map, MAPSIZE);
+    //printf("\n");
     int pathLength = 0, numSections = 0;
     int *stops = malloc(sizeof(int) * MAPSIZE * MAPSIZE);
     int *path = Navigate(map, MAPSIZE, destination, &pathLength, &numSections, stops);

@@ -119,6 +119,44 @@ void PrintMap(int *map, int mapSize, int *path, int pathLength){
     printf("\n");
 }
 
+void PrintMapExPath(int *map, int mapSize){
+    EnableANSI();
+    const int total = mapSize * mapSize;
+    // Column header
+    for (int j = -1; j < mapSize; j++) {
+        if (j == -1) printf("   |");
+        else if (j <= 9) printf(" %d ", j);
+        else printf("%d ", j);
+    }
+    printf("\n");
+
+    for (int i = 0; i < total; i++) {
+        if (i % mapSize == 0) {
+            if (i != 0) printf("\n");
+            printf("%2d |", i / mapSize);
+        }
+
+        const char *color = WHT;
+        char c = '?';
+
+        switch (map[i]) {
+            case NORMALROAD: c = '.'; color = WHT; break;
+            case INTERSTATEROAD: c = 'H'; color = MAG; break;
+            case INTERSTATESTOP: c = '1'; color = BLU; break;
+            case TYPE2STOP: c = '2'; color = YEL; break;
+            case TYPE3STOP: c = '3'; color = GRN; break;
+            case BLOCKADE: c = '#'; color = RED; break;
+            case ROUTE: c = 'X'; color = CYN; break;
+            default: c = '?'; color = WHT; break;
+        }
+
+        printf("%s %c %s", color, c, WHT);
+    }
+    printf("\n");
+}
+
+
+
 void RunMapGen(int *map, int mapSize, Stops *restStops)
 {
     InitMap(map, mapSize); //inits the map and sets all values equal 0
