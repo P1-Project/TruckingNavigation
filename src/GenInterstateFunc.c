@@ -110,7 +110,7 @@ int *DefineInterstatePath(int *map, int mapSize, InterStateRoad interstateRoad, 
  * The number of stops and the updated map itself
  */
 void SetInterstateRestStops(int *map, int mapSize,
-    int frequencyOfStops, int path[], int pathLength,
+    const int frequencyOfStops, int path[], const int pathLength,
     Stops *restStops,
     StopType stopTypesArray[3],
     int *stopCounter
@@ -130,12 +130,6 @@ void SetInterstateRestStops(int *map, int mapSize,
         IdxToCoords(path[i], mapSize,
                     &restStops[counter].locationX,
                     &restStops[counter].locationY);
-
-        //displaying debugging informaiton
-        /*printf("TruckStop # %d at path[%d] = %d\n", counter, i, path[i]);
-        printf("Location (x,y): %d, %d\n",
-                restStops[counter].locationX,
-                restStops[counter].locationY);*/
 
         map[path[i]] = INTERSTATESTOP; //value for an interstate truck stop on the map
         counter++; //post increments the counter for the amount of stops to keep track.
@@ -162,7 +156,7 @@ void SetInterStateRoad(int *map, int mapSize,
     int pathLength;
     int *path = DefineInterstatePath(map, mapSize, interStateRoad, &pathLength);
     int frequencyOfStops = 2;
-    SetInterstateRestStops(map, MAPSIZE, frequencyOfStops, path, pathLength,
+    SetInterstateRestStops(map, mapSize, frequencyOfStops, path, pathLength,
         restStops, stopTypesArray, stopCounter);
 
     //frees the memory allocated for pointers
@@ -187,25 +181,24 @@ void GenInterStates(int *map, const int mapSize, Stops *restStops, StopType stop
     int baseX = mapSize / 2;          // vertical highway near center
     int baseY = mapSize / 2;          // horizontal highway near center
     // Vertical highway
-    interStateRoad1.startX = rand() % (mapSize - 1);
-    //interStateRoad1.startX = baseX + (-wiggle + rand() % (wiggle -(-wiggle)+1));
+    interStateRoad1.startX = clamp(baseX + RandomBetween(-wiggle, wiggle), 0 ,mapSize - 1);
     interStateRoad1.startY = 0;           // top edge
-    interStateRoad1.endX   = rand() % (mapSize - 1);
+    interStateRoad1.endX   = clamp(baseX + RandomBetween(-wiggle, wiggle), 0 ,mapSize - 1);
     interStateRoad1.endY   = mapSize - 1; // bottom edge
     // Horizontal highway
     interStateRoad2.startX = 0;           // left edge
-    interStateRoad2.startY = rand() % (mapSize - 1);
+    interStateRoad2.startY = clamp(baseY + RandomBetween(-wiggle, wiggle), 0 ,mapSize - 1);
     interStateRoad2.endX   = mapSize - 1; // right edge
-    interStateRoad2.endY   = rand() % (mapSize - 1);
+    interStateRoad2.endY   = clamp(baseY + RandomBetween(-wiggle, wiggle), 0 ,mapSize - 1);
     // 2. Ensure they are not too close to each other
     int minSeparation = mapSize / 4;
     while (abs(interStateRoad1.startX - interStateRoad2.startY) < minSeparation)
     {
-        interStateRoad1.startX = rand() % (mapSize - 1);
-        interStateRoad1.endX   = rand() % (mapSize - 1);
+        interStateRoad1.startX = clamp(baseX + RandomBetween(-wiggle, wiggle), 0 ,mapSize - 1);
+        interStateRoad1.endX   = clamp(baseX + RandomBetween(-wiggle, wiggle), 0 ,mapSize - 1);
 
-        interStateRoad2.startY = rand() % (mapSize - 1);
-        interStateRoad2.endY   = rand() % (mapSize - 1);
+        interStateRoad2.startY = clamp(baseY + RandomBetween(-wiggle, wiggle), 0 ,mapSize - 1);
+        interStateRoad2.endY   = clamp(baseY + RandomBetween(-wiggle, wiggle), 0 ,mapSize - 1);
     }
     // 3. Draw highways
     int stopCounter = abs(NUMBEROFSTOPS - NUMBEROFINTERSTATESTOPS);
