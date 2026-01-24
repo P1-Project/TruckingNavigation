@@ -8,32 +8,21 @@
 int main(void) {
     printf("Hello, World!\n");
     char input;
-
-    do {
+    do { //Input validation
         printf("Do you want a random map (r) or map (a), (b) or (c)?\n");
         scanf(" %c", &input);
     } while (!(input == 'r' || input == 'a' || input == 'b' || input == 'c'));
-
     switch (input) {
-        case 'r':
-            printf("Printing random map\n");
-            srand(time(NULL)); //used to gen a random seed
-            break;
+        case 'r': printf("Printing random map\n"); srand(time(NULL)); break;
         case 'a': srand(67); printf("Printing map 'a'\n"); break;
         case 'b': srand(21); printf("Printing map 'b'\n"); break;
         case 'c': srand(42); printf("Printing map 'c'\n"); break;
         default: printf ("Map choice error"); exit(EXIT_FAILURE);
     }
-
-    int map[MAPSIZE*MAPSIZE];
-    Stops restStops[NUMBEROFSTOPS];
-    // Find optimal route between start and end points
-    Destination destination;
+    int map[MAPSIZE*MAPSIZE]; Stops restStops[NUMBEROFSTOPS]; Destination destination;
     RunDestination(&destination,MAPSIZE);
-    //runMapGen()
     RunMapGen(map, MAPSIZE, restStops);
-    //PrintMapExPath(map, MAPSIZE);
-    //printf("\n");
+    // Find optimal route between start and end points
     int pathLength = 0, numSections = 0;
     int *stops = malloc(sizeof(int) * MAPSIZE * MAPSIZE);
     int *path = Navigate(map, MAPSIZE, destination, &pathLength, &numSections, stops);
