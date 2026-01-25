@@ -69,11 +69,9 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
     int *searchPoints = malloc(sizeof(int)* (mapSize * mapSize));
 
     while (currentIdx != goalIdx) {
-
         //First Run should equal the original path,
         int *path = RunAstarPathFinding(map, mapSize, currentIdx, goalIdx, &pathLength);
         if (!path || pathLength == 0) break;
-
         numSearchPoints = 0;
         DivideRoute(map, path, pathLength, searchPoints,&numSearchPoints,DRIVINGTIMEMAX);
         // Time spent driving aka section size = 13 tiles before first rest stop
