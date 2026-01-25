@@ -54,7 +54,10 @@ int* OriginalPath(int *map, const int mapSize, const Destination destination,
  */
 int *Navigate(int *map, const int mapSize, const Destination destination,
     int *fullPathLength, int *numSections, int *stops) {
+
     int *fullPath = malloc(sizeof(int) * (mapSize * mapSize));
+    int *numberStops = malloc(sizeof(int) * mapSize);
+    int *searchPoints = malloc(sizeof(int)* mapSize);
     int pathLength = 0;
     // Get start and end points
     const int startIdx = CheckCoordinateSet(map, destination.startX, destination.startY, mapSize);
@@ -62,18 +65,15 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
     /////////////////////////////////
     //variables in use
     int numSearchPoints, currentIdx = startIdx, localFullPathLength = 0,
-    localNumSections = 0, localStopCount = 0, restStopIdx = 0;
-
-    int desiredType;
-    int *numberStops = malloc(sizeof(int) * (mapSize * mapSize));
-    int *searchPoints = malloc(sizeof(int)* (mapSize * mapSize));
-
+    localNumSections = 0, localStopCount = 0, restStopIdx = 0, desiredType;
     while (currentIdx != goalIdx) {
         //First Run should equal the original path,
-        int *path = RunAstarPathFinding(map, mapSize, currentIdx, goalIdx, &pathLength);
+        int *path = RunAstarPathFinding(map, mapSize, currentIdx,
+            goalIdx, &pathLength);
         if (!path || pathLength == 0) break;
         numSearchPoints = 0;
-        DivideRoute(map, path, pathLength, searchPoints,&numSearchPoints,DRIVINGTIMEMAX);
+        DivideRoute(map, path, pathLength, searchPoints,
+            &numSearchPoints,DRIVINGTIMEMAX);
         // Time spent driving aka section size = 13 tiles before first rest stop
         //if the path is too short the program returns the full path from start to end
         if (numSearchPoints == 0) {
@@ -82,8 +82,7 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
                     fullPath[localFullPathLength++] = path[i];
                 }
             }
-            free(path);
-            break;
+            free(path); break;
         }
         //The route must be divided for the driver to follow regulations
         if (localNumSections++ == 0) {desiredType = 0;}//Stop type can be both.
@@ -93,7 +92,7 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
         const int targetSection = searchPoints[0]; // next section point
         const int t2 = LookForNeighbor(map, targetSection, mapSize, TYPE2STOP, 5);
         const int t3 = LookForNeighbor(map, targetSection, mapSize, TYPE3STOP, 5);
-        //if no rest stop found
+        //if no rest stop found return no path found
         if (t2 == -1 && t3 == -1) {
             printf("No path found\n");
             *numSections = -1; *stops = -1; *fullPathLength = -1;
@@ -115,11 +114,8 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
                     restStopIdx = (distance2 < distance3 ? t2 : t3);
                 }
             }
-        } else if (desiredType == TYPE3STOP) {
-            restStopIdx = (t3 != -1) ? t3 : t2;
-        } else { // TYPE2STOP
-            restStopIdx = (t2 != -1) ? t2 : t3;
-        }
+        } else if (desiredType == TYPE3STOP) {restStopIdx = (t3 != -1) ? t3 : t2;}
+        else { restStopIdx = (t2 != -1) ? t2 : t3;} // TYPE2STOP
         //Divide path into sections (this fills searchPointsType3)
         // Recalculate A* to the rest stop
         int *pathToStop = RunAstarPathFinding(map, mapSize,
@@ -135,17 +131,11 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
         // Update current position to rest stop
         currentIdx = restStopIdx;
         // Loop continues and A* now runs from rest stop to goal
-        free(pathToStop);
-        free(path);
+        free(pathToStop); free(path);
     }
-    //return
     //full path, FullPathLength, numberStops, numSections,
-    *fullPathLength = localFullPathLength;
-    *numSections = localStopCount;
-    //*stops = numberStops;
-    free(numberStops);
-    free(searchPoints);
-    return fullPath;
+    *fullPathLength = localFullPathLength; *numSections = localStopCount;
+    free(numberStops); free(searchPoints); return fullPath;
 }
 
 void NavigateWrapper(int *map, int mapSize, int *path, int pathLength, int *stops, const int numOfStops) {
