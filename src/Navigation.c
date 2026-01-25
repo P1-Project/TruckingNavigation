@@ -59,34 +59,28 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
     // Get start and end points
     const int startIdx = CheckCoordinateSet(map, destination.startX, destination.startY, mapSize);
     const int goalIdx = CheckCoordinateSet(map, destination.endX, destination.endY, mapSize);
-/////////////////////////////////
+    /////////////////////////////////
     //variables in use
-    int numSearchPoints = 0; int currentIdx = startIdx; int localFullPathLength = 0;
-    int localNumSections = 0; int localStopCount = 0; int restStopIdx = 0;
-    const int baseSearchRadius = 5;
+    int numSearchPoints, currentIdx = startIdx, localFullPathLength = 0,
+    localNumSections = 0, localStopCount = 0, restStopIdx = 0;
+
     int desiredType;
     int *numberStops = malloc(sizeof(int) * (mapSize * mapSize));
     int *searchPoints = malloc(sizeof(int)* (mapSize * mapSize));
 
     while (currentIdx != goalIdx) {
+
         //First Run should equal the original path,
         int *path = RunAstarPathFinding(map, mapSize, currentIdx, goalIdx, &pathLength);
         if (!path || pathLength == 0) break;
 
         numSearchPoints = 0;
-        DivideRoute(map, path, pathLength,
-                    searchPoints,
-                    &numSearchPoints,
-                    DRIVINGTIMEMAX);
+        DivideRoute(map, path, pathLength, searchPoints,&numSearchPoints,DRIVINGTIMEMAX);
         // Time spent driving aka section size = 13 tiles before first rest stop
         //if the path is too short the program returns the full path from start to end
         if (numSearchPoints == 0) {
             for (int i = 0; i < pathLength; i++) {
-                int start = 0;
-                if (localFullPathLength > 0 && fullPath[localFullPathLength-1] == path[0]) {
-                    start = 1; // skip the first node of pathToStop
-                }
-                for (i = start; i <= pathLength-1; i++) {
+                for (i = 0; i <= pathLength-1; i++) {
                     fullPath[localFullPathLength++] = path[i];
                 }
             }
@@ -94,39 +88,32 @@ int *Navigate(int *map, const int mapSize, const Destination destination,
             break;
         }
         //The route must be divided for the driver to follow regulations
-        if (localNumSections++ == 0) {
-            desiredType = 0; //Stop type can be both.
-        }
-        else {//numSections % 2 == 0 chose type 3 otherwise type 2
-            desiredType = (localStopCount % 2 != 0) ? TYPE3STOP : TYPE2STOP;
-        }
+        if (localNumSections++ == 0) {desiredType = 0;}//Stop type can be both.
+        //numSections % 2 == 0 chose type 3 otherwise type 2
+        else {desiredType = (localStopCount % 2 != 0) ? TYPE3STOP : TYPE2STOP;}
         //Find the nearest TYPE3STOP to the next section break
-        int targetSection = searchPoints[0]; // next section point
-        int t2 = LookForNeighbor(map, targetSection, mapSize, TYPE2STOP, baseSearchRadius);
-        int t3 = LookForNeighbor(map, targetSection, mapSize, TYPE3STOP, baseSearchRadius);
+        const int targetSection = searchPoints[0]; // next section point
+        const int t2 = LookForNeighbor(map, targetSection, mapSize, TYPE2STOP, 5);
+        const int t3 = LookForNeighbor(map, targetSection, mapSize, TYPE3STOP, 5);
         //if no rest stop found
         if (t2 == -1 && t3 == -1) {
             printf("No path found\n");
-            free(path);
-            *numSections = -1;
-            *stops = -1;
-            *fullPathLength = -1;
-            free(numberStops);
-            free(searchPoints);
+            *numSections = -1; *stops = -1; *fullPathLength = -1;
+            free(path); free(numberStops); free(searchPoints);
             return NULL;
         }
         if (desiredType == 0) { //pick type closest
-            if (t2 == -1 ) restStopIdx = t3;
-            else if (t3 == -1 ) restStopIdx = t2;
-            else {
-                int distance2 = HeuristicChebyshev(targetSection, t2 , mapSize);
-                int distance3 = HeuristicChebyshev(targetSection, t3 , mapSize);
-                if (distance2 == distance3) {
-                    int goalDistance2 = HeuristicChebyshev(t2, goalIdx, mapSize);
-                    int goalDistance3 = HeuristicChebyshev(t3, goalIdx, mapSize);
+            if (t2 == -1 ) restStopIdx = t3; //if no type 2 is found pick type 3
+            else if (t3 == -1 ) restStopIdx = t2; //if no type 3 is found pick type 2
+            else { //if both found pick the closest
+                const int distance2 = HeuristicChebyshev(targetSection, t2 , mapSize);
+                const int distance3 = HeuristicChebyshev(targetSection, t3 , mapSize);
+                if (distance2 == distance3) { //if distance from section break point is equal pick the closest to goal
+                    const int goalDistance2 = HeuristicChebyshev(t2, goalIdx, mapSize);
+                    const int goalDistance3 = HeuristicChebyshev(t3, goalIdx, mapSize);
                     restStopIdx = (goalDistance2 < goalDistance3) ? t2 : t3;
                 }
-                else {
+                else {//pick the closest one
                     restStopIdx = (distance2 < distance3 ? t2 : t3);
                 }
             }
