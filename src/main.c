@@ -26,12 +26,11 @@ int main(void) {
             case 'c': srand(42); printf("Printing map 'c'\n"); break;
             default: printf ("Map choice error"); exit(EXIT_FAILURE);
         }
-        for (int i = 0; i < 10; i++) {
+        /*for (int i = 0; i < 10; i++) {
             printf("%d) %d \n", i, rand());
         }
         printf("\n");
-
-
+        */
         int map[MAPSIZE*MAPSIZE];
         //Stops *restStops = malloc(sizeof(Stops)*NUMBEROFSTOPS23);
         Stops restStops[NUMBEROFSTOPS];
